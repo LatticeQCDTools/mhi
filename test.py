@@ -1,15 +1,24 @@
 import numpy as np
 import os
 import sys
-np.set_printoptions(linewidth=300)
-from . import mhi
-from . import basis_functions
+from mhi import mhi
+from mhi import basis_functions
 
 def main():
+    """
+    Command-line script to test functionality of MHI code against tabulated
+    reference data.
+    """
+    if len(sys.argv) != 2:
+        print("usage: python {sys.argv[0]} <reference/output/directory>")
+        sys.exit(0)
 
-    base = "/Users/williamjay/Research/Npi/output"
+    base = sys.argv[1]
+    if not os.path.exists(base):
+        print(base, "does not exist.")
+        sys.exit(0)
 
-    # test_groups_and_irreps(base)
+    test_groups_and_irreps(base)
 
     # Momentum configurations for spinless case
     test_setup1 = [
@@ -63,8 +72,8 @@ def main():
 
     tests = [
         (os.path.join(base, "spinless"), test_spinless, test_setup1),
-        # (os.path.join(base, "Npi"), test_nucleon_pi, test_setup2),
-        # (os.path.join(base, "np"), test_np, test_setup2),
+        (os.path.join(base, "Npi"), test_nucleon_pi, test_setup2),
+        (os.path.join(base, "np"), test_np, test_setup2),
     ]
     for base, test_fcn, setup in tests:
         print("Testing against files in", base)
