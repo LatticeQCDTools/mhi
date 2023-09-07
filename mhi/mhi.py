@@ -8,12 +8,6 @@ symmetry, and isospin (TODO!).
 
 Authors:
 William Detmold, William I. Jay, Gurtej Kanwar, Phiala E. Shanahan, and Michael L. Wagman
-
-* Check for TODO flag in the docs
-* Rerun tests after lastest refactoring
-* Add main function giving support as a command-line utility
-* Making a few wrapper/driver classes
-* Add setup.py file for installation using pip
 """
 
 import functools
@@ -1468,6 +1462,9 @@ def rephase(arr, irrep):
 def mhi(momenta, particles, verbose=False):
     """
     General-purpose driver function for projection.
+    TODO: finalize interface
+    TODO: make sure this function is general enough
+    TODO: make sure this function follows the "final algorithm" in the paper
 
     Parameters
     ----------
