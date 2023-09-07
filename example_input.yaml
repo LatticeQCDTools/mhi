@@ -1,0 +1,6 @@
+momenta : [[1,2,3], [-1,-2,-3]]
+particles : [
+  [pion, A1m],
+  [pion , A1m],
+]
+
