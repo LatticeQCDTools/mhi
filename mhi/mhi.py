@@ -26,6 +26,7 @@ import string
 import numpy as np
 import sympy
 import yaml
+import h5py
 from . import basis_functions
 
 ####################
@@ -1751,32 +1752,60 @@ def test_block_diagonalization(Dmm, Dmumu, projector, verbose=False):
         print("Success: block diagonalization using projection matrices")
 
 
-def main():
+def write_hdf5(h5fname, result_dict):
     """
-    Command-line interace for the module.
+    Writes block-diagonalization / change-of-basis coefficients to HDF5.
+
+    Parameters
+    ----------
+    h5fname : str
+        The name of the output file
+    result_dict : dict
+        The block-diagonalization / change of basis matrices, where each key
+        is a tuple the form (irrep_name, degeneracy) and each key is an ndarray
+        with the coefficients.
+
+    Returns
+    -------
+    None
+
     """
-
-    args = sys.argv
-    if len(args) != 2:
-        print(f"Usage: python {args[0]} <config.yaml>")
-        sys.exit(0)
-
-    with open(args[1], 'r') as ifile:
-        inputs = yaml.safe_load(ifile)
-
-    momenta = np.array(inputs['momenta'])
-    particles = inputs['particles']
-
-    assert len(momenta.shape) == 2, f"Expected 2d array of momenta, found {len(momenta.shape)}"
-    assert momenta.shape[1] == 3, f"Momenta must be 3 vectors, found {momenta.shape[1]}-vectors."
-    assert len(momenta) == len(particles), "Number of momenta must equal number of particles."
-
-    proj = mhi(momenta, particles, verbose=True)
-    for key, val in proj.items():
-        print(key, val.shape)
-
-    # TODO: Save results
+    with h5py.File(h5fname, mode='a') as h5file:
+        for (irrep_name, degeneracy), data in result_dict.items():
+            dpath = f'data/{irrep_name}/{degeneracy}'
+            if dpath not in h5file:
+                _ = h5file.create_dataset(name=dpath, data=data,
+                                          compression='gzip', shuffle=True)
+            else:
+                existing = h5file[dpath]  # load existing data
+                existing[...] = data      # assigned new values to data
+                assert np.allclose(h5file[dpath], data),\
+                    f"Error updated values for ({irrep_name}, {degeneracy})."
+            h5file.flush()
 
 
-if __name__ == "__main__":
-    main()
+def read_hdf5(h5fname):
+    """
+    Reads saved block-diagonalization / change-of-basis coefficients from HDF5.
+
+    Parameters
+    ----------
+    h5fname : str
+        The name of HDF5 file to read
+
+    Returns
+    -------
+    result_dict : dict
+        The block-diagonalization / change of basis matrices, where each key
+        is a tuple the form (irrep_name, degeneracy) and each key is an ndarray
+        with the coefficients.
+
+    """
+    result_dict = {}
+    with h5py.File(h5fname, 'r') as ifile:
+        for irrep_name in ifile['data']:
+            for degeneracy in ifile['data'][irrep_name]:
+                print(irrep_name, degeneracy)
+                result_dict[(irrep_name, int(degeneracy))] =\
+                    np.array(ifile['data'][irrep_name][degeneracy][:])
+    return result_dict
