@@ -42,7 +42,7 @@ basis_fcns["C4v"] = {
     "A2": basis_fcns["Oh"]["A1m"],
     "B1": [basis_fcns["Oh"]["Ep"][1],],
     "B2": [basis_fcns["Oh"]["T2p"][1],],
-    "E" : [1j*Y*Z, -1j*X*Z],  # I had[-X*Z, -Y*Z]  # TODO -- get squared away about this convention
+    "E" : [-X*Z, -Y*Z],
 }
 
 basis_fcns["C3v"] = {
@@ -112,8 +112,8 @@ basis_spinors["Dic4"] = {
         [(1, SpinorTuple(1/2, -1/2, +1)),],
     ],
     "G2": [
-        [(np.sqrt(1/6), SpinorTuple(5/2, -5/2, +1)), (-np.sqrt(5/6), SpinorTuple(5/2, +3/2, +1)),],
         [(np.sqrt(1/6), SpinorTuple(5/2, +5/2, +1)), (-np.sqrt(5/6), SpinorTuple(5/2, -3/2, +1)),],
+        [(np.sqrt(1/6), SpinorTuple(5/2, -5/2, +1)), (-np.sqrt(5/6), SpinorTuple(5/2, +3/2, +1)),],
     ],
 }
 
@@ -170,6 +170,8 @@ basis_spinors["nucleon"] = {
     ],
 }
 
+# Translation between subgroups of Oh and the corresponding subgroups of OhD
+# to allow for accessing the relevant basis vectors using either name
 _keymap = {
     'Oh': 'OhD', 'C4v': 'Dic4', 'C3v': 'Dic3',
     'C2v': 'Dic2', 'C2R': 'C4R', 'C2P': 'C4P', 'C1': 'C1D'}
