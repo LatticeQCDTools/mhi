@@ -33,6 +33,3 @@ There are some pending TODO items:
 * Finalize the "driver function" mhi.mhi(...), checking for correctness,
   generality, and consistency with the final algorithm as described in the paper.
 * Add "group conjugations" to transform little groups into canonical form
-* Add tests to compare to results of Morningstar
-* Add test comparing to tabulated values for little-group irrep matrices.
-  (Existing tests only do irreps of Oh and OhD, but not the little groups.)
