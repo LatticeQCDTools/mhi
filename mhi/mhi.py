@@ -19,6 +19,7 @@ import os
 import string
 import numpy as np
 import sympy
+from scipy.linalg import expm
 import yaml
 import h5py
 from . import basis_functions
@@ -366,6 +367,7 @@ def transform(arr, group_element, verbose=False):
     args = rank * [group_element] + [arr]  # einsum eats a list of tensors
     return np.einsum(subscripts, *args, optimize='greedy')
 
+
 def tensor_inner(a, b, verbose=False):
     """
     Computes the inner product between two tensors a[i,j,...,k]*b[i,j,...,k].
@@ -390,6 +392,7 @@ def tensor_inner(a, b, verbose=False):
     if verbose:
         print(subscripts)
     return np.einsum(subscripts, np.conjugate(a), b, optimize='greedy')
+
 
 def make_tensor_product_space(dims):
     """
@@ -466,6 +469,49 @@ class DiracPauli:
             [np.zeros((1,3)), np.eye(1)]])
         test_clifford([self.g1, self.g2, self.g3, self.g4], self.eta, verbose)
         test_gamma5([self.g1, self.g2, self.g3, self.g4], self.g5, verbose)
+
+    def rotation_vec(self, omega):
+        """
+        Computes the spinor rotation matrix associated with the 3-vector omega.
+        Parameters
+        ----------
+        omega: (3, ) ndarray or list
+            The vector specifying the rotation
+
+        Returns
+        -------
+        arr : (4, 4) ndarray
+            The complex roation matrix
+        """
+        assert len(omega) == 3, "omega must be a 3-vector"
+        g = [self.g1, self.g2, self.g3]
+        eps = self.eps3
+        arg = np.zeros(g[0].shape, dtype=complex)
+        for i,j,k in itertools.product(range(3), repeat=3):
+            arg += eps[i,j,k] * g[i] @ g[j] * omega[k]
+        arg *= -0.25
+        return expm(arg)
+
+    def rotation(self, theta, direction):
+        """
+        Computes the spinor rotation matrix associated with an rotation
+        of angle "theta" around the kth axis.
+        Parameters
+        ----------
+        theta: float
+            The rotation angle
+        direction: int
+            The axis number, with {1,2,3} <--> {x,y,z}.
+
+        Returns
+        -------
+        arr : (4, 4) ndarray
+            The complex rotation matrix
+        """
+        assert direction in (1,2,3), "Please specify direction in (1,2,3)."
+        omega = np.zeros(3)
+        omega[direction -1] = theta
+        return self.rotation_vec(omega)
 
 
 def get_nprod(j):
@@ -576,6 +622,47 @@ def make_oh():
     perms = [id3, pxy, pyz, pxz, pxy@pyz, pxz@pzy]
 
     return np.array([r@p for r, p in itertools.product(refls, perms)])
+
+def rotation(theta, direction):
+    """
+    Computes the rotation matrix by the angle theta around a particular axis.
+
+    Parameters
+    ----------
+    theta : float
+        The angle
+    direction: int
+        The axis number, with {1,2,3} <--> {x,y,z}.
+
+
+    Returns
+    -------
+    arr : (3, 3) ndarray
+        The rotation matrix
+    """
+    assert direction in (1,2,3), "Please specify direction in (1,2,3)."
+    omega = np.zeros(3)
+    omega[direction-1] = theta
+    return rotation_vec(omega)
+
+
+def rotation_vec(omega):
+    """
+    Computes the rotation matrix associated with the three-vector omega.
+
+    Parameters
+    ----------
+    omega : (3, ) ndarray or list
+        The vector defining the rotation
+
+    Returns
+    -------
+    arr : (3, 3) ndarray
+        The rotation matrix
+    """
+    assert len(omega) == 3, "omega must be a 3-vector"
+    eps = levi_civita(3)
+    return expm(-eps @ omega)
 
 
 def make_ohd():
@@ -1552,6 +1639,23 @@ def test_stabilizer(verbose=False):
 
 def anticommutator(arr1, arr2):
     """
+    Computes the anticommutator of two matrices.
+
+    Parameters
+    ----------
+    arr1 : array_like
+    arr2 : array_like
+
+    Returns
+    -------
+    arr : ndarray
+        The anticommutator {arr1, arr2}
+    """
+    return arr1 @ arr2 + arr2 @ arr1
+
+
+def commutator(arr1, arr2):
+    """
     Computes the commutator of two matrices.
 
     Parameters
@@ -1562,9 +1666,9 @@ def anticommutator(arr1, arr2):
     Returns
     -------
     arr : ndarray
-        The commutator [arr1, arr2]
+        The commutator {arr1, arr2}
     """
-    return arr1 @ arr2 + arr2 @ arr1
+    return arr1 @ arr2 - arr2 @ arr1
 
 
 def test_clifford(gamma, eta, verbose=False):
