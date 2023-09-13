@@ -19,6 +19,7 @@ def main():
         sys.exit(0)
 
     test_groups_and_irreps(base)
+    test_subgroups_and_irreps(base)
 
     # Momentum configurations for spinless case
     test_setup1 = [
@@ -107,7 +108,7 @@ def test_groups_and_irreps(base):
     assert np.allclose(oh, oh_ref), "Mismatch: Oh"
     print("Success for group: Oh")
 
-    # Oh: Verify agreement of group presentations
+    # OhD: Verify agreement of group presentations
     ohd = mhi.make_ohd()
     ohd_ref = read_mathematica(
         os.path.join(base,"OhD/Group.dat"),
@@ -134,6 +135,70 @@ def test_groups_and_irreps(base):
             table.shape)
         assert np.allclose(ref, table)
         print("Success for OhD irrep:", irrep_name)
+
+
+def test_subgroups_and_irreps(base):
+    """
+    Tests construction of subgroup presentations and irrep matrices, comparing
+    results to tabulated reference data.
+
+    Parameters
+    ----------
+    base : str
+        Path to the output directory containing the reference data.
+
+    Returns
+    -------
+    None
+    """
+    oh = mhi.make_oh()
+
+    # Verify agreement of subgroup presentations and irreps
+    subgroups = {
+        'C4v': [0,0,1],
+        'C3v': [1,1,1],
+        'C2v': [0,1,1],
+        'C2R': [1,2,0],
+        'C2P': [1,1,2],
+        'C1':  [1,2,3],
+    }
+    for name, momenta in subgroups.items():
+
+        # Subroups of Oh
+        little = mhi.make_stabilizer(momenta=momenta, group=oh)
+        little_name = mhi.identify_stabilizer(little)
+        assert name == little_name, f"Misidentified subgroup? {name} vs {little_name}"
+        little_ref = read_mathematica(
+            os.path.join(base, f"{little_name}/Group.dat"),
+            little.shape)
+        assert np.allclose(little, little_ref), f"Mismatch: {little_name}"
+        print(f"Success for subgroup: {little_name} of Oh")
+
+        # Irreps of subgroups of Oh
+        Dmumu = mhi.make_irrep_from_group(little)
+        for irrep_name, table in Dmumu.items():
+            ref = read_mathematica(
+                os.path.join(base, f"{name}/{irrep_name}.dat"),
+                table.shape)
+            assert np.allclose(ref, table), f"Problem with {irrep_name}"
+            print(f"Success for {little_name} irrep: {irrep_name}")
+
+        # Subgroups of OhD
+        little_double = mhi.make_spinorial_little_group(little)
+        little_double_ref = read_mathematica(
+            os.path.join(base, f"{little_name}D/Group.dat"),
+            little_double.shape)
+        assert np.allclose(little_double, little_double_ref), f"Mismatch: {little_name}"
+        print(f"Success for subgroup: {little_name}D of OhD")
+
+        # Irreps of subgroups of OhD
+        Dmumu_double = mhi.make_irrep_from_groupD(little)
+        for irrep_name, table in Dmumu_double.items():
+            ref = read_mathematica(
+                os.path.join(base, f"{name}D/{irrep_name}.dat"),
+                table.shape)
+            assert np.allclose(ref, table), f"Problem with {irrep_name}"
+            print(f"Success for {little_name} irrep: {irrep_name}")
 
 
 def test_spinless(momenta, fname_rep, fname_basis):
@@ -174,19 +239,8 @@ def test_spinless(momenta, fname_rep, fname_basis):
     proj = mhi.project_basis(Dmm, Dmumu, verbose=True)
     table = make_table(proj)
     ref = read_mathematica(fname_basis, table.shape)
-    bad_idxs = []
-    if not np.allclose(table, ref):
-        for idx, row in enumerate(table):
-            if not np.allclose(row, ref[idx]):
-                bad_idxs.append(idx)
-                print("Bad idx=",idx)
-                print("WJ-->", np.round(row[:10], 2))
-                print("TK-->", np.round(ref[idx, :10], 2))
-        print(f"Error: trouble with {fname_basis}")
-        print("bad idxs", bad_idxs)
-    # assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
-    else:
-        print("Success:", os.path.split(fname_basis)[-1])
+    assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
+    print("Success:", os.path.split(fname_basis)[-1])
 
 
 def test_nucleon_pi(momenta, fname_rep, fname_basis):
@@ -238,11 +292,6 @@ def test_nucleon_pi(momenta, fname_rep, fname_basis):
 
     ref = read_mathematica(fname_rep, Dmm_momspin.shape)
 
-    # print("Dmm_momspin.shape", Dmm_momspin.shape)
-    # print("ref.shape", ref.shape)
-    # print(np.round(Dmm_momspin[1][:10, :5], 4))
-    # print(np.round(ref[1][:10,:5], 4))
-
     assert np.allclose(Dmm_momspin, ref),\
         f"Trouble with {os.path.split(fname_rep)[-1]}"
     print("Success:", os.path.split(fname_rep)[-1])
@@ -251,19 +300,8 @@ def test_nucleon_pi(momenta, fname_rep, fname_basis):
     table = make_table(proj)
     ref = read_mathematica(fname_basis, table.shape)
 
-    bad_idxs = []
-    if not np.allclose(table, ref):
-        for idx, row in enumerate(table):
-            if not np.allclose(row, ref[idx]):
-                bad_idxs.append(idx)
-                print("Bad idx=",idx)
-                print("WJ-->", np.round(row[:10], 2))
-                print("TK-->", np.round(ref[idx, :10], 2))
-        print(f"Error: trouble with {fname_basis}")
-        print("bad idxs", bad_idxs)
-    # assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
-    else:
-        print("Success:", os.path.split(fname_basis)[-1])
+    assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
+    print("Success:", os.path.split(fname_basis)[-1])
 
 
 def test_np(momenta, fname_rep, fname_basis):
@@ -315,19 +353,8 @@ def test_np(momenta, fname_rep, fname_basis):
     table = make_table(proj)
     ref = read_mathematica(fname_basis, table.shape)
 
-    bad_idxs = []
-    if not np.allclose(table, ref):
-        for idx, row in enumerate(table):
-            if not np.allclose(row, ref[idx]):
-                bad_idxs.append(idx)
-                print("Bad idx=",idx)
-                print("WJ-->", np.round(row[:10], 2))
-                print("TK-->", np.round(ref[idx, :10], 2))
-        print(f"Error: trouble with {fname_basis}")
-        print("bad idxs", bad_idxs)
-    # assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
-    else:
-        print("Success:", os.path.split(fname_basis)[-1])
+    assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
+    print("Success:", os.path.split(fname_basis)[-1])
 
 
 def irrep_priority(irrep_name):
@@ -381,10 +408,9 @@ def make_table(proj):
     """
     irreps = [key for key, _ in proj.keys()]
     idxs = range(len(irreps))
-    new_irreps, new_idxs  = zip(
+    _, new_idxs  = zip(
         *sorted(zip(irreps, idxs),
         key=lambda pair: irrep_priority(pair[0])))
-    print(new_irreps)
     rows = list(proj.values())
     return np.vstack([rows[idx] for idx in new_idxs])
 
