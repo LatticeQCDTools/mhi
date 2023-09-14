@@ -55,6 +55,7 @@ def levi_civita(dim):
         arr[x] = int(np.linalg.det(mat))
     return arr
 
+
 def unique_permutations(seq):
     """
     Yield only unique permutations of seq in an efficient way.
@@ -137,6 +138,7 @@ def unique_permutations(seq):
         # including k, also efficiently.                     0 0 1 1 0 0 1 1
         seq[k + 1:] = seq[-1:k:-1]
 
+
 def symmetrize(arr):
     """
     Computes the completely symmetrized version of the input array.
@@ -172,6 +174,7 @@ def symmetrize(arr):
             arr_sym[perm] = sym
     return arr_sym
 
+
 def tensor_product(a, b):
     """
     Computes the tensor product between tensors a and b.
@@ -192,6 +195,7 @@ def tensor_product(a, b):
     tensor[i,j,...k,r,s,...t] = a[i,j,...k]*b[r,s,...,t].
     """
     return np.tensordot(a, b, axes=0)
+
 
 def tensor_nfold(*tensors):
     """
@@ -623,6 +627,7 @@ def make_oh():
 
     return np.array([r@p for r, p in itertools.product(refls, perms)])
 
+
 def rotation(theta, direction):
     """
     Computes the rotation matrix by the angle theta around a particular axis.
@@ -701,6 +706,7 @@ def make_ohd():
     assert len(ohd) == 96, f"Unexpected group size {len(ohd)}"
     return ohd
 
+
 def make_spinorial_little_group(little):
     """
     Makes the "spinorial" little group associated with the double cover OhD,
@@ -754,6 +760,7 @@ def make_stabilizer(momenta, group):
         )
     return stab
 
+
 def identify_stabilizer(stabilizer):
     """
     Identifies the name of the stabilizer group "H" by checking its order.
@@ -786,6 +793,7 @@ def identify_stabilizer(stabilizer):
     }
     return dims[dim]
 
+
 def make_little_and_stabilizer(momenta, group):
     """
     Computes the little group and stabilizer group of the ordered set of momenta.
@@ -817,9 +825,119 @@ def make_little_and_stabilizer(momenta, group):
     return (little, stab)
 
 
+def conjugate(g, h):
+    """
+    Computes the conjugate of group element h by group element g: g.h.g^{-1}.
+    Assumes that g is an orthogonal matrix so that g^{-1} = g^T.
+
+    Parameters
+    ----------
+    g : (n, n) ndarray
+    h : (n, n) ndarray
+
+    Returns
+    -------
+    h_conj : (n, n) ndarray
+        The conjugated element, g.h.g^{-1}
+    """
+    return g @ h @ g.T
+
+
+def conjugate_group(g, group):
+    """
+    Computes the conjugate of the group G by the group element g: g.G.g^{-1}.
+    Assumes that g is an orthogonal matrix so that g^{-1} = g^T.
+
+    Parameters
+    ----------
+    group : (|G|, n, n) ndarray
+        The group G
+    h : (n, n) ndarray
+        The conjugating element
+
+    Returns
+    -------
+    group_conj : (|G|, n, n) ndarray
+        The conjugated group g.G.g^{-1}
+    """
+    return np.array([conjugate(g, elt) for elt in group])
+
+
+Isomorphism = namedtuple("Isomorphism", ['g', 'perm'])
+
+
+def find_subgroup_isomorphism(group, subgroup_h1 , subgroup_h2):
+    """"
+    Finds the isomorphism between conjugate subgroups H1 and H2.
+
+    Parameters
+    ----------
+    group : (|G|, n, n) ndarray
+        The group G
+    subgroup_h1 : (|H|, n, n) ndarray
+        The subgroups H1
+    subgroup_h2 : (|H|, n, n) ndarray
+        The subgroups H2
+
+    Returns
+    -------
+    g, perm : (n, n) ndarray, (|H|, ) ndarray
+        The group element and permutation specifying the isomorphism via
+        (g.H1.g^{inv})[perm] --> H2 as an ordered set
+
+    """
+    assert subgroup_h1.shape == subgroup_h2.shape,\
+        f"Incomensurate shapes for subgroups H1 and H2: {subgroup_h1.shape} {subgroup_h2.shape}"
+    assert group.shape[1:] == subgroup_h1.shape[1:],\
+        f"Incomensurate shapes for group G and the subgroup H1: {group.shape} {subgroup_h1.shape}"
+
+    def argsort(group):
+        """
+        Computes the indices that would sort the group, using a hash
+        """
+        return np.argsort([force_hash(g) for g in group])
+
+    ridx2 = argsort(subgroup_h2).argsort()
+    for g in group:
+        h1_conj = conjugate_group(g, subgroup_h1)
+        idx1 = argsort(h1_conj)
+        perm = idx1[ridx2]
+        if np.allclose(h1_conj[perm], subgroup_h2):
+            break
+    else:
+        raise ValueError("Failed to locate an isomorphism.")
+    return Isomorphism(g, perm)
+
+
+def apply_isomorphism(group, isomorphism):
+    """
+    Applies the isomorphism (g, perm) to the group G via (g.G.g^{-1})[perm].
+
+    Parameters
+    ----------
+    group : (|G|, n, n) ndarray
+        The group
+    isomorphism : namedtuple / Isomorphism
+        The (group_element, permuation) pair
+
+    Returns
+    -------
+    group_iso : (|G|, n, n) ndarray
+        The group after applying the isomorphism, (g.G.g^{-1})[perm]
+    """
+    return conjugate_group(isomorphism.g, group)[isomorphism.perm]
+
+
 ######################
 # Orbit construction #
 ######################
+
+def force_hash(arr):
+    """
+    Computes a hash for an array.
+    """
+    return int(sha256(arr.view(np.uint8)).hexdigest(), 16)
+
 
 class HashableArray(np.ndarray):
     """
@@ -833,7 +951,9 @@ class HashableArray(np.ndarray):
 
     def __init__(self, arr):
         self._arr = arr
-        self._hash = int(sha256(arr.view(np.uint8)).hexdigest(), 16)
+        # TODO: remove commented line
+        # self._hash = int(sha256(arr.view(np.uint8)).hexdigest(), 16)
+        self._hash = force_hash(arr)
 
     def __array_finalize__(self, obj):
         if obj is None:

@@ -18,6 +18,7 @@ def main():
         print(base, "does not exist.")
         sys.exit(0)
 
+    test_conjugation()
     test_groups_and_irreps(base)
     test_subgroups_and_irreps(base)
 
@@ -85,6 +86,37 @@ def main():
                      os.path.join(base, fname_basis))
 
 # ----- end main ----- #
+
+
+def test_conjugation():
+    """
+    Tests group conjugation for mapping conjugate subgroups into one another.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    """
+    oh = mhi.make_oh()
+    momenta = [
+        ([0,0,1], [0,1,0]),
+        ([0,1,1], [1,1,0]),
+        ([0,1,2], [1,2,0]),
+        ([1,1,2], [2,1,1]),
+        ([1,2,3], [3,2,1]),
+    ]
+    for momentum1, momentum2 in momenta:
+        h1 = mhi.make_stabilizer(momentum1, oh)
+        h2 = mhi.make_stabilizer(momentum2, oh)
+        isomorphism = mhi.find_subgroup_isomorphism(oh, h1, h2)
+        h2test = mhi.apply_isomorphism(h1, isomorphism)
+        assert np.allclose(h2test, h2),\
+            "Error with conjugation of little groups for momenta {momentum1} {momentum2}."
+        print(f"Success: conjugation of little groups for momenta {momentum1} {momentum2}.")
+
 
 def test_groups_and_irreps(base):
     """
