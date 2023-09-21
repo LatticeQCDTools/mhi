@@ -1647,7 +1647,7 @@ def rephase(arr, irrep):
         phase = np.exp(1j*(-0.5*np.pi - np.angle(vec[idx])))
         tmp = vec[idx] * phase
         phi = np.angle(tmp, deg=True) % 360
-        assert phi == 270, f"Bad angle, phi={phi} deg."
+        assert np.isclose(phi, 270), f"Bad angle, phi={phi} deg."
         assert np.isclose(np.abs(vec[idx]), np.abs(tmp)), "Bad length."
 
     # Convention for generic irreps
