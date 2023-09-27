@@ -10,7 +10,7 @@ def main():
     reference data.
     """
     if len(sys.argv) != 2:
-        print("usage: python {sys.argv[0]} <reference/output/directory>")
+        print(f"usage: python {sys.argv[0]} <reference/output/directory>")
         sys.exit(0)
 
     base = sys.argv[1]
