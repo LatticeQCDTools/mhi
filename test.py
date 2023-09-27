@@ -22,68 +22,20 @@ def main():
     test_groups_and_irreps(base)
     test_subgroups_and_irreps(base)
 
-    # Momentum configurations for spinless case
-    test_setup1 = [
-        ("Dmm_000.dat", "basis_000.dat", np.array([[0,0,0]])),
-        ("Dmm_100.dat", "basis_100.dat", np.array([[0,0,1],[0,0,-1]])),
-        ("Dmm_110.dat", "basis_110.dat", np.array([[0,1,1],[0,-1,-1]])),
-        ("Dmm_111.dat", "basis_111.dat", np.array([[1,1,1],[-1,-1,-1]])),
-        ("Dmm_112.dat", "basis_112.dat", np.array([[1,1,2],[-1,-1,-2]])), #
-        ("Dmm_120.dat", "basis_120.dat", np.array([[1,2,0],[-1,-2,0]])), #
-        ("Dmm_123.dat", "basis_123.dat", np.array([[1,2,3],[-1,-2,-3]])), #
-        ("Dmm_001_000.dat", "basis_001_000.dat", np.array([[0,0,1],[0,0,0]])),
-        ("Dmm_110_000.dat", "basis_110_000.dat", np.array([[1,1,0],[0,0,0]])),
-        ("Dmm_111_000.dat", "basis_111_000.dat", np.array([[1,1,1],[0,0,0]])),
-        ("Dmm_120_000.dat", "basis_120_000.dat", np.array([[1,2,0],[0,0,0]])),
-        ("Dmm_123_000.dat", "basis_123_000.dat", np.array([[1,2,3],[0,0,0]])),
-        ("Dmm_110_m001.dat", "basis_110_m001.dat", np.array([[1,1,0],[0,0,1]])),
-        ("Dmm_101_100.dat", "basis_101_100.dat", np.array([[1,0,1],[-1,0,0]])),
-        ("Dmm_111_m1m10.dat", "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0]])),
-        ("Dmm_211_m2m10.dat", "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0]])),
-        ("Dmm_10m1_012.dat", "basis_10m1_012.dat", np.array([[1,0,-1],[0,1,2]])),
-        ("Dmm_100_m010.dat", "basis_100_m010.dat", np.array([[0,0,1],[0,1,0]])),
-        ("Dmm_112_00m2.dat", "basis_112_00m2.dat", np.array([[2,1,1],[-2,0,0]])),
-        ("Dmm_10m2_012.dat", "basis_10m2_012.dat", np.array([[-2,0,1],[2,1,0]])),
-        ("Dmm_101_02m1.dat", "basis_101_02m1.dat", np.array([[1,0,1],[0,2,-1]])),
-    ]
-
-    # Momentum configurations for Npi and np
-    test_setup2 = [
-        ("Dmm_000.dat", "basis_000.dat", np.array([[0,0,0]])),
-        ("Dmm_100.dat", "basis_100.dat", np.array([[0,0,1],[0,0,-1]])),
-        ("Dmm_110.dat", "basis_110.dat", np.array([[0,1,1],[0,-1,-1]])),
-        ("Dmm_111.dat", "basis_111.dat", np.array([[1,1,1],[-1,-1,-1]])),
-        ("Dmm_112.dat", "basis_112.dat", np.array([[2,1,1],[-2,-1,-1]])),
-        ("Dmm_120.dat", "basis_120.dat", np.array([[1,2,0],[-1,-2,0]])),
-        ("Dmm_123.dat", "basis_123.dat", np.array([[1,2,3],[-1,-2,-3]])),
-        ("Dmm_001_000.dat", "basis_001_000.dat", np.array([[0,0,1],[0,0,0]])),
-        ("Dmm_110_000.dat", "basis_110_000.dat", np.array([[0,1,1],[0,0,0]])),
-        ("Dmm_111_000.dat", "basis_111_000.dat", np.array([[1,1,1],[0,0,0]])),
-        ("Dmm_120_000.dat", "basis_120_000.dat", np.array([[1,2,0],[0,0,0]])),
-        ("Dmm_123_000.dat", "basis_123_000.dat", np.array([[1,2,3],[0,0,0]])),
-        ("Dmm_110_m001.dat","basis_110_m001.dat", np.array([[1,1,0],[0,0,1]])),
-        ("Dmm_101_100.dat", "basis_101_100.dat", np.array([[1,0,1],[-1,0,0]])),
-        ("Dmm_111_m1m10.dat", "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0]])),
-        ("Dmm_211_m2m10.dat", "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0]])),
-        ("Dmm_10m1_012.dat", "basis_10m1_012.dat", np.array([[1,0,-1],[0,1,2]])),
-        ("Dmm_100_m010.dat", "basis_100_m010.dat", np.array([[0,0,1],[0,1,0]])),
-        ("Dmm_112_00m2.dat", "basis_112_00m2.dat", np.array([[2,1,1],[-2,0,0]])),
-        ("Dmm_10m2_012.dat", "basis_10m2_012.dat", np.array([[-2,0,1],[2,1,0]])),
-        ("Dmm_101_02m1.dat", "basis_101_02m1.dat", np.array([[1,0,1],[0,2,-1]])),
-    ]
-
+    setup1, setup2, setup3 = get_test_setups()
     tests = [
-        (os.path.join(base, "spinless"), test_spinless, test_setup1),
-        (os.path.join(base, "Npi"), test_nucleon_pi, test_setup2),
-        (os.path.join(base, "np"), test_np, test_setup2),
+        (os.path.join(base, "spinless"), [], setup1),
+        (os.path.join(base, "Npi"), ['n','pi'], setup2),
+        (os.path.join(base, "np"), ['n','p'], setup2),
+        (os.path.join(base, "nn"), ['n','n'], setup3),
     ]
-    for base, test_fcn, setup in tests:
+    for base, particle_names, setup in tests:
         print("Testing against files in", base)
         for fname_rep, fname_basis, momenta in setup:
             print("#"*40)
-            test_fcn(momenta,
-                     os.path.join(base, fname_rep),
-                     os.path.join(base, fname_basis))
+            test_mhi(momenta, particle_names,
+                     fname_rep=os.path.join(base, fname_rep),
+                     fname_basis=os.path.join(base, fname_basis))
 
 # ----- end main ----- #
 
@@ -232,35 +184,25 @@ def test_subgroups_and_irreps(base):
             assert np.allclose(ref, table), f"Problem with {irrep_name}"
             print(f"Success for {little_name} irrep: {irrep_name}")
 
-
-def test_spinless(momenta, fname_rep, fname_basis):
+def test_mhi(momenta, particle_names, fname_rep, fname_basis):
     """
-    Tests "pion-kaon" tables.
-
-    Verifies construction of momentum-orbit representation matrices as well as
-    the change-of-basis coefficients against tabulated reference data for two
-    distinguishable spin-zero particles.
+    Verifies construction of momentum-(spin-)orbit representation matrices as
+    well as the change-of-basis coefficients against tabulated reference data.
 
     Parameters
     ----------
     momenta : (nmomenta, 3) or (3, ) array_like
         The ordered momenta, with shape.
+    particle_names : list or None
+        The names of the particles, e.g., ('n', 'pi')
     fname_rep : str
         Path to the input file containing the data for the momentum orbit
         representation.
     fname_basis : str
         Path to the input file containing the data for the change-of-basis
         coefficients
-
-    Returns
-    -------
-    None
     """
-    oh = mhi.make_oh()
-    little, _ = mhi.make_little_and_stabilizer(momenta, oh)
-    orbit = mhi.make_momentum_orbit(momenta, little)
-    Dmm = mhi.make_momentum_orbit_rep(orbit, little)
-    Dmumu = mhi.make_irrep_from_group(little)
+    proj, Dmm = mhi.mhi(momenta, particle_names=particle_names, verbose=True, return_Dmm=True)
 
     # Check momentum-orbit representation matrices
     ref = read_mathematica(fname_rep, Dmm.shape)
@@ -268,123 +210,8 @@ def test_spinless(momenta, fname_rep, fname_basis):
     print("Success:", os.path.split(fname_rep)[-1])
 
     # Check change-of-basis coefficients
-    proj = mhi.project_basis(Dmm, Dmumu, verbose=True)
     table = make_table(proj)
     ref = read_mathematica(fname_basis, table.shape)
-    assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
-    print("Success:", os.path.split(fname_basis)[-1])
-
-
-def test_nucleon_pi(momenta, fname_rep, fname_basis):
-    """
-    Tests "nucleon-pion" tables.
-
-    Verifies construction of momentum-spin-orbit representation matrices as
-    well as the change-of-basis coefficients against tabulated reference data
-    for a pair of particles with spin-1/2 and spin-zero, respectively.
-
-    Parameters
-    ----------
-    momenta : (nmomenta, 3) or (3, ) array_like
-        The ordered momenta, with shape.
-    fname_rep : str
-        Path to the input file containing the data for the momentum orbit
-        representation.
-    fname_basis : str
-        Path to the input file containing the data for the change-of-basis
-        coefficients
-
-    Returns
-    -------
-    None
-    """
-    oh = mhi.make_oh()
-    little, _ = mhi.make_little_and_stabilizer(momenta, oh)
-    little_double = mhi.make_spinorial_little_group(little)
-    orbit = mhi.make_momentum_orbit(momenta, little)
-
-    # Make momentum-orbit representation matrices
-    Dmm = mhi.make_momentum_orbit_rep(orbit, little)
-
-    # Make nucleon irrep matrices
-    basis = basis_functions.basis_spinors['nucleon']['nucleon']
-    Dmumu_nucleon = mhi.make_irrep_spinor(basis, little_double)
-
-    # Make pion double-cover irrep matrices
-    idxs = np.hstack([np.where([np.allclose(gg, g) for gg in oh]) for g in little])
-    idxs = np.hstack([idxs, idxs+48]).squeeze()
-    Dmumu_pion = np.vstack(2*[mhi.make_irrep_from_group(oh)['A1m']])
-    Dmumu_pion = Dmumu_pion[idxs]
-
-    # Combine momentum-orbit rep and particle-spin irrep matrices
-    Dmm_momspin = mhi.make_momentum_spin_rep(Dmm, Dmumu_nucleon, Dmumu_pion)
-
-    # Make double_cover irrep matrices
-    Dmumu_double = mhi.make_irrep_from_groupD(little)
-
-    ref = read_mathematica(fname_rep, Dmm_momspin.shape)
-
-    assert np.allclose(Dmm_momspin, ref),\
-        f"Trouble with {os.path.split(fname_rep)[-1]}"
-    print("Success:", os.path.split(fname_rep)[-1])
-
-    proj = mhi.project_basis(Dmm_momspin, Dmumu_double)
-    table = make_table(proj)
-    ref = read_mathematica(fname_basis, table.shape)
-
-    assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
-    print("Success:", os.path.split(fname_basis)[-1])
-
-
-def test_np(momenta, fname_rep, fname_basis):
-    """
-    Tests "neutron-proton" tables.
-
-    Verifies construction of momentum-spin-orbit representation matrices as
-    well as the change-of-basis coefficients against tabulated reference data
-    for two distinguishable spin-1/2 particles.
-
-    Parameters
-    ----------
-    momenta : (nmomenta, 3) or (3, ) array_like
-        The ordered momenta, with shape.
-    fname_rep : str
-        Path to the input file containing the data for the momentum orbit
-        representation.
-    fname_basis : str
-        Path to the input file containing the data for the change-of-basis
-        coefficients
-
-    Returns
-    -------
-    None
-
-    """
-    oh = mhi.make_oh()
-    little, _ = mhi.make_little_and_stabilizer(momenta, oh)
-    little_double = mhi.make_spinorial_little_group(little)
-    orbit = mhi.make_momentum_orbit(momenta, little)
-
-    # Make momentum-orbit representation matrices
-    Dmm = mhi.make_momentum_orbit_rep(orbit, little)
-
-    # Make nucleon irrep matrices
-    basis = basis_functions.basis_spinors['nucleon']['nucleon']
-    Dmumu_nucleon = mhi.make_irrep_spinor(basis, little_double)
-
-    # Combine momentum-orbit rep and particle-spin irrep matrices
-    Dmm_momspin = mhi.make_momentum_spin_rep(Dmm, Dmumu_nucleon, Dmumu_nucleon)
-
-    ref = read_mathematica(fname_rep, Dmm_momspin.shape)
-    assert np.allclose(Dmm_momspin, ref),\
-          f"Trouble with {os.path.split(fname_rep)[-1]}"
-    print("Success:", os.path.split(fname_rep)[-1])
-
-    Dmumu_double = mhi.make_irrep_from_groupD(little)
-    proj = mhi.project_basis(Dmm_momspin, Dmumu_double)
-    table = make_table(proj)
-    ref = read_mathematica(fname_basis, table.shape)
-
     assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
     print("Success:", os.path.split(fname_basis)[-1])
 
@@ -466,6 +293,97 @@ def read_mathematica(fname, shape=None):
         if shape is not None:
             ref = ref.reshape(shape)
         return ref
+
+def get_test_setups():
+    """
+    Gets hard-coded setup information for running tests
+    """
+    # Momentum configurations for spinless case
+    test_setup1 = [
+        ("Dmm_000.dat", "basis_000.dat", np.array([[0,0,0],[0,0,0]])),
+        ("Dmm_100.dat", "basis_100.dat", np.array([[0,0,1],[0,0,-1]])),
+        ("Dmm_110.dat", "basis_110.dat", np.array([[0,1,1],[0,-1,-1]])),
+        ("Dmm_111.dat", "basis_111.dat", np.array([[1,1,1],[-1,-1,-1]])),
+        ("Dmm_112.dat", "basis_112.dat", np.array([[1,1,2],[-1,-1,-2]])),
+        ("Dmm_120.dat", "basis_120.dat", np.array([[1,2,0],[-1,-2,0]])),
+        ("Dmm_123.dat", "basis_123.dat", np.array([[1,2,3],[-1,-2,-3]])),
+        ("Dmm_001_000.dat", "basis_001_000.dat", np.array([[0,0,1],[0,0,0]])),
+        ("Dmm_110_000.dat", "basis_110_000.dat", np.array([[1,1,0],[0,0,0]])),
+        ("Dmm_111_000.dat", "basis_111_000.dat", np.array([[1,1,1],[0,0,0]])),
+        ("Dmm_120_000.dat", "basis_120_000.dat", np.array([[1,2,0],[0,0,0]])),
+        ("Dmm_123_000.dat", "basis_123_000.dat", np.array([[1,2,3],[0,0,0]])),
+        ("Dmm_110_m001.dat", "basis_110_m001.dat", np.array([[1,1,0],[0,0,1]])),
+        ("Dmm_101_100.dat", "basis_101_100.dat", np.array([[1,0,1],[-1,0,0]])),
+        ("Dmm_111_m1m10.dat", "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0]])),
+        ("Dmm_211_m2m10.dat", "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0]])),
+        ("Dmm_10m1_012.dat", "basis_10m1_012.dat", np.array([[1,0,-1],[0,1,2]])),
+        ("Dmm_100_m010.dat", "basis_100_m010.dat", np.array([[0,0,1],[0,1,0]])),
+        ("Dmm_112_00m2.dat", "basis_112_00m2.dat", np.array([[2,1,1],[-2,0,0]])),
+        ("Dmm_10m2_012.dat", "basis_10m2_012.dat", np.array([[-2,0,1],[2,1,0]])),
+        ("Dmm_101_02m1.dat", "basis_101_02m1.dat", np.array([[1,0,1],[0,2,-1]])),
+    ]
+
+    # Momentum configurations for Npi and np
+    test_setup2 = [
+        ("Dmm_000.dat", "basis_000.dat", np.array([[0,0,0],[0,0,0]])),
+        ("Dmm_100.dat", "basis_100.dat", np.array([[0,0,1],[0,0,-1]])),
+        ("Dmm_110.dat", "basis_110.dat", np.array([[0,1,1],[0,-1,-1]])),
+        ("Dmm_111.dat", "basis_111.dat", np.array([[1,1,1],[-1,-1,-1]])),
+        ("Dmm_112.dat", "basis_112.dat", np.array([[2,1,1],[-2,-1,-1]])),
+        ("Dmm_120.dat", "basis_120.dat", np.array([[1,2,0],[-1,-2,0]])),
+        ("Dmm_123.dat", "basis_123.dat", np.array([[1,2,3],[-1,-2,-3]])),
+        ("Dmm_001_000.dat", "basis_001_000.dat", np.array([[0,0,1],[0,0,0]])),
+        ("Dmm_110_000.dat", "basis_110_000.dat", np.array([[0,1,1],[0,0,0]])),
+        ("Dmm_111_000.dat", "basis_111_000.dat", np.array([[1,1,1],[0,0,0]])),
+        ("Dmm_120_000.dat", "basis_120_000.dat", np.array([[1,2,0],[0,0,0]])),
+        ("Dmm_123_000.dat", "basis_123_000.dat", np.array([[1,2,3],[0,0,0]])),
+        ("Dmm_110_m001.dat","basis_110_m001.dat", np.array([[1,1,0],[0,0,1]])),
+        ("Dmm_101_100.dat", "basis_101_100.dat", np.array([[1,0,1],[-1,0,0]])),
+        ("Dmm_111_m1m10.dat", "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0]])),
+        ("Dmm_211_m2m10.dat", "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0]])),
+        ("Dmm_10m1_012.dat", "basis_10m1_012.dat", np.array([[1,0,-1],[0,1,2]])),
+        ("Dmm_100_m010.dat", "basis_100_m010.dat", np.array([[0,0,1],[0,1,0]])),
+        ("Dmm_112_00m2.dat", "basis_112_00m2.dat", np.array([[2,1,1],[-2,0,0]])),
+        ("Dmm_10m2_012.dat", "basis_10m2_012.dat", np.array([[-2,0,1],[2,1,0]])),
+        ("Dmm_101_02m1.dat", "basis_101_02m1.dat", np.array([[1,0,1],[0,2,-1]])),
+    ]
+
+    # Momentum configurations for nn
+    test_setup3 = [
+        ("Dmm_proj_000.dat", "basis_000.dat", np.array([[0,0,0],[0,0,0]])),
+        ("Dmm_proj_100.dat", "basis_100.dat", np.array([[0,0,1],[0,0,-1]])),
+        ("Dmm_proj_110.dat", "basis_110.dat", np.array([[0,1,1],[0,-1,-1]])),
+        ("Dmm_proj_111.dat", "basis_111.dat", np.array([[1,1,1],[-1,-1,-1]])),
+        ("Dmm_proj_112.dat", "basis_112.dat", np.array([[2,1,1],[-2,-1,-1]])),
+        ("Dmm_proj_120.dat", "basis_120.dat", np.array([[2,1,0],[-2,-1,0]])),
+        ("Dmm_proj_123.dat", "basis_123.dat", np.array([[3,2,1],[-3,-2,-1]])),
+        ("Dmm_proj_001_000.dat", "basis_001_000.dat", np.array([[0,0,1],[0,0,0]])),
+        ("Dmm_proj_001_001.dat", "basis_001_001.dat", np.array([[0,0,1],[0,0,1]])),
+        ("Dmm_proj_100_010.dat", "basis_100_010.dat", np.array([[0,0,1],[0,1,0]])),
+        ("Dmm_proj_101_02m1.dat", "basis_101_02m1.dat", np.array([[1,0,1],[0,2,-1]])),
+        ("Dmm_proj_101_100.dat", "basis_101_100.dat", np.array([[1,0,1],[-1,0,0]])),
+        ("Dmm_proj_101_101.dat", "basis_101_101.dat", np.array([[1,0,1],[-1,0,1]])),
+        ("Dmm_proj_10m1_012.dat", "basis_10m1_012.dat", np.array([[1,0,-1],[0,1,2]])),
+        ("Dmm_proj_10m2_012.dat", "basis_10m2_012.dat", np.array([[-2,0,1],[2,1,0]])),
+        ("Dmm_proj_110_000.dat", "basis_110_000.dat", np.array([[0,1,1],[0,0,0]])),
+        ("Dmm_proj_110_110.dat", "basis_110_110.dat", np.array([[1,1,0],[1,1,0]])),
+        ("Dmm_proj_110_m001.dat", "basis_110_m001.dat", np.array([[1,1,0],[0,0,1]])),
+        ("Dmm_proj_111_000.dat", "basis_111_000.dat", np.array([[1,1,1],[0,0,0]])),
+        ("Dmm_proj_111_111.dat", "basis_111_111.dat", np.array([[1,1,1],[1,1,1]])),
+        ("Dmm_proj_111_m1m10.dat", "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0]])),
+        ("Dmm_proj_111_m1m11.dat", "basis_111_m1m11.dat", np.array([[1,1,1],[-1,-1,1]])),
+        ("Dmm_proj_112_00m2.dat", "basis_112_00m2.dat", np.array([[2,1,1],[-2,0,0]])),
+        ("Dmm_proj_112_11m2.dat", "basis_112_11m2.dat", np.array([[2,1,1],[-2,1,1]])),
+        ("Dmm_proj_120_000.dat", "basis_120_000.dat", np.array([[1,2,0],[0,0,0]])),
+        ("Dmm_proj_120_120.dat", "basis_120_120.dat", np.array([[1,2,0],[1,2,0]])),
+        ("Dmm_proj_121_0m1m1.dat", "basis_121_0m1m1.dat", np.array([[1,2,1],[-1,-1,0]])),
+        ("Dmm_proj_123_000.dat", "basis_123_000.dat", np.array([[1,2,3],[0,0,0]])),
+        ("Dmm_proj_123_123.dat", "basis_123_123.dat", np.array([[1,2,3],[1,2,3]])),
+        ("Dmm_proj_211_m2m10.dat", "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0]])),
+        ("Dmm_proj_211_m2m11.dat", "basis_211_m2m11.dat", np.array([[2,1,1],[-2,-1,1]])),
+        ("Dmm_proj_220_m1m10.dat", "basis_220_m1m10.dat", np.array([[0,2,2],[0,-1,-1]])),
+    ]
+    return test_setup1, test_setup2, test_setup3
 
 if __name__ == "__main__":
     main()
