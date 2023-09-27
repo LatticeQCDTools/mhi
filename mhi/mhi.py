@@ -1939,9 +1939,9 @@ def mhi(momenta, particle_names=None, verbose=False, return_Dmm=False):
     * Apply Schur's algorithm and lowering operators to construct the
       block-diagonalization / change-of-basis matrices
     """
-    if particle_names is not None:
-        assert len(particle_names) == len(momenta),\
-            "Incomensurate momenta and particle names specified."
+    if (particle_names is not None) and len(particle_names) > 0:
+        if len(particle_names) != len(momenta):
+            raise ValueError("Incomensurate momenta and particle names specified.")
 
     def _infer_spin_dims(particle_names):
         table = load_particle_info()
@@ -1959,6 +1959,7 @@ def mhi(momenta, particle_names=None, verbose=False, return_Dmm=False):
     # 2. Compute the irrep matrics of the little group
     if particle_names is None:
         particle_names = []
+    if len(particle_names) == 0:
         # Distinguishable spin-zero particles. Single-cover irrep matrics suffice.
         Dmumu = make_irrep_from_group(little)
     else:
