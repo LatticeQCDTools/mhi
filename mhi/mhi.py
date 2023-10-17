@@ -14,6 +14,7 @@ import functools
 import itertools
 from collections import namedtuple
 from hashlib import sha256
+import re
 import sys
 import os
 import pathlib
@@ -26,7 +27,7 @@ import yaml
 import h5py
 from . import basis_functions
 
-SignedPermutation = namedtuple("SignedPermutation", ["sign", "perm"])
+WeightedPermutation = namedtuple("WeightedPermutation", ["weight", "perm"])
 Isomorphism = namedtuple("Isomorphism", ['g', 'perm'])
 SpinShellTuple = namedtuple("SpinShellTuple", ['momenta', 'spins'])
 
@@ -734,9 +735,9 @@ def make_stabilizer(momenta, group):
     Parameters
     ----------
     momenta : (nmomenta, 3) or (3, ) array_like
-        The ordered momenta, with shape.
+        The ordered momenta
     group : (|G|, 3, 3) array_like
-        The group, with shape.
+        The group
 
     Returns
     -------
@@ -754,6 +755,36 @@ def make_stabilizer(momenta, group):
             ]
         )
     return stab
+
+
+def make_canonical_stabilizer(name, group):
+    """
+    Computes the stabilizer subgroup with a canonical orientation inside the
+    larger group Oh.
+
+    Parameters
+    ----------
+    name : str
+        The name of the desired stabilizer subgroup
+    group : (|G|, 3, 3) array_like
+        The group
+
+    Returns
+    -------
+    stabilizer : (|H|, 3, 3) array_like
+        The stabilizer subgroup
+    """
+    canonical_momenta = {
+        "Oh": np.array([0,0,0]),
+        "C4v": np.array([0,0,1]),
+        "C3v": np.array([1,1,1]),
+        "C2v": np.array([0,1,1]),
+        "C2p": np.array([1,2,0]),
+        "C2r": np.array([1,1,2]),
+        "C1": np.array([1,2,3]),
+    }
+    ktot = canonical_momenta[name]
+    return make_stabilizer(ktot, group)
 
 
 def identify_stabilizer(stabilizer):
@@ -796,9 +827,9 @@ def make_little_and_stabilizer(momenta, group):
     Parameters
     ----------
     momenta : (nmomenta, 3) array_like
-        The momenta, with shape
+        The momenta
     group : (|G|, 3, 3) array_like
-        The group, with shape
+        The group
 
     Returns
     -------
@@ -990,7 +1021,7 @@ def make_momentum_orbit(momenta, group, exchange_group=None):
     group : (|G|, 3, 3) array_like
         The group matrices
     exchange_group : array_like
-        The exchange group with namedtuple/SignedPermutation elements
+        The exchange group with namedtuple/WeightedPermutation elements
 
     Returns
     -------
@@ -1011,7 +1042,7 @@ def make_momentum_orbit(momenta, group, exchange_group=None):
         "Incommensurate shape for product g@momenta.T, "
         f"g={group[0].shape} momenta={momenta.shape}")
     if exchange_group is None:
-        exchange_group = [SignedPermutation(None, np.arange(len(momenta)))]
+        exchange_group = [WeightedPermutation(None, np.arange(len(momenta)))]
 
     # Create the shell
     shell = []
@@ -1025,8 +1056,8 @@ def make_momentum_orbit(momenta, group, exchange_group=None):
     # Apply the exchange group
     # Note: These separate loops for creating the shell and apply the exchange
     # group could be combined at the price of changing the ordering of the shell.
-    for arr in shell[:]:
-        for exchange_element in exchange_group:
+    for exchange_element in exchange_group:
+        for arr in shell[:]:
             arr_new = HashableArray(np.array(arr[exchange_element.perm]))
             if arr_new not in shell:
                 shell.append(arr_new)
@@ -1048,7 +1079,7 @@ def make_momentum_spin_orbit(momenta, spin_dims, group, exchange_group=None):
     group : (|G|, 3, 3) array_like
         The group matrices.
     exchange : array_like or None
-        The exchange_group with namedtuple/SignedPermutation elements
+        The exchange_group with namedtuple/WeightedPermutation elements
 
     Return
     ------
@@ -1145,22 +1176,39 @@ def make_exchange_group(labels):
 
     Parameters
     ----------
-    labels : array_like
-        The labels associated with the particles
+    labels : array_like or None
+        The labels associated with the particles.
     fermions : dict
         Whether a given key (label) corresponds to a fermion.
         Values must be booleans: True for fermions and False for bosons.
 
     Returns
     -------
-    exchange_group : list
-        The exchange group, with namedtuple/SignedPermutation elements
+    exchange_group : list or None
+        The exchange group, with namedtuple/WeightedPermutation elements.
+        The result is None when no labels are specified.
+
+    Notes
+    -----
+    Generic fermions are labeled 'f{n}' for integers n, e.g., 'f1', 'f2, ...
+    Generic bosons are labeld 'b{n}' for integers n, e.g., 'b1', 'b2', ...
+    Support also exists for certain named particles like 'pi', 'K', 'neutron',
+    'proton', 'nucleon'.
     """
+    if (labels is None) or (len(labels) == 0):
+        return None  # No labels specified
+
     table = load_particle_info()
     fermions = {key : value.is_fermion for key, value in table.items()}
+    fermion_template = re.compile(r'(f|F)(|\d+)')  # generic fermion, e.g., f1
+    boson_template = re.compile((r'(b|B)(|\d+)'))  # generic boson, e.g., b1
 
     # Verify inputs
     for label in np.unique(labels):
+        if fermion_template.match(label):
+            fermions[label] = True
+        elif boson_template.match(label):
+            fermions[label] = False
         assert label in fermions, f"Missing fermion/boson specification for {label}"
     for key, val in fermions.items():
         assert isinstance(val, bool), f"Bad specification for {key}: {val}. Expected a bool."
@@ -1181,21 +1229,21 @@ def make_exchange_group(labels):
         # Overall sign = product of the parities of the individual permuations
         sign = np.product([parity(perm)**power for perm, power in zip(idxs, powers)])
         perm = np.concatenate(idxs)
-        exchange_group.append(SignedPermutation(sign=sign, perm=perm))
+        exchange_group.append(WeightedPermutation(weight=sign, perm=perm))
     return exchange_group
 
 
-def make_identical_particle_projector(momentum_spin_orbit, exchange_group, verbose=False):
+def make_external_symmetry_projector(momentum_spin_orbit, exchange_group, verbose=False):
     """
-    Computes the identicical-particle projection matrix.
+    Computes the projection matrix associated with an external symmetry group.
 
     Parameters
     ----------
     momentum_spin_orbit : (n, ) array_like
         Array of SpinShellTuples, each of defines the (momenta, spin)
         configuration for a given element of the orbit
-    exchange_group : array_like
-         The exchange group, with namedtuple/SignedPermutation elements
+    external_group : array_like
+         The external group, with namedtuple/WeightedPermutation elements
     verbose : bool
         Whether or not to print extra diagnostic information.
 
@@ -1225,7 +1273,7 @@ def make_identical_particle_projector(momentum_spin_orbit, exchange_group, verbo
             continue
 
         vec = np.zeros(dim)
-        for sign, perm in exchange_group:
+        for weight, perm in exchange_group:
             final = initial[perm]
 
             # Grab location associated with the "final state"
@@ -1235,7 +1283,7 @@ def make_identical_particle_projector(momentum_spin_orbit, exchange_group, verbo
                     # nonzero entries. It suffices to construct the eigenvector
                     # containing the jth entry once.
                     seen[idx_final] = True
-                    vec[idx_final] += sign
+                    vec[idx_final] += weight
                     break
             else:
                 raise ValueError((
@@ -1865,14 +1913,14 @@ def make_spin_half_irrep(little_double):
             little_double)
 
 
-def make_Dspin(particle_names, little, little_double):
+def make_Dspin(spin_irreps, little, little_double):
     """
     Builds a list of spin irrep matrices for the specified particles.
 
     Parameters
     ----------
-    particle_names : list
-        The names of the particles as strings, e.g., ['n', 'pi']
+    spin_irreps : list
+        The names of the particles' spin irreps as strings, e.g., ['A1m', 'G1p']
     little : (|G|, 3, 3) array_like
         The little-group matrices associated with some momenta
     little_double : (|G^D|, 4, 4) array_like
@@ -1883,24 +1931,48 @@ def make_Dspin(particle_names, little, little_double):
     Dspin : list
         The "spin" irrep matrices for each particle
     """
-    table = load_particle_info()
-    irreps = [table[particle].irrep for particle in particle_names]
-    if 'A1m' in irreps:
+    if spin_irreps is None:
+        return []
+
+    if 'A1m' in spin_irreps:
         pseudoscalar = make_pseudoscalar_irrep(little)
-    if 'G1p' in irreps:
+    if 'G1p' in spin_irreps:
         spin_half = make_spin_half_irrep(little_double)
     Dspin = []
-    for particle, irrep in zip(particle_names, irreps):
+    for irrep in spin_irreps:
         if irrep == 'A1m':
             Dspin.append(pseudoscalar)
         elif irrep == 'G1p':
             Dspin.append(spin_half)
         else:
-            raise ValueError(f"Unexpected (particle, irrep) ({particle}, {irrep})")
+            raise ValueError(f"Unexpected irrep '{irrep}'")
     return Dspin
 
 
-def mhi(momenta, particle_names=None, verbose=False, return_Dmm=False):
+def identify_spin_dim(irrep):
+    """
+    Identifies the dimension of the specified spin irrep.
+
+    Parameters
+    ----------
+    str : irrep
+        The name of the spin irrep, e.g., 'A1m' or 'G1p'.
+    Returns
+    -------
+    dim : int
+        The dimension of the irrep
+
+    """
+    bases = [basis_functions.basis_fcns, basis_functions.basis_spinors]
+    for basis in bases:
+        for irrep_dict in basis.values():
+            for irrep_name, basis_fcns in irrep_dict.items():
+                if irrep_name == irrep:
+                    return len(basis_fcns)
+    raise ValueError(f"Unable to locate irrep '{irrep}'")
+
+
+def mhi(momenta, spin_irreps=None, external_symmetry=None, verbose=False, return_Dmm=False):
     """
     General-purpose driver function for construction of change-of-basis /
     block-diagonalization matrices which project linear combinations of plane-
@@ -1911,13 +1983,15 @@ def mhi(momenta, particle_names=None, verbose=False, return_Dmm=False):
     Parameters
     ----------
     momenta : (nparticles, 3) or (3, ) array_like
-        The ordered momenta, with shape.
+        The ordered momenta
     particle_names : array_like
         The particle names, e.g., ['n', 'p']
     verbose : bool
         Whether or not to print extra diagnostic information.
     return_Dmm : bool
         Whether or not to return the momentum-(spin) representation matrices
+    external_symmetry : list of WeightedPermutations
+        The external symmetry group
 
     Returns
     -------
@@ -1933,63 +2007,67 @@ def mhi(momenta, particle_names=None, verbose=False, return_Dmm=False):
 
     * Compute the little group of the total momentum
     * Compute irrep matrices of the little group, Dmumu(R)
-    * Decide if a particle-exchange group is present
     * Compute the momentum(-spin) representation matrices, Dmm(R)
     * Apply exchange-group projection to Dmm matrices, P @ Dmm(R) @ P
     * Apply Schur's algorithm and lowering operators to construct the
       block-diagonalization / change-of-basis matrices
     """
-    if (particle_names is not None) and len(particle_names) > 0:
-        if len(particle_names) != len(momenta):
-            raise ValueError("Incomensurate momenta and particle names specified.")
+    if (len(momenta) >= 3):
+        print((
+            "Warning: detailed optimization efforts have not been made "
+            "in the reference implementation. Additional optimization may be "
+            "required for practical calculations with n>=3 particles, especially "
+            "in the case of large momentum-spin orbits."
+        ))
 
-    def _infer_spin_dims(particle_names):
-        table = load_particle_info()
-        return [table[particle].spin_dim for particle in particle_names]
+    if (spin_irreps is not None) and len(spin_irreps) > 0:
+        if len(spin_irreps) != len(momenta):
+            raise ValueError("Incomensurate momenta and spin irreps specified.")
 
-    def _get_projector(momenta, particle_names, little, exchange):
-        spin_dims = _infer_spin_dims(particle_names)
-        momspin_orbit = make_momentum_spin_orbit(momenta, spin_dims, little, exchange)
-        return make_identical_particle_projector(momspin_orbit, exchange)
+    def _get_projector(momenta, spin_irreps, little, weighted_permutations):
+        spin_dims = [identify_spin_dim(irrep) for irrep in spin_irreps]
+        momspin_orbit = make_momentum_spin_orbit(momenta, spin_dims, little, weighted_permutations)
+        return make_external_symmetry_projector(momspin_orbit, weighted_permutations)
 
     # 1. Compute the little group of the total momentum
     little, _ = make_little_and_stabilizer(momenta, group=make_oh())
+    # TODO: Sort out what, exactly, should be going on here.
+    # little_name = identify_stabilizer(little)
+    # little_canonical = make_canonical_stabilizer(little_name, group=make_oh())
+    # isomorphism = find_subgroup_isomorphism(make_oh(), little_canonical , little)
+    # little = apply_isomorphism(little, isomorphism)
     little_double = make_spinorial_little_group(little)
 
     # 2. Compute the irrep matrics of the little group
-    if particle_names is None:
-        particle_names = []
-    if len(particle_names) == 0:
+    if spin_irreps is None:
         # Distinguishable spin-zero particles. Single-cover irrep matrics suffice.
         Dmumu = make_irrep_from_group(little)
     else:
         Dmumu = make_irrep_from_groupD(little)
 
-    # 3. Decide if a particle-exchange group is present
-    exchange = None
-    if len(np.unique(particle_names)) < len(particle_names):
-        exchange = make_exchange_group(particle_names)
-        proj = _get_projector(momenta, particle_names, little, exchange)
-
-    # 4. Compute momentum(-spin) representation matrices
-    orbit = make_momentum_orbit(momenta, little, exchange)
+    # 3. Compute momentum(-spin) representation matrices
+    orbit = make_momentum_orbit(momenta, little, external_symmetry)
     Dmm = make_momentum_orbit_rep(orbit, little)
-    Dspin = make_Dspin(particle_names, little, little_double)
+    Dspin = make_Dspin(spin_irreps, little, little_double)
     Dmm_momspin = make_momentum_spin_rep(Dmm, *Dspin)
 
-    # 5. Apply exchange-group projection
-    if exchange:
-        print(proj.shape)
-        print(Dmm_momspin.shape)
-        Dmm_momspin = np.einsum("ij,ajk,kl", proj, Dmm_momspin, proj, optimize='greedy')
+    for elt in orbit:
+        print(elt.flatten())
 
-    # 6. Apply Schur's lemma and lowering operators
+    # 4. Compute and apply projection from the external symmetry group
+    if external_symmetry:
+        # Naively, the projector applied to the Dmm should be proj @ Dmm(R) @ proj.
+        # However, the projector is idempotent, and the permutations commute
+        # with rotations. Therefore, it suffices to compute Dmm(R) @ proj.
+        proj = _get_projector(momenta, spin_irreps, little, external_symmetry)
+        Dmm_momspin = np.einsum("ajk,kl", Dmm_momspin, proj, optimize='greedy')
+
+    # 5. Apply Schur's lemma and lowering operators
     result = apply_schur_and_lower(Dmm_momspin, Dmumu, verbose)
 
     if return_Dmm:
         return result, Dmm_momspin
     return result
-
 
 
 ##################

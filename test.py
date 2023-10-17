@@ -22,20 +22,27 @@ def main():
     test_groups_and_irreps(base)
     test_subgroups_and_irreps(base)
 
-    setup1, setup2, setup3 = get_test_setups()
+    setup1, setup2, setup3, setup4 = get_test_setups()
     tests = [
-        (os.path.join(base, "spinless"), [], setup1),
-        (os.path.join(base, "Npi"), ['n','pi'], setup2),
-        (os.path.join(base, "np"), ['n','p'], setup2),
-        (os.path.join(base, "nn"), ['n','n'], setup3),
+        (os.path.join(base, "spinless"), [], None, setup1),
+        (os.path.join(base, "Npi"), ['n','pi'], ['G1p','A1m'], setup2),
+        (os.path.join(base, "np"), ['n','p'], ['G1p','G1p'], setup2),
+        (os.path.join(base, "nn"), ['n','n'], ['G1p','G1p'], setup3),
+        (os.path.join(base, "nnn"), ['n','n','n'], ['G1p','G1p','G1p'], setup4),
     ]
-    for base, particle_names, setup in tests:
+    for base, particle_names, spin_irreps, setup in tests:
         print("Testing against files in", base)
         for fname_rep, fname_basis, momenta in setup:
             print("#"*40)
-            test_mhi(momenta, particle_names,
-                     fname_rep=os.path.join(base, fname_rep),
+            if fname_rep:
+                fname_rep = os.path.join(base,fname_rep)
+            test_mhi(momenta,
+                     particle_names,
+                     spin_irreps,
+                     fname_rep=fname_rep,
                      fname_basis=os.path.join(base, fname_basis))
+
+    # TODO: Add n, nn, nnn, nnnn, etc... timings
 
 # ----- end main ----- #
 
@@ -184,7 +191,7 @@ def test_subgroups_and_irreps(base):
             assert np.allclose(ref, table), f"Problem with {irrep_name}"
             print(f"Success for {little_name} irrep: {irrep_name}")
 
-def test_mhi(momenta, particle_names, fname_rep, fname_basis):
+def test_mhi(momenta, particle_names, spin_irreps, fname_rep, fname_basis):
     """
     Verifies construction of momentum-(spin-)orbit representation matrices as
     well as the change-of-basis coefficients against tabulated reference data.
@@ -202,12 +209,19 @@ def test_mhi(momenta, particle_names, fname_rep, fname_basis):
         Path to the input file containing the data for the change-of-basis
         coefficients
     """
-    proj, Dmm = mhi.mhi(momenta, particle_names=particle_names, verbose=True, return_Dmm=True)
+    external_symmetry = mhi.make_exchange_group(particle_names)
+    proj, Dmm = mhi.mhi(
+        momenta,
+        spin_irreps,
+        external_symmetry=external_symmetry,
+        verbose=True,
+        return_Dmm=True)
 
     # Check momentum-orbit representation matrices
-    ref = read_mathematica(fname_rep, Dmm.shape)
-    assert np.allclose(Dmm, ref), f"Trouble with {fname_rep}"
-    print("Success:", os.path.split(fname_rep)[-1])
+    if fname_rep is not None:
+        ref = read_mathematica(fname_rep, Dmm.shape)
+        assert np.allclose(Dmm, ref), f"Trouble with {fname_rep}"
+        print("Success:", os.path.split(fname_rep)[-1])
 
     # Check change-of-basis coefficients
     table = make_table(proj)
@@ -383,7 +397,25 @@ def get_test_setups():
         ("Dmm_proj_211_m2m11.dat", "basis_211_m2m11.dat", np.array([[2,1,1],[-2,-1,1]])),
         ("Dmm_proj_220_m1m10.dat", "basis_220_m1m10.dat", np.array([[0,2,2],[0,-1,-1]])),
     ]
-    return test_setup1, test_setup2, test_setup3
+
+    # Momentum configurations for nnn
+    test_setup4 = [
+        (None, "basis_001.dat", np.array([[0,0,1],[0,0,-1],[0,0,0]])),
+        (None, "basis_001_002.dat", np.array([[0,0,1],[0,0,2],[0,0,-3]])),
+        (None, "basis_011.dat", np.array([[0,1,1],[0,-1,-1],[0,0,0]])),
+        (None, "basis_011_022.dat", np.array([[0,-1,-1],[0,-2,-2],[0,3,3]])),
+        (None, "basis_111.dat", np.array([[1,1,1],[-1,-1,-1],[0,0,0]])),
+        (None, "basis_111_222.dat", np.array([[1,1,1],[2,2,2],[-3,-3,-3]])),
+        (None, "basis_210.dat", np.array([[2,1,0],[-2,-1,0],[0,0,0]])),
+        (None, "basis_011_0m10.dat", np.array([[0,1,1],[0,-1,0],[0,0,-1]])),
+        (None, "basis_210_m200.dat", np.array([[2,1,0],[-2,0,0],[0,-1,0]])),
+        (None, "basis_211.dat", np.array([[2,1,1],[-2,-1,-1],[0,0,0]])),
+        (None, "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0],[0,0,-1]])),
+        (None, "basis_0m11_210.dat", np.array([[0,-1,1],[2,1,0],[-2,0,-1]])),
+        # OK, but very slow to run all the internal tests
+        # (None, "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0],[0,0,-1]])),
+    ]
+    return test_setup1, test_setup2, test_setup3, test_setup4
 
 if __name__ == "__main__":
     main()
