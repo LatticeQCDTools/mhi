@@ -1,56 +1,77 @@
+"""
+Example script illustrating cubic-group irrep decompositions for DDpi.
+"""
+
 import numpy as np
 import itertools
 from mhi import mhi
 
 def main():
-
-    bases = {}
-
-    bases[2] = [
-        ("D+", "D+", "pi+"),
-    ]
-
-    bases[1] = [
-        ("D+", "D+", "pi0"),
-        ("D+", "D0", "pi+"),
-        ("D0", "D+", "pi+")
-    ]
-
-    bases[0] = [
-        ("D+", "D+", "pi+"),
-        ("D0", "D0", "pi+"),
-        ("D+", "D0", "pi0"),
-        ("D0", "D+", "pi0"),
-    ]
-
-    # Permutations in S3
+    """
+    Runs the cubic-group irrep decomposition for a variety of momentum
+    configurations.
+    """
+    # Define projectors in the group algebra of S2 x S1
     perms = [np.array(list(perm) + [2]) for perm in itertools.permutations([0,1])]
-
-
-    # Representation matrices for the basis states
-    Dmats = {}
-    for Iz, basis in bases.items():
-        Dmat = np.zeros((len(perms), len(basis), len(basis)))
-        for idx, perm in enumerate(perms):
-            for i, j in itertools.product(range(len(basis)), repeat=2):
-                if basis[i] == tuple(np.array(basis[j])[perm]):
-                    Dmat[idx,i,j] = 1
-        Dmats[Iz] = Dmat
-
-    irreps = {
-        'trivial': np.array([1 for _ in range(len(perms))]),
-        'sign': np.array([mhi.parity(perm) for perm in perms]),
-    }
-
-    # Projections in the group algebra
     internal_symmetries = {
         'trivial': [mhi.WeightedPermutation(1, perm) for perm in perms],
         'sign': [mhi.WeightedPermutation(mhi.parity(perm), perm) for perm in perms],
     }
 
-    group = mhi.make_oh()
+    rows = []
+    for momenta in get_all_momenta():
+        # Identify group names
+        little, stab = mhi.make_little_and_stabilizer(momenta, group=mhi.make_oh())
+        little_name = mhi.identify_stabilizer(little)
+        stab_name = mhi.identify_stabilizer(stab)
+        little_name = format_group_name(little_name)
+        stab_name = format_group_name(stab_name)
 
-    all_momenta = [
+        # Format the state in Latex
+        state = f"$\left|D{tuple(momenta[0])},D{tuple(momenta[1])},pi{tuple(momenta[2])}\\right\\rangle$"
+        state  = state.replace("pi", "\pi")
+
+        for irrep in ['trivial', 'sign']:
+            # Compute the irrep decomposition
+            result, orbit = mhi.mhi(
+                momenta=momenta,
+                spin_irreps=['A1m','A1m','A1m'],
+                internal_symmetry=internal_symmetries[irrep])
+
+            # Format the results as rows of a table
+            if len(result):
+                result = sort_and_format(result.keys())
+            else:
+                continue
+            columns = [
+                little_name,
+                stab_name,
+                irrep.capitalize(),
+                state,
+                str(len(orbit)),
+                result
+            ]
+            row = " & ".join(columns) + r"\\"
+            if row not in rows:
+                rows.append(row)
+
+    for row in rows:
+        print(row)
+
+def get_all_momenta():
+    """
+    Get the list of momentum variations.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    all_momenta : list
+        list of ndarrays with the momenta
+    """
+    return [
         np.array([[0,0,0],[0,0,0],[0,0,0]]),
         np.array([[0,0,1],[0,0,-1],[0,0,0]]),
         np.array([[0,1,1],[0,-1,-1],[0,0,0]]),
@@ -59,53 +80,6 @@ def main():
         np.array([[2,1,1],[-2,-1,-1],[0,0,0]]),
         np.array([[3,2,1],[-3,-2,-1],[0,0,0]]),
     ]
-    rows = []
-    for momenta in all_momenta:
-        # print("#"*40)
-        little, stab = mhi.make_little_and_stabilizer(momenta, group=group)
-        little_name = mhi.identify_stabilizer(little)
-        stab_name = mhi.identify_stabilizer(stab)
-        little_name = format_group_name(little_name)
-        stab_name = format_group_name(stab_name)
-
-        state = f"$\left|D{tuple(momenta[0])},D{tuple(momenta[1])},pi{tuple(momenta[2])}\\right\\rangle$"
-        state  = state.replace("pi", "\pi")
-        for Iz in [2, 1, 0]:
-            for irrep, irrep_mats in irreps.items():
-                if irrep == 'standard':
-                    subscripts = "rij,rab->ijab"
-                else:
-                    subscripts = "r,rab->ab"
-                fproj = np.einsum(subscripts, irrep_mats, Dmats[Iz])
-                rank = np.linalg.matrix_rank(fproj)
-                if rank > 0:
-                    result, orbit = mhi.mhi(
-                        momenta=momenta,
-                        spin_irreps=['A1m','A1m','A1m'],
-                        internal_symmetry=internal_symmetries[irrep]
-                    )
-                else:
-                    result = {}
-
-                if len(result):
-                    irrep_decomposition = sort_and_format(result.keys())
-                else:
-                    continue #irrep_decomposition = "None"
-
-                columns = [
-                    little_name,
-                    stab_name,
-                    irrep.capitalize(),
-                    state,
-                    str(len(orbit)),
-                    irrep_decomposition
-                ]
-                row = " & ".join(columns) + r"\\"
-                if row not in rows:
-                    rows.append(row)
-    for row in rows:
-        print(row)
-
 
 
 def irrep_priority(irrep_name):
@@ -185,6 +159,19 @@ def irrep_to_latex(output):
 
 
 def format_group_name(name):
+    """
+    Formats the group name in Latex, e.g., 'C2R' -> '$C_2^R$'.
+
+    Parameters
+    ----------
+    name : str
+        The name of the group
+
+    Returns
+    -------
+    name_latex : str
+        The name of the group in Latex
+    """
     name_map = {
         'C2R': 'C_2^R',
         'C2P': 'C_2^P',
@@ -198,7 +185,18 @@ def format_group_name(name):
 
 def sort_and_format(irrep_list):
     """
-    TODO
+    Sorts and formats a list of (possibly degenerate) irreps to Latex, e.g.,
+    ['A1p', 'A2p', 'Ep', 'Ep'] --> '$A_1^+ \oplus A_2^+ \oplus 2E^+$'.
+
+    Parameters
+    ----------
+    irrep_list : list of str
+        The irreps in the decomposition
+
+    Returns
+    -------
+    decomp : str
+        The decomposition in Latex format
     """
     # Count the degenerate copies
     irrep_counts = {}
