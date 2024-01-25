@@ -2064,14 +2064,6 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
     * Apply Schur's algorithm and lowering operators to construct the
       block-diagonalization / change-of-basis matrices
     """
-    if (len(momenta) >= 3):
-        print((
-            "Warning: detailed optimization efforts have not been made "
-            "in the reference implementation. Additional optimization may be "
-            "required for practical calculations with n>=3 particles, especially "
-            "in the case of large momentum-spin orbits."
-        ))
-
     if (spin_irreps is not None) and len(spin_irreps) > 0:
         if len(spin_irreps) != len(momenta):
             raise ValueError("Incomensurate momenta and spin irreps specified.")
@@ -2098,6 +2090,14 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
 
     # 3. Compute momentum(-spin) representation matrices
     orbit = make_momentum_orbit(momenta, little, internal_symmetry)
+    if verbose:
+        print(f"Size of extended orbit: {len(orbit)}")
+    if len(orbit) > 100:
+        print((
+            "Warning: detailed optimization efforts have not been made "
+            "in the reference implementation.\nAdditional optimization may be "
+            "required for calculations with large momentum-spin orbits."
+        ))
     Dmm = make_momentum_orbit_rep(orbit, little)
     Dspin = make_Dspin(spin_irreps, little, little_double)
     Dmm_momspin = make_momentum_spin_rep(Dmm, *Dspin)
