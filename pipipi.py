@@ -115,7 +115,7 @@ def get_known_results(momenta):
 
     Parameters
     ----------
-    momenta : (n, 4) ndarray
+    momenta : (n, 3) ndarray
         The momenta of the pions
     Returns
     -------

@@ -2043,7 +2043,12 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
     Returns
     -------
     proj : dict
-        The block-diagonalization/change-of-basis matrices
+        The block-diagonalization/change-of-basis matrices.
+        The keys are of the form (irrep_name, degeneracy_idx)
+        The values are the block-diagonalization matrices themselves as arrays.
+    orbit : (|orbit|, nparticles, 3), ndarray
+        Multidimensional array. The first index runs over the ordered list of
+        momenta in the orbit.
     Dmm : ndarray, optional
         The momentum(-spin) representation matrices after applying any relevant
         projection related to exchange of idenditical particles

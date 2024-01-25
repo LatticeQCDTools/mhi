@@ -148,7 +148,7 @@ def identify_little_group_and_stabilizer(momenta):
 
     Parameters
     ----------
-    momenta : (n, 4) array_like
+    momenta : (n, 3) array_like
         The momenta
 
     Returns
@@ -202,7 +202,7 @@ def format_example_state(labels, momenta):
     ----------
     labels : (n, ) array_like
         The labels for the particles, assumed to be 'b1', 'b2', 'b3', 'b4'
-    momenta : (n, 4) array_like
+    momenta : (n, 3) array_like
         The particle momenta
 
     Returns
