@@ -25,11 +25,3 @@ After running the main function, it is possible to test the ability to read the 
 To test the module against previously tabulated data, run the command
 
 `$ python test.py <path/to/reference/data>`
-
-## TODO
-
-There are some pending TODO items:
-* Address lingering TODO flags in the code
-* Finalize the "driver function" mhi.mhi(...), checking for correctness,
-  generality, and consistency with the final algorithm as described in the paper.
-* Add "group conjugations" to transform little groups into canonical form
