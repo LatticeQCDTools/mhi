@@ -3,8 +3,7 @@ MHI -- "Multi-Hadron Interpolators"
 
 Module for constructing block-diagonalization / change-of-basis matrices to map
 products of N local plane-wave operators into irreps of the cubic group.
-Includes appropriate generalizations for spin, identical-particle exchange
-symmetry, and isospin (TODO!).
+Includes appropriate generalizations for spin and internal symmetries.
 
 Authors:
 William Detmold, William I. Jay, Gurtej Kanwar, Phiala E. Shanahan, and Michael L. Wagman
@@ -2078,7 +2077,7 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
     little_name = identify_stabilizer(little)
     little_canonical = make_canonical_stabilizer(little_name, group=make_oh())
     isomorphism = find_subgroup_isomorphism(make_oh(), little_canonical , little)
-    little = little[isomorphism.perm]  # TODO: Add comment on what exactly is going on here
+    little = little[isomorphism.perm]  # Rotate to conventional orientation
     little_double = make_spinorial_little_group(little)
 
     # 2. Compute the irrep matrics of the little group

@@ -156,8 +156,6 @@ def check_oh(oh):
     assert np.allclose(Dmumu['A2p'][idx2], np.array([[-1]]))
 
     # Ep irrep
-    # TODO: Confirm that our basis for E irrep has the desired order w.r.t
-    # the basis used by Morningstar et al.
     assert np.allclose(reverse(Dmumu['Ep'][idx1]),
                        0.5 * np.array([[1, np.sqrt(3)],[np.sqrt(3), -1]]))
     assert np.allclose(reverse(Dmumu['Ep'][idx2]),
@@ -293,8 +291,6 @@ def check_c3v(oh):
     assert np.allclose(Dmumu['A2'][idx2], -np.eye(1))
 
     # E irrep
-    # TODO: Confirm that our basis for E irrep has the desired order w.r.t
-    # the basis used by Morningstar et al.
     assert np.allclose(reverse(Dmumu['E'][idx1]),
                        0.5*np.array([[-1, np.sqrt(3)], [-np.sqrt(3), -1]]))
     assert np.allclose(reverse(Dmumu['E'][idx2]),
