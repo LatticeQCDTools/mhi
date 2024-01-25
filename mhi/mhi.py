@@ -779,8 +779,8 @@ def make_canonical_stabilizer(name, group):
         "C4v": np.array([0,0,1]),
         "C3v": np.array([1,1,1]),
         "C2v": np.array([0,1,1]),
-        "C2p": np.array([1,2,0]),
-        "C2r": np.array([1,1,2]),
+        "C2R": np.array([1,2,0]),
+        "C2P": np.array([1,1,2]),
         "C1": np.array([1,2,3]),
     }
     ktot = canonical_momenta[name]
@@ -1169,6 +1169,56 @@ def partition(arr):
     return {key: tmp[key] for key in keys}
 
 
+def recombine(labels, partition_keys, partition_idxs):
+    """
+    Recombines indices from partitioned sets.
+    This function is equivalent to concatenating the indices for contiguous labels.
+    For instance, ['b1', 'b1', 'b2] are contiguous, but ['b1', 'b2', 'b1'] are not.
+
+    Parameters
+    ----------
+    labels : (n, ) array_like
+        The labels, e.g., ['b1', 'b2', 'b1']
+    partition_keys : (m, ) array_like
+        The unique elements of the labels, ordered by first appearance.
+    partition_idxs : (m, ) tuple of array_like
+        The indices to recombine, in the same order as the partition_keys
+
+    Returns
+    -------
+    idxs : (n, ) ndarray
+        The recombined indices
+
+    Examples
+    --------
+    This example builds the tensor product of permutations on the set of labels
+    ['b1','b2','b1']. Since the label 'b1' is not contiguous, the permutations
+    associated with this label should include the identity (0)(2) and the swap
+    (0,2).
+    >>> labels = ['b1','b2','b1']
+    >>> partitions = partition(labels)
+    >>> perms = {key: list(itertools.permutations(idxs)) for key, idxs in partitions.items()}
+    >>> keys = np.array(list(partitions.keys()))
+    >>> for idxs in itertools.product(*perms.values()):
+    >>>     print(mhi.recombine(labels, keys, idxs), "(correct)")
+    >>>     print(np.concatenate(idxs), "(wrong)")
+    [0 1 2] (correct)
+    [0 2 1] (wrong)
+    [2 1 0] (correct)
+    [2 0 1] (wrong)
+    """
+    assert len(partition_keys) == len(partition_idxs),\
+        "Incommensurate partition_keys and indices"
+    assert len(np.concatenate(partition_idxs)) == len(labels),\
+        "Incommensurate labels and indices."
+    idxs = np.zeros(len(labels), dtype=int)
+    iterators_idxs = [iter(elt) for elt in partition_idxs]
+    for i, label in enumerate(labels):
+        j = np.argwhere(partition_keys == label).item()
+        idxs[i] = next(iterators_idxs[j])
+    return idxs
+
+
 def make_exchange_group(labels):
     """
     Computes the exchange group associated with exchange of identical particles.
@@ -1200,8 +1250,8 @@ def make_exchange_group(labels):
 
     table = load_particle_info()
     fermions = {key : value.is_fermion for key, value in table.items()}
-    fermion_template = re.compile(r'(f|F)(|\d+)')  # generic fermion, e.g., f1
-    boson_template = re.compile((r'(b|B)(|\d+)'))  # generic boson, e.g., b1
+    fermion_template = re.compile(r'(f|F)(|-?|\d+)')  # generic fermion, e.g., f1
+    boson_template = re.compile((r'(b|B)(|-?|\d+)'))  # generic boson, e.g., b1
 
     # Verify inputs
     for label in np.unique(labels):
@@ -1215,7 +1265,7 @@ def make_exchange_group(labels):
 
     # Decide which particles have the same labels
     partitions = partition(labels)
-
+    keys = np.array(list(partitions.keys()))
     # Permutations associated with individual labels, ignoring signs
     perms = {key: list(itertools.permutations(idxs)) for key, idxs in partitions.items()}
 
@@ -1227,25 +1277,24 @@ def make_exchange_group(labels):
     exchange_group = []
     for idxs in itertools.product(*perms.values()):
         # Overall sign = product of the parities of the individual permuations
-        sign = np.product([parity(perm)**power for perm, power in zip(idxs, powers)])
-        perm = np.concatenate(idxs)
+        sign = np.product([parity(np.argsort(perm))**power for perm, power in zip(idxs, powers)])
+        # perm = np.concatenate(idxs)  # wrong if labels non-contiguous
+        perm = recombine(labels, keys, idxs)
         exchange_group.append(WeightedPermutation(weight=sign, perm=perm))
     return exchange_group
 
 
-def make_external_symmetry_projector(momentum_spin_orbit, exchange_group, verbose=False):
+def make_internal_symmetry_projector(orbit, internal_symmetry):
     """
-    Computes the projection matrix associated with an external symmetry group.
+    Computes the projection matrix associated with an internal symmetry group.
 
     Parameters
     ----------
     momentum_spin_orbit : (n, ) array_like
         Array of SpinShellTuples, each of defines the (momenta, spin)
         configuration for a given element of the orbit
-    external_group : array_like
-         The external group, with namedtuple/WeightedPermutation elements
-    verbose : bool
-        Whether or not to print extra diagnostic information.
+    internal_group : array_like
+         The internal group, with namedtuple/WeightedPermutation elements
 
     Returns
     -------
@@ -1256,51 +1305,43 @@ def make_external_symmetry_projector(momentum_spin_orbit, exchange_group, verbos
     Notes
     -----
     As a projection matrix, "proj" is idempotent: proj @ proj = proj.
+
+    The full internal symmetry operator can be thought of as a linear
+    combination of permutations. The representation matrices can be computed
+    either before or after taking the linear combination. This implementation
+    takes the latter route, computing a representation matrix for each and
+    taking a suitable linear combination.
     """
-    dim = len(momentum_spin_orbit)
-    seen = [False] * dim
-    proj = np.zeros((dim, dim))
+    has_spins = False
+    if hasattr(orbit[0], 'spins'):
+        has_spins = True
+    proj = np.zeros((len(orbit), len(orbit)), dtype=float)
+    for weight, perm in internal_symmetry:
+        # Permute the orbit
+        if has_spins:
+            orbit_permuted = [SpinShellTuple(momenta[perm], spins[perm]) for momenta, spins in orbit]
+        else:
+            orbit_permuted = [momenta[perm] for momenta in orbit]
+        # Compute the matrix elements of the operator acting on the shell representation
+        tmp = np.zeros((len(orbit), len(orbit)), dtype=float)
+        for i, new in enumerate(orbit_permuted):
+            for j, old in enumerate(orbit):
+                if has_spins:
+                    if np.allclose(new.momenta, old.momenta) and np.allclose(new.spins, old.spins):
+                        tmp[i,j] = 1
+                else:
+                    if np.allclose(new, old):
+                        tmp[i,j] = 1.0
+        proj += float(weight) * tmp
 
-    # Repackage (momenta, spins) elements for later convenience
-    momentum_spin_orbit = np.array(
-        [MomentumSpinOrbitElement(*elt) for elt in momentum_spin_orbit],
-        dtype=object)
-
-    # Compute the eigenvectors
-    for idx_initial, initial in enumerate(momentum_spin_orbit):
-        if seen[idx_initial]:
-            # Skip eigenvectors that have already been computed
-            continue
-
-        vec = np.zeros(dim)
-        for weight, perm in exchange_group:
-            final = initial[perm]
-
-            # Grab location associated with the "final state"
-            for idx_final, elt in enumerate(momentum_spin_orbit):  # for-else
-                if final == elt:
-                    # Distinct eigenvectors will contain disjoint sets of
-                    # nonzero entries. It suffices to construct the eigenvector
-                    # containing the jth entry once.
-                    seen[idx_final] = True
-                    vec[idx_final] += weight
-                    break
-            else:
-                raise ValueError((
-                    f"Unable to locate {final.momenta}, {final.spins} within "
-                    "the momentum-spin orbit. Please check that the specified "
-                    "particles are really identical"
-                ))
-        if np.linalg.norm(vec) == 0:
-            continue
-        vec /= np.linalg.norm(vec)
-        if verbose:
-            print("Found another eigenvector")
-        proj += np.einsum("i,j->ij", vec, vec)
-
+    # Projection matrices have eigenvalues [0, 1].
+    evals = np.linalg.eigvals(proj)
+    norm = evals[np.argmax(np.abs(evals))]
+    if np.isclose(norm, 0):
+        return None  # Orbit is removed by the projector
+    proj = proj / norm
     assert np.allclose(proj @ proj, proj), "Error: projector not idempotent"
     return proj
-
 
 #################################
 # Orbit-representation matrices #
@@ -1660,7 +1701,10 @@ def orth(arr):
         basis.append(new_vec)
     if len(basis) == 0:
         raise ValueError("Failed to construct orthogonal basis")
-    return np.array(basis)
+    basis = np.array(basis)
+    assert np.allclose(basis.conj() @ basis.T, np.eye(len(basis))),\
+        "Failure to construct orthonormal basis."
+    return basis
 
 
 def project(vector, basis, direction):
@@ -1748,9 +1792,8 @@ def apply_schur_and_lower(Dmm, Dmumu, verbose=False):
         if dim > 1: # ... but only if the irrep has several rows.
             try:
                 coeffs = compute_lowering_coefficients(Dmumu[irrep_name])
-            except Exception as err:
-                print(f"Failed to locate lowering coefficients: {irrep_name}")
-                raise err
+            except AssertionError:
+                raise AssertionError(f"Failed to locate lowering coefficients: {irrep_name}")
             lowering_op = np.einsum("i,iab", coeffs, Dmm)
 
         # Count the number of degenerate copies
@@ -1775,9 +1818,15 @@ def apply_schur_and_lower(Dmm, Dmumu, verbose=False):
                 new_vec = lowering_op @ vecs[-1]
                 if np.isclose(np.linalg.norm(new_vec), 0):
                     raise ValueError("Zero vector encountered while lowering")
+                if not np.isclose(np.linalg.norm(new_vec), 1):
+                    raise ValueError("Normalization broken during lowering.")
                 vecs.append(new_vec)
             vecs = rephase(np.array(vecs), irrep_name)
             projector[(irrep_name, kappa)] = vecs
+        for kappa, vec in enumerate(vecs):
+            if not np.allclose(np.linalg.norm(vec), 1):
+                print(irrep_name, kappa, "norm", np.linalg.norm(vec))
+
 
     # Check results for consistency
     test_row_orthogonality(projector, verbose=verbose)
@@ -1972,13 +2021,11 @@ def identify_spin_dim(irrep):
     raise ValueError(f"Unable to locate irrep '{irrep}'")
 
 
-def mhi(momenta, spin_irreps=None, external_symmetry=None, verbose=False, return_Dmm=False):
+def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return_Dmm=False):
     """
     General-purpose driver function for construction of change-of-basis /
     block-diagonalization matrices which project linear combinations of plane-
     wave states onto irreps of the cubic group.
-    TODO: make sure the algorithm implemented here agrees with the description
-    in the final paper
 
     Parameters
     ----------
@@ -1990,8 +2037,8 @@ def mhi(momenta, spin_irreps=None, external_symmetry=None, verbose=False, return
         Whether or not to print extra diagnostic information.
     return_Dmm : bool
         Whether or not to return the momentum-(spin) representation matrices
-    external_symmetry : list of WeightedPermutations
-        The external symmetry group
+    internal_symmetry : list of WeightedPermutations
+        The internal symmetry group
 
     Returns
     -------
@@ -2027,47 +2074,51 @@ def mhi(momenta, spin_irreps=None, external_symmetry=None, verbose=False, return
     def _get_projector(momenta, spin_irreps, little, weighted_permutations):
         spin_dims = [identify_spin_dim(irrep) for irrep in spin_irreps]
         momspin_orbit = make_momentum_spin_orbit(momenta, spin_dims, little, weighted_permutations)
-        return make_external_symmetry_projector(momspin_orbit, weighted_permutations)
+        return make_internal_symmetry_projector(momspin_orbit, weighted_permutations)
 
     # 1. Compute the little group of the total momentum
     little, _ = make_little_and_stabilizer(momenta, group=make_oh())
-    # TODO: Sort out what, exactly, should be going on here.
-    # little_name = identify_stabilizer(little)
-    # little_canonical = make_canonical_stabilizer(little_name, group=make_oh())
-    # isomorphism = find_subgroup_isomorphism(make_oh(), little_canonical , little)
-    # little = apply_isomorphism(little, isomorphism)
+    little_name = identify_stabilizer(little)
+    little_canonical = make_canonical_stabilizer(little_name, group=make_oh())
+    isomorphism = find_subgroup_isomorphism(make_oh(), little_canonical , little)
+    little = little[isomorphism.perm]  # TODO: Add comment on what exactly is going on here
     little_double = make_spinorial_little_group(little)
 
     # 2. Compute the irrep matrics of the little group
     if spin_irreps is None:
         # Distinguishable spin-zero particles. Single-cover irrep matrics suffice.
-        Dmumu = make_irrep_from_group(little)
+        Dmumu = make_irrep_from_group(little_canonical)
     else:
-        Dmumu = make_irrep_from_groupD(little)
+        Dmumu = make_irrep_from_groupD(little_canonical)
 
     # 3. Compute momentum(-spin) representation matrices
-    orbit = make_momentum_orbit(momenta, little, external_symmetry)
+    orbit = make_momentum_orbit(momenta, little, internal_symmetry)
     Dmm = make_momentum_orbit_rep(orbit, little)
     Dspin = make_Dspin(spin_irreps, little, little_double)
     Dmm_momspin = make_momentum_spin_rep(Dmm, *Dspin)
 
-    for elt in orbit:
-        print(elt.flatten())
-
-    # 4. Compute and apply projection from the external symmetry group
-    if external_symmetry:
+    # 4. Compute and apply projection from the internal symmetry group
+    if internal_symmetry:
         # Naively, the projector applied to the Dmm should be proj @ Dmm(R) @ proj.
         # However, the projector is idempotent, and the permutations commute
         # with rotations. Therefore, it suffices to compute Dmm(R) @ proj.
-        proj = _get_projector(momenta, spin_irreps, little, external_symmetry)
-        Dmm_momspin = np.einsum("ajk,kl", Dmm_momspin, proj, optimize='greedy')
+        proj = _get_projector(momenta, spin_irreps, little, internal_symmetry)
+        if proj is None:
+            Dmm_momspin = None
+        else:
+            Dmm_momspin = np.einsum("ajk,kl", Dmm_momspin, proj, optimize='greedy')
 
     # 5. Apply Schur's lemma and lowering operators
-    result = apply_schur_and_lower(Dmm_momspin, Dmumu, verbose)
+    if Dmm_momspin is None:
+        result = {}
+    else:
+        result = apply_schur_and_lower(Dmm_momspin, Dmumu, verbose)
 
+    if verbose and (len(result) == 0):
+        print("Decomposition vanishes for specified inputs.")
     if return_Dmm:
         return result, Dmm_momspin
-    return result
+    return result, orbit
 
 
 ##################
