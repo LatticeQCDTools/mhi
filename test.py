@@ -42,7 +42,6 @@ def main():
                      fname_rep=fname_rep,
                      fname_basis=os.path.join(base, fname_basis))
 
-    # TODO: Add n, nn, nnn, nnnn, etc... timings
 
 # ----- end main ----- #
 
@@ -209,11 +208,11 @@ def test_mhi(momenta, particle_names, spin_irreps, fname_rep, fname_basis):
         Path to the input file containing the data for the change-of-basis
         coefficients
     """
-    external_symmetry = mhi.make_exchange_group(particle_names)
+    internal_symmetry = mhi.make_exchange_group(particle_names)
     proj, Dmm = mhi.mhi(
         momenta,
         spin_irreps,
-        external_symmetry=external_symmetry,
+        internal_symmetry=internal_symmetry,
         verbose=True,
         return_Dmm=True)
 

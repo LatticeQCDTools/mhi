@@ -1,7 +1,6 @@
 """
 Example script illustrating cubic-group irrep decompositions for DDpi.
 """
-
 import numpy as np
 import itertools
 from mhi import mhi
