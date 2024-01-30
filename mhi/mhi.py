@@ -2020,7 +2020,232 @@ def identify_spin_dim(irrep):
     raise ValueError(f"Unable to locate irrep '{irrep}'")
 
 
-def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return_Dmm=False):
+class IrrepDecomposition:
+    def __init__(self, decomp, orbit, Dmm, little_name, stab_name):
+        """
+        Container for results of computing the block-diagonalization matrices
+        which project linear combinations of plane-wave states onto irreps of
+        the cubic group.
+
+        Parameters
+        ----------
+        decomp : dict
+            The irrep decomposition and change-of-basis matrices.
+            The keys are tuples (irrep_name, degeneracy_idx).
+            The values are the block-diagonalization matrices, given as arrays
+            of shape (|irrep|, |O|).
+        orbit : (|O|, ) , ndarray
+            The "extended" spin-momentum orbit, where each element is a
+            SpinShellTuple specifying momentum and spin indices.
+        Dmm : (|G|, |O|, |O|), ndarray
+            The (reducible) representation matrices associated with the orbit.
+        little_name : str
+            The name of the little group leaving the total momentum invariant
+        stab_name : str
+            The name of the stabilizer group leaving the ordered set of
+            momenta invariant.
+
+        Notes
+        -----
+        Projection onto cubic-group irreps requires two pieces.
+        1.) A basis of momentum plane-wave correlation functions, presumably
+            computed using lattice QCD.
+        2.) The block-diagonalization matrices computed using this module.
+
+        To carry out this projection, the basis of correlation functions must
+        have the same order as the orbit used to compute the block-diagonalization
+        coefficients. The required ordering can be seen by examining the
+        "orbit."
+        """
+        # Check expected shape of block diagonalization matrices
+        for _, arr in decomp.items():
+            assert arr.shape[1] == len(orbit)
+        # Check expected shape of (reducible) representaiton matrices
+        if Dmm is not None:
+            assert (Dmm.shape[1] == Dmm.shape[2]) & (Dmm.shape[1] == len(orbit))
+
+        self.decomp = decomp
+        self.orbit = orbit
+        self.Dmm = Dmm
+        self._little_name = little_name
+        self._stab_name = stab_name
+
+    def format(self, latex=False):
+        """
+        Formats the irrep decomposition as text string.
+
+        Parameters
+        ----------
+        latex : bool
+            Whether or not return a latex-formatted sting
+
+        Returns
+        -------
+        output : str
+            The irrep decomposition, e.g., "A1p + A2p + 2*Ep" or
+            "$A_1^+ \oplus A_2^+ \oplus 2E^+$".
+        """
+        # Count the degenerate copies
+        irrep_counts = {}
+        for irrep, _ in self.decomp:
+            if irrep not in irrep_counts:
+                irrep_counts[irrep] = 1
+            else:
+                irrep_counts[irrep] += 1
+
+        # Sort the names according to a conventional ordering
+        names = list(irrep_counts.keys())
+        degeneracies = list(irrep_counts.values())
+        names, degeneracies = zip(
+                *sorted(zip(names, degeneracies),
+                key=lambda pair: self._irrep_priority(pair[0])))
+        if latex:
+            output = r" \oplus ".join([f"{degen}*{irrep}" for degen, irrep in zip(degeneracies, names)])
+            output = self._irrep_to_latex(output)
+            output = output.replace("1*", "").replace("*", "")
+            output = "$" + output + "$"
+        else:
+            output = " + ".join([f"{degen}*{irrep}" for degen, irrep in zip(degeneracies, names)])
+        return output
+
+    def _irrep_priority(self, irrep_name):
+        """
+        Evaluate the priority of an irrep for sorting.
+
+        Parameters
+        ----------
+        irrep_name : str
+            The irrep name
+
+        Returns
+        -------
+        priority : int
+            The priority of the irrep compared to others, for use in sorting
+        """
+        ordered_irreps = [
+            'A1p', 'A2p', 'Ep', 'T1p', 'T2p',
+            'A1m', 'A2m', 'Em', 'T1m', 'T2m',
+            'A', 'A1', 'A2', 'B', 'B1', 'B2', 'E',
+            "F", "F1", "F2", "G", "G1", "G2", "G1p", "G2p",
+            "Hp", "G1m", "G2m", "Hm"
+        ]
+        priority = dict(zip(ordered_irreps, range(len(ordered_irreps))))
+        if irrep_name not in ordered_irreps:
+            raise ValueError("Bad irrep_name", irrep_name)
+        return priority.get(irrep_name)
+
+    def _irrep_to_latex(self, output):
+        """
+        Converts irrep names from internal string representations to latex.
+
+        Parameters
+        ----------
+        output : str
+            Some text containing the internal string representations of the irrep names
+
+        Returns
+        -------
+        output : str
+            The text, but with appropriate replacements, e.g., 'A1p' -> 'A_1^+.
+        """
+        irrep_map = {
+            'A1p': 'A_1^+',
+            'A2p': 'A_2^+',
+            'Ep': 'E^+',
+            'T1p': 'T_1^+',
+            'T2p': 'T_2^+',
+            'A1m': 'A_1^-',
+            'A2m':  'A_2^-',
+            'Em':  'E^-',
+            'T1m':  'T_1^-',
+            'T2m': 'T_2^-',
+            'A': 'A',
+            'A1': 'A_1',
+            'A2': 'A_2',
+            'B':  'B',
+            'B1':  'B_1',
+            'B2':  'B_2',
+            'E': 'E',
+            "F":  "F",
+            "F1":  "F_1",
+            "F2":  "F_2",
+            "G": "G",
+            "G1": "G_1",
+            "G2": "G_2",
+            "G1p": "G_1^+",
+            "G2p": "G_2^+",
+            "Hp": "H^+",
+            "G1m": "G_1^-",
+            "G2m": "G_2^-",
+            "Hm": "H^-",
+        }
+        for old, new in irrep_map.items():
+            output = output.replace(old, new)
+        return output
+
+    def _format_group_name(self, name):
+        """
+        Formats the group name in Latex, e.g., 'C2R' -> '$C_2^R$'.
+
+        Parameters
+        ----------
+        name : str
+            The name of the group
+
+        Returns
+        -------
+        name_latex : str
+            The name of the group in Latex
+        """
+        name_map = {
+            'C2R': 'C_2^R',
+            'C2P': 'C_2^P',
+            'Oh': 'O_h',
+            'C4v': 'C_4^v',
+            'C3v': 'C_3^v',
+            'C2v': 'C_2^v',
+            'C1': 'C_1'
+        }
+        return '$' + name_map[name] + '$'
+
+    def little_name(self, latex=False):
+        """
+        Returns the name of the little group.
+
+        Parameters
+        ----------
+        latex : bool
+            Whether or not return a latex-formatted sting
+
+        Returns
+        -------
+        little_name : str
+            The name of the little group
+        """
+        if latex:
+            return self._format_group_name(self._little_name)
+        return self._little_name
+
+    def stab_name(self, latex=False):
+        """
+        Returns the name of the stabilizer group.
+
+        Parameters
+        ----------
+        latex : bool
+            Whether or not return a latex-formatted sting
+
+        Returns
+        -------
+        stab_name : str
+            The name of the stabilizer group
+        """
+        if latex:
+            return self._format_group_name(self._stab_name)
+        return self._stab_name
+
+
+def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
     """
     General-purpose driver function for construction of change-of-basis /
     block-diagonalization matrices which project linear combinations of plane-
@@ -2041,16 +2266,8 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
 
     Returns
     -------
-    proj : dict
-        The block-diagonalization/change-of-basis matrices.
-        The keys are of the form (irrep_name, degeneracy_idx)
-        The values are the block-diagonalization matrices themselves as arrays.
-    orbit : (|orbit|, nparticles, 3), ndarray
-        Multidimensional array. The first index runs over the ordered list of
-        momenta in the orbit.
-    Dmm : ndarray, optional
-        The momentum(-spin) representation matrices after applying any relevant
-        projection related to exchange of idenditical particles
+    result : IrrepDecomposition
+        object containing the results of the irrep decomposition.
 
     Notes
     -----
@@ -2067,14 +2284,10 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
         if len(spin_irreps) != len(momenta):
             raise ValueError("Incomensurate momenta and spin irreps specified.")
 
-    def _get_projector(momenta, spin_irreps, little, weighted_permutations):
-        spin_dims = [identify_spin_dim(irrep) for irrep in spin_irreps]
-        momspin_orbit = make_momentum_spin_orbit(momenta, spin_dims, little, weighted_permutations)
-        return make_internal_symmetry_projector(momspin_orbit, weighted_permutations)
-
     # 1. Compute the little group of the total momentum
-    little, _ = make_little_and_stabilizer(momenta, group=make_oh())
+    little, stab = make_little_and_stabilizer(momenta, group=make_oh())
     little_name = identify_stabilizer(little)
+    stab_name = identify_stabilizer(stab)
     little_canonical = make_canonical_stabilizer(little_name, group=make_oh())
     isomorphism = find_subgroup_isomorphism(make_oh(), little_canonical , little)
     little = little[isomorphism.perm]  # Rotate to conventional orientation
@@ -2089,9 +2302,15 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
 
     # 3. Compute momentum(-spin) representation matrices
     orbit = make_momentum_orbit(momenta, little, internal_symmetry)
+    if spin_irreps is None:
+        spin_dims = [1 for _ in range(len(momenta))]
+    else:
+        spin_dims = [identify_spin_dim(irrep) for irrep in spin_irreps]
+    orbit_momspin = make_momentum_spin_orbit(momenta, spin_dims, little, internal_symmetry)
+
     if verbose:
-        print(f"Size of extended orbit: {len(orbit)}")
-    if len(orbit) > 100:
+        print(f"Size of extended orbit: {len(orbit_momspin)}")
+    if len(orbit_momspin) > 100:
         print((
             "Warning: detailed optimization efforts have not been made "
             "in the reference implementation.\nAdditional optimization may be "
@@ -2106,7 +2325,7 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
         # Naively, the projector applied to the Dmm should be proj @ Dmm(R) @ proj.
         # However, the projector is idempotent, and the permutations commute
         # with rotations. Therefore, it suffices to compute Dmm(R) @ proj.
-        proj = _get_projector(momenta, spin_irreps, little, internal_symmetry)
+        proj = make_internal_symmetry_projector(orbit_momspin, internal_symmetry)
         if proj is None:
             Dmm_momspin = None
         else:
@@ -2120,9 +2339,8 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False, return
 
     if verbose and (len(result) == 0):
         print("Decomposition vanishes for specified inputs.")
-    if return_Dmm:
-        return result, Dmm_momspin
-    return result, orbit
+
+    return IrrepDecomposition(result, orbit_momspin, Dmm_momspin, little_name, stab_name)
 
 
 ##################
