@@ -209,21 +209,20 @@ def test_mhi(momenta, particle_names, spin_irreps, fname_rep, fname_basis):
         coefficients
     """
     internal_symmetry = mhi.make_exchange_group(particle_names)
-    proj, Dmm = mhi.mhi(
+    result = mhi.mhi(
         momenta,
         spin_irreps,
         internal_symmetry=internal_symmetry,
-        verbose=True,
-        return_Dmm=True)
+        verbose=True)
 
     # Check momentum-orbit representation matrices
     if fname_rep is not None:
-        ref = read_mathematica(fname_rep, Dmm.shape)
-        assert np.allclose(Dmm, ref), f"Trouble with {fname_rep}"
+        ref = read_mathematica(fname_rep, result.Dmm.shape)
+        assert np.allclose(result.Dmm, ref), f"Trouble with {fname_rep}"
         print("Success:", os.path.split(fname_rep)[-1])
 
     # Check change-of-basis coefficients
-    table = make_table(proj)
+    table = make_table(result.decomp)
     ref = read_mathematica(fname_basis, table.shape)
     assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
     print("Success:", os.path.split(fname_basis)[-1])

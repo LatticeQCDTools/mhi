@@ -95,13 +95,13 @@ if args.verbose:
 
 # Do the calculation
 print_verbose(args.verbose, "Starting calculation.")
-proj, _ = mhi.mhi(momenta, spin_irreps, internal_symmetry=internal_symmetry, verbose=args.verbose)
+result = mhi.mhi(momenta, spin_irreps, internal_symmetry=internal_symmetry, verbose=args.verbose)
 print_verbose(args.verbose, "Finished calculation.")
 
 # Save the results
 print_verbose(args.verbose, "Writing results to",  args.ofile)
 if args.clobber and os.path.exists(args.ofile):
     os.remove(args.ofile)
-mhi.write_hdf5(args.ofile, proj)
+mhi.write_hdf5(args.ofile, result.decomp)
 print_verbose(args.verbose, "Writing complete.")
 sys.exit(0)

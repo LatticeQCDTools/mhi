@@ -22,14 +22,14 @@ def main():
             print(f"--> Checking {irrep} ")
 
             # Compute cubic-group irrep decomposition
-            result, _ = mhi.mhi(
+            result = mhi.mhi(
                 momenta=momenta,
                 spin_irreps=['A1m','A1m','A1m'],
                 internal_symmetry=internal_symmetries[irrep]
             )
 
             # Isolate list of irreps
-            result = sorted([irrep for irrep, _ in result])
+            irreps = sorted([irrep for irrep, _ in result.decomp])
 
             # Get reference result
             if irrep in ('standard:1', 'standard:2'):
@@ -38,7 +38,7 @@ def main():
                 ref = sorted(known_result[irrep])
 
             # Compare to reference
-            if result != ref:
+            if irreps != ref:
                 print(result)
                 print(ref)
                 raise ValueError(f"Mismatch for {irrep}")
