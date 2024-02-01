@@ -348,9 +348,9 @@ def transform(arr, group_element, verbose=False):
 
     Parameters
     ----------
-    arr : (M, M, ..., M) array_like
+    arr : ``(M, M, ..., M)`` array_like
         The tensor to transform.
-    group_element : (M, M) array_like
+    group_element : ``(M, M)`` array_like
         The group element applying the transformation.
     verbose : bool
         Whether to print the indices used in Einstein summation notation.
@@ -384,8 +384,8 @@ def tensor_inner(a, b, verbose=False):
 
     Parameters
     ----------
-    a : (M, M, ... , M) array_like
-    b : (M, M, ... , M) array_like
+    a : ``(M, M, ... , M)`` array_like
+    b : ``(M, M, ... , M)`` array_like
 
     Returns
     -------
@@ -483,14 +483,15 @@ class DiracPauli:
     def rotation_vec(self, omega):
         """
         Computes the spinor rotation matrix associated with the 3-vector omega.
+
         Parameters
         ----------
-        omega: (3, ) ndarray or list
+        omega: ``(3, )`` ndarray or list
             The vector specifying the rotation
 
         Returns
         -------
-        arr : (4, 4) ndarray
+        arr : ``(4, 4)`` ndarray
             The complex roation matrix
         """
         assert len(omega) == 3, "omega must be a 3-vector"
@@ -506,6 +507,7 @@ class DiracPauli:
         """
         Computes the spinor rotation matrix associated with an rotation
         of angle "theta" around the kth axis.
+
         Parameters
         ----------
         theta: float
@@ -515,7 +517,7 @@ class DiracPauli:
 
         Returns
         -------
-        arr : (4, 4) ndarray
+        arr : ``(4, 4)`` ndarray
             The complex rotation matrix
         """
         assert direction in (1,2,3), "Please specify direction in (1,2,3)."
@@ -550,6 +552,7 @@ def make_spinor_array(spinor):
     """
     Builds a normalized "state" with total (j, jz, parity) inside a suitable
     tensor product space of spin-1/2 states.
+
     Parameters
     ----------
     spinor : SpinorTuple
@@ -603,7 +606,7 @@ def make_oh():
 
     Returns
     -------
-    group : (48, 3, 3) ndarray
+    group : ``(48, 3, 3)`` ndarray
     """
     # Reflections
     rx = np.diag([-1, 1, 1])
@@ -637,7 +640,7 @@ def rotation(theta, direction):
 
     Returns
     -------
-    arr : (3, 3) ndarray
+    arr : ``(3, 3)`` ndarray
         The rotation matrix
     """
     assert direction in (1,2,3), "Please specify direction in (1,2,3)."
@@ -652,12 +655,12 @@ def rotation_vec(omega):
 
     Parameters
     ----------
-    omega : (3, ) ndarray or list
+    omega : ``(3, )`` ndarray or list
         The vector defining the rotation
 
     Returns
     -------
-    arr : (3, 3) ndarray
+    arr : ``(3, 3)`` ndarray
         The rotation matrix
     """
     assert len(omega) == 3, "omega must be a 3-vector"
@@ -667,8 +670,8 @@ def rotation_vec(omega):
 
 def make_ohd():
     """
-    Constructs a presentation of the "spinorial" double cover Oh^D of the cubic
-    group ordering of group elements.
+    Constructs a presentation of the "spinorial" double cover :math:`Oh^D` of
+    the cubic group ordering of group elements.
 
     Parameters
     ----------
@@ -676,7 +679,7 @@ def make_ohd():
 
     Returns
     -------
-    group : (96, 4, 4) ndarray
+    group : ``(96, 4, 4)`` ndarray
     """
     dirac = DiracPauli()
 
@@ -709,12 +712,12 @@ def make_spinorial_little_group(little):
 
     Parameters
     ----------
-    little : (|G|, 3, 3) array_like
+    little : ``(|G|, 3, 3)`` array_like
         The little group G.
 
     Returns
     -------
-    group : (2*|G|, 4, 4) ndarray
+    group : ``(2*|G|, 4, 4)`` ndarray
         The double-cover little group.
     """
     oh_group = make_oh()
@@ -733,14 +736,14 @@ def make_stabilizer(momenta, group):
 
     Parameters
     ----------
-    momenta : (nmomenta, 3) or (3, ) array_like
+    momenta : ``(nmomenta, 3)`` or ``(3, )`` array_like
         The ordered momenta
-    group : (|G|, 3, 3) array_like
+    group : ``(|G|, 3, 3)`` array_like
         The group
 
     Returns
     -------
-    stabilizer : (|H|, 3, 3) ndarray
+    stabilizer : ``(|H|, 3, 3)`` ndarray
         The stabilizer group H.
     """
     momenta = np.array(momenta)
@@ -765,12 +768,12 @@ def make_canonical_stabilizer(name, group):
     ----------
     name : str
         The name of the desired stabilizer subgroup
-    group : (|G|, 3, 3) array_like
+    group : ``(|G|, 3, 3)`` array_like
         The group
 
     Returns
     -------
-    stabilizer : (|H|, 3, 3) array_like
+    stabilizer : ``(|H|, 3, 3)`` array_like
         The stabilizer subgroup
     """
     canonical_momenta = {
@@ -792,7 +795,7 @@ def identify_stabilizer(stabilizer):
 
     Parameters
     ----------
-    stabilizer : (|H|, 3, 3) array_like
+    stabilizer : ``(|H|, 3, 3)`` array_like
         The stabilizer group.
 
     Returns
@@ -825,9 +828,9 @@ def make_little_and_stabilizer(momenta, group):
 
     Parameters
     ----------
-    momenta : (nmomenta, 3) array_like
+    momenta : ``(nmomenta, 3)`` array_like
         The momenta
-    group : (|G|, 3, 3) array_like
+    group : ``(|G|, 3, 3)`` array_like
         The group
 
     Returns
@@ -852,38 +855,39 @@ def make_little_and_stabilizer(momenta, group):
 
 def conjugate(g, h):
     """
-    Computes the conjugate of group element h by group element g: g.h.g^{-1}.
-    Assumes that g is an orthogonal matrix so that g^{-1} = g^T.
+    Computes the conjugate of group element h by group element g:
+    :math:`g.h.g^{-1}`.  Assumes that g is an orthogonal matrix so that
+    :math:`g^{-1} = g^T`.
 
     Parameters
     ----------
-    g : (n, n) ndarray
-    h : (n, n) ndarray
+    g : ``(n, n)`` ndarray
+    h : ``(n, n)`` ndarray
 
     Returns
     -------
-    h_conj : (n, n) ndarray
-        The conjugated element, g.h.g^{-1}
+    h_conj : ``(n, n)`` ndarray
+        The conjugated element, :math:`g.h.g^{-1}`
     """
     return g @ h @ g.T
 
 
 def conjugate_group(g, group):
     """
-    Computes the conjugate of the group G by the group element g: g.G.g^{-1}.
-    Assumes that g is an orthogonal matrix so that g^{-1} = g^T.
+    Computes the conjugate of the group G by the group element g: :math:`g.G.g^{-1}`.
+    Assumes that g is an orthogonal matrix so that :math:`g^{-1} = g^T`.
 
     Parameters
     ----------
-    group : (|G|, n, n) ndarray
+    group : ``(|G|, n, n)`` ndarray
         The group G
-    h : (n, n) ndarray
+    h : ``(n, n)`` ndarray
         The conjugating element
 
     Returns
     -------
-    group_conj : (|G|, n, n) ndarray
-        The conjugated group g.G.g^{-1}
+    group_conj : ``(|G|, n, n)`` ndarray
+        The conjugated group :math:`g.G.g^{-1}`
     """
     return np.array([conjugate(g, elt) for elt in group])
 
@@ -894,16 +898,16 @@ def find_subgroup_isomorphism(group, subgroup_h1 , subgroup_h2):
 
     Parameters
     ----------
-    group : (|G|, n, n) ndarray
+    group : ``(|G|, n, n)`` ndarray
         The group G
-    subgroup_h1 : (|H|, n, n) ndarray
+    subgroup_h1 : ``(|H|, n, n)`` ndarray
         The subgroups H1
-    subgroup_h2 : (|H|, n, n) ndarray
+    subgroup_h2 : ``(|H|, n, n)`` ndarray
         The subgroups H2
 
     Returns
     -------
-    g, perm : (n, n) ndarray, (|H|, ) ndarray
+    g, perm : ``(n, n)`` ndarray, ``(|H|, )`` ndarray
         The group element and permutation specifying the isomorphism via
         (g.H1.g^{inv})[perm] --> H2 as an ordered set
 
@@ -933,19 +937,19 @@ def find_subgroup_isomorphism(group, subgroup_h1 , subgroup_h2):
 
 def apply_isomorphism(group, isomorphism):
     """
-    Applies the isomorphism (g, perm) to the group G via (g.G.g^{-1})[perm].
+    Applies the isomorphism (g, perm) to the group G via :math:`(g.G.g^{-1})[perm]`.
 
     Parameters
     ----------
-    group : (|G|, n, n) ndarray
+    group : ``(|G|, n, n)`` ndarray
         The group
     isomorphism : namedtuple / Isomorphism
         The (group_element, permuation) pair
 
     Returns
     -------
-    group_iso : (|G|, n, n) ndarray
-        The group after applying the isomorphism, (g.G.g^{-1})[perm]
+    group_iso : ``(|G|, n, n)`` ndarray
+        The group after applying the isomorphism, :math:`(g.G.g^{-1})[perm]`
     """
     return conjugate_group(isomorphism.g, group)[isomorphism.perm]
 
@@ -1015,9 +1019,9 @@ def make_momentum_orbit(momenta, group, exchange_group=None):
 
     Parameters
     ----------
-    momenta : (nmomenta, 3) array_like
+    momenta : ``(nmomenta, 3)`` array_like
         The ordered momenta.
-    group : (|G|, 3, 3) array_like
+    group : ``(|G|, 3, 3)`` array_like
         The group matrices
     exchange_group : array_like
         The exchange group with namedtuple/WeightedPermutation elements
@@ -1071,22 +1075,22 @@ def make_momentum_spin_orbit(momenta, spin_dims, group, exchange_group=None):
 
     Parameters
     ----------
-    momenta : (nmomenta, 3) array_like
+    momenta : ``(nmomenta, 3)`` array_like
         The ordered momenta
     spin_dims : list of ints
         The dimensions of the spinor spaces.
-    group : (|G|, 3, 3) array_like
+    group : ``(|G|, 3, 3)`` array_like
         The group matrices.
     exchange : array_like or None
         The exchange_group with namedtuple/WeightedPermutation elements
 
-    Return
-    ------
+    Returns
+    -------
     spin_shell : ndarray
         The flattened tensor product.
 
-    Note
-    ----
+    Notes
+    -----
     Consider a spinor transforming in an N-dimensional irrep.
     By definition, the different basis vectors for the irrep transform
     into each other under the action of the group.
@@ -1176,16 +1180,16 @@ def recombine(labels, partition_keys, partition_idxs):
 
     Parameters
     ----------
-    labels : (n, ) array_like
+    labels : ``(n, )`` array_like
         The labels, e.g., ['b1', 'b2', 'b1']
-    partition_keys : (m, ) array_like
+    partition_keys : ``(m, )`` array_like
         The unique elements of the labels, ordered by first appearance.
-    partition_idxs : (m, ) tuple of array_like
+    partition_idxs : ``(m, )`` tuple of array_like
         The indices to recombine, in the same order as the partition_keys
 
     Returns
     -------
-    idxs : (n, ) ndarray
+    idxs : ``(n, )`` ndarray
         The recombined indices
 
     Examples
@@ -1194,6 +1198,7 @@ def recombine(labels, partition_keys, partition_idxs):
     ['b1','b2','b1']. Since the label 'b1' is not contiguous, the permutations
     associated with this label should include the identity (0)(2) and the swap
     (0,2).
+
     >>> labels = ['b1','b2','b1']
     >>> partitions = partition(labels)
     >>> perms = {key: list(itertools.permutations(idxs)) for key, idxs in partitions.items()}
@@ -1289,7 +1294,7 @@ def make_internal_symmetry_projector(orbit, internal_symmetry):
 
     Parameters
     ----------
-    momentum_spin_orbit : (n, ) array_like
+    momentum_spin_orbit : ``(n, )`` array_like
         Array of SpinShellTuples, each of defines the (momenta, spin)
         configuration for a given element of the orbit
     internal_group : array_like
@@ -1297,7 +1302,7 @@ def make_internal_symmetry_projector(orbit, internal_symmetry):
 
     Returns
     -------
-    proj : (n, n) ndarray
+    proj : ``(n, n)`` ndarray
         projection matrix, intended to be contracted against the extended
         momentum-spin representation matrices: "Dmm(R) -> proj @ Dmm(R) @ proj"
 
@@ -1361,15 +1366,15 @@ def make_momentum_orbit_rep_matrix(orbit, group_element):
 
     Returns
     -------
-    permutation : (|O|, |O|) ndarray
+    permutation : ``(|O|, |O|)`` ndarray
         The representation matrix, which happens to be a permutation matrix.
 
     Notes
     -----
     A group acts on a vector to generate an orbit O. When the group then acts
     on the orbit, the result is a permutation of the vectors in the orbit.
-    The permutation can be represented as a square matrix of size |O|x|O|,
-    where |O| is the size of the orbit. The full set of these matrices (with
+    The permutation can be represented as a square matrix of size ``|O|x|O|``,
+    where ``|O|`` is the size of the orbit. The full set of these matrices (with
     one for each group element) is itself a group representation.
     """
     dim = len(orbit)
@@ -1392,12 +1397,12 @@ def make_momentum_orbit_rep(orbit, group):
     ----------
     orbit : list
         The orbit of an ordered set of vectors under the group
-    group : (|G|, 3, 3) array_like
+    group : ``(|G|, 3, 3)`` array_like
         The group matrices.
 
     Returns
     -------
-    representation : (|G|, |O|, |O|) ndarray
+    representation : ``(|G|, |O|, |O|)`` ndarray
         The momentum-representation matrices
     """
     return np.array([make_momentum_orbit_rep_matrix(orbit, g) for g in group])
@@ -1409,16 +1414,16 @@ def make_momentum_spin_rep(Dmm, *Dspin):
 
     Parameters
     ----------
-    Dmm : (|G|,|O|,|O|) ndarray
+    Dmm : ``(|G|,|O|,|O|)`` ndarray
         The momentum-representation matrices.
-    *Dspin : (|G^D|, |irrep|, |irrep|) ndarray(s)
+    *Dspin : ``(|G^D|, |irrep|, |irrep|)`` ndarray(s)
         The spin irrep matrices.
 
     Returns
     -------
-    Dmm_spin : (|G^D|, dim_total, dim_total) ndarray
+    Dmm_spin : ``(|G^D|, dim_total, dim_total)`` ndarray
         The combined momomentum-spin representation matrices, where the total
-        dimension is given by dim_total = |O|x|irrep1|x|irrep2|x...x|irrepN|.
+        dimension is given by dim_total = ``|O|x|irrep1|x|irrep2|x...x|irrepN|``.
         As should be expected, the proudct includes all the representations
         appearing in the list of "Dspin" matrices.
     """
@@ -1449,12 +1454,12 @@ def make_irrep_matrix(polarizations, group_element):
     ----------
     polarizations : list
         The polarization tensors specifying the basis functions for the irrep
-    group_element : (3, 3) array_like
+    group_element : ``(3, 3)`` array_like
         The group element.
 
     Returns
     -------
-    irrep_matrix : (|irrep|, |irrep|) ndarray
+    irrep_matrix : ``(|irrep|, |irrep|)`` ndarray
         The irrep matrix.
     """
     dim = len(polarizations)
@@ -1475,12 +1480,12 @@ def make_irrep(polarizations, group):
     ----------
     polarizations : list
         The polarization tensors specifying the basis functions for the irrep.
-    group: (|G|, 3, 3) array_like
+    group: ``(|G|, 3, 3)`` array_like
         The group matrices.
 
     Returns
     -------
-    irrep : (|G|, |irrep|, |irrep|) ndarray
+    irrep : ``(|G|, |irrep|, |irrep|)`` ndarray
         The irrep matrices.
     """
     return np.array([make_irrep_matrix(polarizations, g) for g in group])
@@ -1498,12 +1503,12 @@ def make_irrep_matrix_spinor(irrep_basis, group_element):
     ----------
     irrep_basis : list
         The spinor basis spanning the irrep
-    group_element : (4, 4) ndarray
+    group_element : ``(4, 4)`` ndarray
         The "spinorial" group element.
 
     Returns
     -------
-    irrep_matrix : (|irrep|, |irrep|) ndarray
+    irrep_matrix : ``(|irrep|, |irrep|)`` ndarray
         The irrep matrix.
 
     Notes
@@ -1546,12 +1551,12 @@ def make_irrep_spinor(basis, group):
     ----------
     basis : list
         The spinor basis spanning the irrep
-    group : (|G|, 4, 4) list or array_like
+    group : ``(|G|, 4, 4)`` list or array_like
         The group matrices.
 
     Returns
     -------
-    irrep : (|G|, |irrep|, |irrep|) ndarray
+    irrep : ``(|G|, |irrep|, |irrep|)`` ndarray
         The irrep matrices.
     """
     return np.array([make_irrep_matrix_spinor(basis, g) for g in group])
@@ -1563,7 +1568,7 @@ def make_irrep_from_group(little_group):
 
     Parameters
     ----------
-    little_group : (|G|, 3, 3) ndarray
+    little_group : ``(|G|, 3, 3)`` ndarray
         The matrices for the little group G.
 
     Returns
@@ -1571,7 +1576,7 @@ def make_irrep_from_group(little_group):
     Dmumu : dict
         The irrep matrices as a dict. The keys give the name of the irrep.
         The values contain the irrep matrices themselves, each with shape
-        (|G|, |irrep|, |irrep|).
+        ``(|G|, |irrep|, |irrep|)``.
     """
     little_group_name = identify_stabilizer(little_group)
 
@@ -1600,7 +1605,7 @@ def make_irrep_from_groupD(little_group):
 
     Parameters
     ----------
-    little_group : (|G|, 3, 3) ndarray
+    little_group : ``(|G|, 3, 3)`` ndarray
         The matrices for the little group G.
 
     Returns
@@ -1608,7 +1613,7 @@ def make_irrep_from_groupD(little_group):
     Dmumu_double : dict
         The irrep matrices as a dict. The keys give the name of the irrep.
         The values contain the irrep matrices themselves, each with shape
-        (|G^D|, |irrep|, |irrep|).
+        ``(|G^D|, |irrep|, |irrep|)``.
     """
     little_name = identify_stabilizer(little_group)
     little_double = make_spinorial_little_group(little_group)
@@ -1637,12 +1642,12 @@ def compute_lowering_coefficients(irrep_matrices):
 
     Parameters
     ----------
-    irrep_matrices : (|G|, |irrep|, |irrep|) array_like
+    irrep_matrices : ``(|G|, |irrep|, |irrep|)`` array_like
         The irrep matrices.
 
     Returns
     -------
-    coeffs : (|G|,) np.ndarray
+    coeffs : ``(|G|,)`` np.ndarray
         The lowering coefficients.
 
     Notes
@@ -1760,18 +1765,18 @@ def apply_schur_and_lower(Dmm, Dmumu, verbose=False):
 
     Parameters
     ----------
-    Dmm : (|G|, |O|, |O|) array_like
+    Dmm : ``(|G|, |O|, |O|)`` array_like
         Momentum-(spin)-representation matrices
     Dmumu : dict
         The irrep matrices. The keys give the name of the irrep. The values
-        contain the group irrep matrices, with shape (|G|, |irrep|, |irrep|).
+        contain the group irrep matrices, with shape ``(|G|, |irrep|, |irrep|)``.
     Returns
     -------
     projector : dict
         The block diagonalization matrix / change-of-basis coefficients.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the coefficients, each of shape
-        (|irrep|, |O|).
+        ``(|irrep|, |O|)``.
     """
     projector = {}
     for irrep_name in Dmumu:
@@ -1841,30 +1846,30 @@ def rephase(arr, irrep):
 
     Parameters
     ----------
-    arr : (|irrep|, |O|) array_like
+    arr : ``(|irrep|, |O|)`` array_like
         Table specifiying the coefficients.
 
     Returns
     -------
-    arr : (|irrep|, |O|) ndarray
+    arr : ``(|irrep|, |O|)`` ndarray
         The table with appropriate phases applied.
 
     Notes
     -----
     The phase convention is as follows:
-    * For a generic irrep, the phase is chosen such that the first nonzero
-      entry of the first row ("mu=1") is real and positive.
-    * For the irreps T2p and T2m only, the phase is chosen such that the second
-      row ("mu=2") is purely imaginary with a negative imaginary part. This
-      choice matches the basis-vector conventions of Basak et al., where a
-      particular combination of spheric harmonics (Y_2^2 - Y_2^{-2}) is used as
-      the "mu=2" basis vector for T2.
+      - For a generic irrep, the phase is chosen such that the first nonzero
+        entry of the first row ("mu=1") is real and positive.
+      - For the irreps T2p and T2m only, the phase is chosen such that the second
+        row ("mu=2") is purely imaginary with a negative imaginary part. This
+        choice matches the basis-vector conventions of Basak et al., where a
+        particular combination of spheric harmonics :math:`(Y_2^2 - Y_2^{-2})` is
+        used as the "mu=2" basis vector for T2.
 
     References
     ----------
-    [1] S. Basak et al., "Clebsch-Gordan construction of lattice interpolating
-        fields for excited baryons", Phys. Rev. D 72, 074501 (2005),
-        [arXiv:hep-lat/0508018].
+    .. [1] S. Basak et al., "Clebsch-Gordan construction of lattice interpolating
+       fields for excited baryons", Phys. Rev. D 72, 074501 (2005),
+       [arXiv:hep-lat/0508018].
     """
     # Special convention to match Basak et al.
     if irrep in ("T2p", "T2m"):
@@ -1926,12 +1931,12 @@ def make_pseudoscalar_irrep(little):
 
     Parameters
     ----------
-    little : (|G|, 3, 3) array_like
+    little : ``(|G|, 3, 3)`` array_like
         The little-group matrices associated with some momenta
 
     Returns
     -------
-    pseudoscalar : (|G^D|, 1, 1) ndarray
+    pseudoscalar : ``(|G^D|, 1, 1)`` ndarray
         The A1m irrep matrices restricted to the double cover of the little group.
     """
     oh = make_oh()
@@ -1948,12 +1953,12 @@ def make_spin_half_irrep(little_double):
 
     Parameters
     ----------
-    little_double : (|G^D|, 4, 4) array_like
+    little_double : ``(|G^D|, 4, 4)`` array_like
         The spinorial little-group matrices associated with some momenta
 
     Returns
     -------
-    pseudoscalar : (|G^D|, 1, 1) ndarray
+    pseudoscalar : ``(|G^D|, 1, 1)`` ndarray
         The G_1^+ irrep matrices restricted to the double cover of the little group.
     """
     return make_irrep_spinor(
@@ -1969,9 +1974,9 @@ def make_Dspin(spin_irreps, little, little_double):
     ----------
     spin_irreps : list
         The names of the particles' spin irreps as strings, e.g., ['A1m', 'G1p']
-    little : (|G|, 3, 3) array_like
+    little : ``(|G|, 3, 3)`` array_like
         The little-group matrices associated with some momenta
-    little_double : (|G^D|, 4, 4) array_like
+    little_double : ``(|G^D|, 4, 4)`` array_like
         The spinorial little-group matrices associated with some momenta
 
     Returns
@@ -2033,11 +2038,11 @@ class IrrepDecomposition:
             The irrep decomposition and change-of-basis matrices.
             The keys are tuples (irrep_name, degeneracy_idx).
             The values are the block-diagonalization matrices, given as arrays
-            of shape (|irrep|, |O|).
-        orbit : (|O|, ) , ndarray
+            of shape ``(|irrep|, |O|)``.
+        orbit : ``(|O|, )`` , ndarray
             The "extended" spin-momentum orbit, where each element is a
             SpinShellTuple specifying momentum and spin indices.
-        Dmm : (|G|, |O|, |O|), ndarray
+        Dmm : ``(|G|, |O|, |O|)``, ndarray
             The (reducible) representation matrices associated with the orbit.
         little_name : str
             The name of the little group leaving the total momentum invariant
@@ -2253,7 +2258,7 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
 
     Parameters
     ----------
-    momenta : (nparticles, 3) or (3, ) array_like
+    momenta : ``(nparticles, 3)`` or ``(3, )`` array_like
         The ordered momenta
     particle_names : array_like
         The particle names, e.g., ['n', 'p']
@@ -2273,12 +2278,12 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
     -----
     The algorithm is as follows:
 
-    * Compute the little group of the total momentum
-    * Compute irrep matrices of the little group, Dmumu(R)
-    * Compute the momentum(-spin) representation matrices, Dmm(R)
-    * Apply exchange-group projection to Dmm matrices, P @ Dmm(R) @ P
-    * Apply Schur's algorithm and lowering operators to construct the
-      block-diagonalization / change-of-basis matrices
+      - Compute the little group of the total momentum
+      - Compute irrep matrices of the little group, Dmumu(R)
+      - Compute the momentum(-spin) representation matrices, Dmm(R)
+      - Apply exchange-group projection to Dmm matrices, P @ Dmm(R) @ P
+      - Apply Schur's algorithm and lowering operators to construct the
+        block-diagonalization / change-of-basis matrices
     """
     if (spin_irreps is not None) and len(spin_irreps) > 0:
         if len(spin_irreps) != len(momenta):
@@ -2422,14 +2427,14 @@ def test_clifford(gamma, eta, verbose=False):
 
     Parameters
     ----------
-    gamma : (4, ) list or (4, 4, 4) array_like
+    gamma : ``(4, )`` list or ``(4, 4, 4)`` array_like
         The gamma matrices gamma[i], i=0,1,2,3.
-    eta : (4,4)
+    eta : ``(4,4)``
         The metric.
     verbose : bool
         Whether to print additional information about successful tests.
 
-    Results
+    Returns
     -------
     None
     """
@@ -2452,14 +2457,14 @@ def test_gamma5(gamma, gamma5, verbose):
 
     Parameters
     ----------
-    gamma : (4, ) list or (4, 4, 4) array_like
+    gamma : ``(4, )`` list or ``(4, 4, 4)`` array_like
         The gamma matrices gamma[i], i=0,1,2,3.
-    gamma5 : (4,4)
+    gamma5 : ``(4,4)``
         The matrix gamma5
     verbose : bool
         Whether to print additional information about successful tests.
 
-    Results
+    Returns
     -------
     None
     """
@@ -2482,7 +2487,7 @@ def test_row_orthogonality(projector, verbose=False):
         The block diagonalization matrix / change-of-basis coefficients.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the coefficients, each of shape
-        (|irrep|, |O|).
+        ``(|irrep|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 
@@ -2510,7 +2515,7 @@ def count_degeneracy(projector):
         The block diagonalization matrix / change-of-basis coefficients.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the coefficients, each of shape
-        (|irrep|, |O|).
+        ``(|irrep|, |O|)``.
 
     Returns
     -------
@@ -2537,7 +2542,7 @@ def test_degenerate_orthogonality(projector, verbose=False):
         The block diagonalization matrix / change-of-basis coefficients.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the coefficients, each of shape
-        (|irrep|, |O|).
+        ``(|irrep|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 
@@ -2570,17 +2575,17 @@ def test_block_diagonalization(Dmm, Dmumu, projector, verbose=False):
 
     Parameters
     ----------
-    Dmm : (|G|,|O|,|O|) ndarray
+    Dmm : ``(|G|,|O|,|O|)`` ndarray
         The momentum-representation matrices.
     Dmumu : dict
         The irrep matrices as a dict. The keys give the name of the irrep.
         The values contain the irrep matrices themselves, each with shape
-        (|G|, |irrep|, |irrep|).
+        ``(|G|, |irrep|, |irrep|)``.
     projector : dict
         The block diagonalization matrix / change-of-basis coefficients.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the coefficients, each of shape
-        (|irrep|, |O|).
+        ``(|irrep|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 
