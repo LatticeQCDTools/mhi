@@ -1,0 +1,2685 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Module documentation &#8212; Multi-hadron Interpolators</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Overview" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Multi-hadron Interpolators</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Module documentation
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Module documentation
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Module documentation</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-mhi.mhi">
+<span id="module-documentation"></span><h1>Module documentation<a class="headerlink" href="#module-mhi.mhi" title="Link to this heading">#</a></h1>
+<p>MHI – “Multi-Hadron Interpolators”</p>
+<p>Module for constructing block-diagonalization / change-of-basis matrices to map
+products of N local plane-wave operators into irreps of the cubic group.
+Includes appropriate generalizations for spin and internal symmetries.</p>
+<p>Authors:
+William Detmold, William I. Jay, Gurtej Kanwar, Phiala E. Shanahan, and Michael L. Wagman</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mhi.mhi.DiracPauli">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">DiracPauli</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#DiracPauli"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.DiracPauli" title="Link to this definition">#</a></dt>
+<dd><p>Wrapper for Dirac matrices in the Dirac-Pauli basis.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mhi.mhi.DiracPauli.rotation" title="mhi.mhi.DiracPauli.rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotation</span></code></a>(theta, direction)</p></td>
+<td><p>Computes the spinor rotation matrix associated with an rotation of angle &quot;theta&quot; around the kth axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mhi.mhi.DiracPauli.rotation_vec" title="mhi.mhi.DiracPauli.rotation_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotation_vec</span></code></a>(omega)</p></td>
+<td><p>Computes the spinor rotation matrix associated with the 3-vector omega.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="mhi.mhi.DiracPauli.rotation">
+<span class="sig-name descname"><span class="pre">rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#DiracPauli.rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.DiracPauli.rotation" title="Link to this definition">#</a></dt>
+<dd><p>Computes the spinor rotation matrix associated with an rotation
+of angle “theta” around the kth axis.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>theta: float</strong></dt><dd><p>The rotation angle</p>
+</dd>
+<dt><strong>direction: int</strong></dt><dd><p>The axis number, with {1,2,3} &lt;–&gt; {x,y,z}.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>arr</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">4)</span></code> ndarray</span></dt><dd><p>The complex rotation matrix</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mhi.mhi.DiracPauli.rotation_vec">
+<span class="sig-name descname"><span class="pre">rotation_vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#DiracPauli.rotation_vec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.DiracPauli.rotation_vec" title="Link to this definition">#</a></dt>
+<dd><p>Computes the spinor rotation matrix associated with the 3-vector omega.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>omega: ``(3, )`` ndarray or list</strong></dt><dd><p>The vector specifying the rotation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>arr</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">4)</span></code> ndarray</span></dt><dd><p>The complex roation matrix</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mhi.mhi.HashableArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">HashableArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#HashableArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.HashableArray" title="Link to this definition">#</a></dt>
+<dd><p>Minimal wrapper to make arrays hashable based on their value at
+initialization. Basically copied from the docs:
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/user/basics.subclassing.html">https://docs.scipy.org/doc/numpy/user/basics.subclassing.html</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></dt><dd><p>View of the transposed array.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></dt><dd><p>Base object if memory is from some other object.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctypes</span></code></dt><dd><p>An object to simplify the interaction of the array with the ctypes module.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></dt><dd><p>Python buffer object pointing to the start of the array’s data.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p>Data-type of the array’s elements.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Information about the memory layout of the array.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">flat</span></code></dt><dd><p>A 1-D iterator over the array.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">imag</span></code></dt><dd><p>The imaginary part of the array.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">itemsize</span></code></dt><dd><p>Length of one array element in bytes.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbytes</span></code></dt><dd><p>Total bytes consumed by the elements of the array.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></dt><dd><p>Number of array dimensions.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code></dt><dd><p>The real part of the array.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></dt><dd><p>Tuple of array dimensions.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></dt><dd><p>Number of elements in the array.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">strides</span></code></dt><dd><p>Tuple of bytes to step in each dimension when traversing an array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code>([axis, out, keepdims, where])</p></td>
+<td><p>Returns True if all elements evaluate to True.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">any</span></code>([axis, out, keepdims, where])</p></td>
+<td><p>Returns True if any of the elements of <cite>a</cite> evaluate to True.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmax</span></code>([axis, out, keepdims])</p></td>
+<td><p>Return indices of the maximum values along the given axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmin</span></code>([axis, out, keepdims])</p></td>
+<td><p>Return indices of the minimum values along the given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">argpartition</span></code>(kth[, axis, kind, order])</p></td>
+<td><p>Returns the indices that would partition this array.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">argsort</span></code>([axis, kind, order])</p></td>
+<td><p>Returns the indices that would sort this array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">astype</span></code>(dtype[, order, casting, subok, copy])</p></td>
+<td><p>Copy of the array, cast to a specified type.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">byteswap</span></code>([inplace])</p></td>
+<td><p>Swap the bytes of the array elements</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose</span></code>(choices[, out, mode])</p></td>
+<td><p>Use an index array to construct a new array from a set of choices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clip</span></code>([min, max, out])</p></td>
+<td><p>Return an array whose values are limited to <code class="docutils literal notranslate"><span class="pre">[min,</span> <span class="pre">max]</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compress</span></code>(condition[, axis, out])</p></td>
+<td><p>Return selected slices of this array along given axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">conj</span></code>()</p></td>
+<td><p>Complex-conjugate all elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugate</span></code>()</p></td>
+<td><p>Return the complex conjugate, element-wise.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([order])</p></td>
+<td><p>Return a copy of the array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumprod</span></code>([axis, dtype, out])</p></td>
+<td><p>Return the cumulative product of the elements along the given axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumsum</span></code>([axis, dtype, out])</p></td>
+<td><p>Return the cumulative sum of the elements along the given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagonal</span></code>([offset, axis1, axis2])</p></td>
+<td><p>Return specified diagonals.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code>(file)</p></td>
+<td><p>Dump a pickle of the array to the specified file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dumps</span></code>()</p></td>
+<td><p>Returns the pickle of the array as a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill</span></code>(value)</p></td>
+<td><p>Fill the array with a scalar value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code>([order])</p></td>
+<td><p>Return a copy of the array collapsed into one dimension.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getfield</span></code>(dtype[, offset])</p></td>
+<td><p>Returns a field of the given array as a certain type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">item</span></code>(*args)</p></td>
+<td><p>Copy an element of an array to a standard Python scalar and return it.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">itemset</span></code>(*args)</p></td>
+<td><p>Insert scalar into an array (scalar is cast to array's dtype, if possible)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code>([axis, out, keepdims, initial, where])</p></td>
+<td><p>Return the maximum along a given axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code>([axis, dtype, out, keepdims, where])</p></td>
+<td><p>Returns the average of the array elements along given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code>([axis, out, keepdims, initial, where])</p></td>
+<td><p>Return the minimum along a given axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">newbyteorder</span></code>([new_order])</p></td>
+<td><p>Return the array with the same data viewed with a different byte order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nonzero</span></code>()</p></td>
+<td><p>Return the indices of the elements that are non-zero.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition</span></code>(kth[, axis, kind, order])</p></td>
+<td><p>Rearranges the elements in the array in such a way that the value of the element in kth position is in the position it would be in a sorted array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code>([axis, dtype, out, keepdims, initial, ...])</p></td>
+<td><p>Return the product of the array elements over the given axis</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ptp</span></code>([axis, out, keepdims])</p></td>
+<td><p>Peak to peak (maximum - minimum) value along a given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">put</span></code>(indices, values[, mode])</p></td>
+<td><p>Set <code class="docutils literal notranslate"><span class="pre">a.flat[n]</span> <span class="pre">=</span> <span class="pre">values[n]</span></code> for all <cite>n</cite> in indices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ravel</span></code>([order])</p></td>
+<td><p>Return a flattened array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">repeat</span></code>(repeats[, axis])</p></td>
+<td><p>Repeat elements of an array.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code>(shape[, order])</p></td>
+<td><p>Returns an array containing the same data with a new shape.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize</span></code>(new_shape[, refcheck])</p></td>
+<td><p>Change shape and size of array in-place.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">round</span></code>([decimals, out])</p></td>
+<td><p>Return <cite>a</cite> with each element rounded to the given number of decimals.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">searchsorted</span></code>(v[, side, sorter])</p></td>
+<td><p>Find indices where elements of v should be inserted in a to maintain order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setfield</span></code>(val, dtype[, offset])</p></td>
+<td><p>Put a value into a specified place in a field defined by a data-type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setflags</span></code>([write, align, uic])</p></td>
+<td><p>Set array flags WRITEABLE, ALIGNED, WRITEBACKIFCOPY, respectively.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code>([axis, kind, order])</p></td>
+<td><p>Sort an array in-place.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze</span></code>([axis])</p></td>
+<td><p>Remove axes of length one from <cite>a</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">std</span></code>([axis, dtype, out, ddof, keepdims, where])</p></td>
+<td><p>Returns the standard deviation of the array elements along given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code>([axis, dtype, out, keepdims, initial, where])</p></td>
+<td><p>Return the sum of the array elements over the given axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapaxes</span></code>(axis1, axis2)</p></td>
+<td><p>Return a view of the array with <cite>axis1</cite> and <cite>axis2</cite> interchanged.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">take</span></code>(indices[, axis, out, mode])</p></td>
+<td><p>Return an array formed from the elements of <cite>a</cite> at the given indices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tobytes</span></code>([order])</p></td>
+<td><p>Construct Python bytes containing the raw data bytes in the array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tofile</span></code>(fid[, sep, format])</p></td>
+<td><p>Write array to a file as text or binary (default).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolist</span></code>()</p></td>
+<td><p>Return the array as an <code class="docutils literal notranslate"><span class="pre">a.ndim</span></code>-levels deep nested list of Python scalars.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tostring</span></code>([order])</p></td>
+<td><p>A compatibility alias for <cite>tobytes</cite>, with exactly the same behavior.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trace</span></code>([offset, axis1, axis2, dtype, out])</p></td>
+<td><p>Return the sum along diagonals of the array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code>(*axes)</p></td>
+<td><p>Returns a view of the array with axes transposed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">var</span></code>([axis, dtype, out, ddof, keepdims, where])</p></td>
+<td><p>Returns the variance of the array elements, along given axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">view</span></code>([dtype][, type])</p></td>
+<td><p>New view of array with the same data.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>dot</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mhi.mhi.IrrepDecomposition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">IrrepDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dmm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">little_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#IrrepDecomposition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.IrrepDecomposition" title="Link to this definition">#</a></dt>
+<dd><p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mhi.mhi.IrrepDecomposition.format" title="mhi.mhi.IrrepDecomposition.format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format</span></code></a>([latex])</p></td>
+<td><p>Formats the irrep decomposition as text string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mhi.mhi.IrrepDecomposition.little_name" title="mhi.mhi.IrrepDecomposition.little_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">little_name</span></code></a>([latex])</p></td>
+<td><p>Returns the name of the little group.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mhi.mhi.IrrepDecomposition.stab_name" title="mhi.mhi.IrrepDecomposition.stab_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stab_name</span></code></a>([latex])</p></td>
+<td><p>Returns the name of the stabilizer group.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="mhi.mhi.IrrepDecomposition.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#IrrepDecomposition.format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.IrrepDecomposition.format" title="Link to this definition">#</a></dt>
+<dd><p>Formats the irrep decomposition as text string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>latex</strong><span class="classifier">bool</span></dt><dd><p>Whether or not return a latex-formatted sting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>output</strong><span class="classifier">str</span></dt><dd><p>The irrep decomposition, e.g., “A1p + A2p + 2*Ep” or
+“$A_1^+ oplus A_2^+ oplus 2E^+$”.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mhi.mhi.IrrepDecomposition.little_name">
+<span class="sig-name descname"><span class="pre">little_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#IrrepDecomposition.little_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.IrrepDecomposition.little_name" title="Link to this definition">#</a></dt>
+<dd><p>Returns the name of the little group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>latex</strong><span class="classifier">bool</span></dt><dd><p>Whether or not return a latex-formatted sting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>little_name</strong><span class="classifier">str</span></dt><dd><p>The name of the little group</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mhi.mhi.IrrepDecomposition.stab_name">
+<span class="sig-name descname"><span class="pre">stab_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#IrrepDecomposition.stab_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.IrrepDecomposition.stab_name" title="Link to this definition">#</a></dt>
+<dd><p>Returns the name of the stabilizer group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>latex</strong><span class="classifier">bool</span></dt><dd><p>Whether or not return a latex-formatted sting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>stab_name</strong><span class="classifier">str</span></dt><dd><p>The name of the stabilizer group</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mhi.mhi.Isomorphism">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">Isomorphism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mhi.mhi.Isomorphism" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>g</strong></dt><dd><p>Alias for field number 0</p>
+</dd>
+<dt><strong>perm</strong></dt><dd><p>Alias for field number 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code>(value, /)</p></td>
+<td><p>Return number of occurrences of value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code>(value[, start, stop])</p></td>
+<td><p>Return first index of value.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.mhi.Isomorphism.g">
+<span class="sig-name descname"><span class="pre">g</span></span><a class="headerlink" href="#mhi.mhi.Isomorphism.g" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.mhi.Isomorphism.perm">
+<span class="sig-name descname"><span class="pre">perm</span></span><a class="headerlink" href="#mhi.mhi.Isomorphism.perm" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mhi.mhi.MomentumSpinOrbitElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">MomentumSpinOrbitElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spins</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#MomentumSpinOrbitElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.MomentumSpinOrbitElement" title="Link to this definition">#</a></dt>
+<dd><p>Wrapper for easy manipulations involving elements of momentum-spin orbits.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mhi.mhi.SpinShellTuple">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">SpinShellTuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spins</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mhi.mhi.SpinShellTuple" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>momenta</strong></dt><dd><p>Alias for field number 0</p>
+</dd>
+<dt><strong>spins</strong></dt><dd><p>Alias for field number 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code>(value, /)</p></td>
+<td><p>Return number of occurrences of value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code>(value[, start, stop])</p></td>
+<td><p>Return first index of value.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.mhi.SpinShellTuple.momenta">
+<span class="sig-name descname"><span class="pre">momenta</span></span><a class="headerlink" href="#mhi.mhi.SpinShellTuple.momenta" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.mhi.SpinShellTuple.spins">
+<span class="sig-name descname"><span class="pre">spins</span></span><a class="headerlink" href="#mhi.mhi.SpinShellTuple.spins" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mhi.mhi.WeightedPermutation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">WeightedPermutation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mhi.mhi.WeightedPermutation" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>perm</strong></dt><dd><p>Alias for field number 1</p>
+</dd>
+<dt><strong>weight</strong></dt><dd><p>Alias for field number 0</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code>(value, /)</p></td>
+<td><p>Return number of occurrences of value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code>(value[, start, stop])</p></td>
+<td><p>Return first index of value.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.mhi.WeightedPermutation.perm">
+<span class="sig-name descname"><span class="pre">perm</span></span><a class="headerlink" href="#mhi.mhi.WeightedPermutation.perm" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.mhi.WeightedPermutation.weight">
+<span class="sig-name descname"><span class="pre">weight</span></span><a class="headerlink" href="#mhi.mhi.WeightedPermutation.weight" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.anticommutator">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">anticommutator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arr2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#anticommutator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.anticommutator" title="Link to this definition">#</a></dt>
+<dd><p>Computes the anticommutator of two matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>arr1</strong><span class="classifier">array_like</span></dt><dd></dd>
+<dt><strong>arr2</strong><span class="classifier">array_like</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">ndarray</span></dt><dd><p>The anticommutator {arr1, arr2}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.apply_isomorphism">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">apply_isomorphism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isomorphism</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#apply_isomorphism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.apply_isomorphism" title="Link to this definition">#</a></dt>
+<dd><p>Applies the isomorphism (g, perm) to the group G via <span class="math notranslate nohighlight">\((g.G.g^{-1})[perm]\)</span>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group</p>
+</dd>
+<dt><strong>isomorphism</strong><span class="classifier">namedtuple / Isomorphism</span></dt><dd><p>The (group_element, permuation) pair</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>group_iso</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group after applying the isomorphism, <span class="math notranslate nohighlight">\((g.G.g^{-1})[perm]\)</span></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.apply_schur_and_lower">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">apply_schur_and_lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dmm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dmumu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#apply_schur_and_lower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.apply_schur_and_lower" title="Link to this definition">#</a></dt>
+<dd><p>Computes the block diagonalization matrix / change-of-basis coefficients,
+using Schur’s algorithm and lowering operators to construct the full tables.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Dmm</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|O|,</span> <span class="pre">|O|)</span></code> array_like</span></dt><dd><p>Momentum-(spin)-representation matrices</p>
+</dd>
+<dt><strong>Dmumu</strong><span class="classifier">dict</span></dt><dd><p>The irrep matrices. The keys give the name of the irrep. The values
+contain the group irrep matrices, with shape <code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|irrep|,</span> <span class="pre">|irrep|)</span></code>.</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——-</strong></dt><dd></dd>
+<dt><strong>projector</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix / change-of-basis coefficients.
+The keys are tuples of the form (irrep_name, degeneracy_number).
+The values are arrays containing the coefficients, each of shape
+<code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|O|)</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.commutator">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">commutator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arr2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#commutator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.commutator" title="Link to this definition">#</a></dt>
+<dd><p>Computes the commutator of two matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>arr1</strong><span class="classifier">array_like</span></dt><dd></dd>
+<dt><strong>arr2</strong><span class="classifier">array_like</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">ndarray</span></dt><dd><p>The commutator {arr1, arr2}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.compute_lowering_coefficients">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">compute_lowering_coefficients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irrep_matrices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#compute_lowering_coefficients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.compute_lowering_coefficients" title="Link to this definition">#</a></dt>
+<dd><p>Computes lowering coefficients for moving between rows of an irrep.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>irrep_matrices</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|irrep|,</span> <span class="pre">|irrep|)</span></code> array_like</span></dt><dd><p>The irrep matrices.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>coeffs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,)</span></code> np.ndarray</span></dt><dd><p>The lowering coefficients.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The linear algebra problem is to find “lowering coefficients” c[i] such
+that c[i] D[i,a,b] = L[a,b] (with sum over group index i implied),
+where D[i,a,b] are irrep matrices and L[a,b] is lowering operator. By
+flattening the irrep indices {a,b}, the problem can be cast as a linear
+system of the form A.x=b. This system is generically underdetermined. The
+current implementation singles out a particular solution using the
+Moore-Penrose pseudo-inverse.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.compute_polarization">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">compute_polarization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monomial</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#compute_polarization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.compute_polarization" title="Link to this definition">#</a></dt>
+<dd><p>Computes the polarization tensor of a given monomial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>monomial</strong><span class="classifier">sympy.core.mul.Mul</span></dt><dd><p>A monomial in the variables {‘x’, ‘y’, ‘z’}</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>polarization_tensor</strong><span class="classifier">ndarray</span></dt><dd><p>The polarization, a totally symmetric tensor</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.compute_restitution">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">compute_restitution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#compute_restitution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.compute_restitution" title="Link to this definition">#</a></dt>
+<dd><p>Computes the monomial restitution of a polarization tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>polarization</strong><span class="classifier">array_like</span></dt><dd><p>The (completely symmetric) polarization tensor</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>restitution</strong><span class="classifier">monomial (sympy.core.mul.Mul)</span></dt><dd><p>The monomial resulting from contracting the vector [x,y,z] across all
+the free indices of the polarization tensor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.conjugate">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#conjugate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.conjugate" title="Link to this definition">#</a></dt>
+<dd><p>Computes the conjugate of group element h by group element g:
+<span class="math notranslate nohighlight">\(g.h.g^{-1}\)</span>.  Assumes that g is an orthogonal matrix so that
+<span class="math notranslate nohighlight">\(g^{-1} = g^T\)</span>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>g</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd></dd>
+<dt><strong>h</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>h_conj</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The conjugated element, <span class="math notranslate nohighlight">\(g.h.g^{-1}\)</span></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.conjugate_group">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">conjugate_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#conjugate_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.conjugate_group" title="Link to this definition">#</a></dt>
+<dd><p>Computes the conjugate of the group G by the group element g: <span class="math notranslate nohighlight">\(g.G.g^{-1}\)</span>.
+Assumes that g is an orthogonal matrix so that <span class="math notranslate nohighlight">\(g^{-1} = g^T\)</span>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group G</p>
+</dd>
+<dt><strong>h</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The conjugating element</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>group_conj</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The conjugated group <span class="math notranslate nohighlight">\(g.G.g^{-1}\)</span></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.contract_across">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">contract_across</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#contract_across"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.contract_across" title="Link to this definition">#</a></dt>
+<dd><p>Conctract a vector full across all the free indices, yielding a scalar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">array_like</span></dt><dd><p>Tensor of generic rank</p>
+</dd>
+<dt><strong>vec</strong><span class="classifier">array_like</span></dt><dd><p>The vector to contract against all the free indices</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>scalar</strong><span class="classifier">float or complex</span></dt><dd><p>The product c = vec[i]*vec[j]*…*vec[n]*arr[i,j,…,n]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.count_degeneracy">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">count_degeneracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#count_degeneracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.count_degeneracy" title="Link to this definition">#</a></dt>
+<dd><p>Counts the degeneracy of irreps within the tables of block-diagnoalization/
+change-of-basis coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>projector</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix / change-of-basis coefficients.
+The keys are tuples of the form (irrep_name, degeneracy_number).
+The values are arrays containing the coefficients, each of shape
+<code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|O|)</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>degeneracy</strong><span class="classifier">dict</span></dt><dd><p>The degeneracies, with keys corresponding to the irrep names and values
+to the counts.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.decompose">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">decompose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monomial</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#decompose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.decompose" title="Link to this definition">#</a></dt>
+<dd><p>Decomposes a monomial of the form c * x**nx * y**ny * z**nz
+into a coefficient “c” and a triplet of exponents “(nx, ny, nz)”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>monomial</strong><span class="classifier">sympy.core.mul.Mul</span></dt><dd><p>A monomial in the variables {‘x’, ‘y’, ‘z’}</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>(coeff, exponents)</strong><span class="classifier">(complex, tuple)</span></dt><dd><p>The coefficient and exponents (nx, ny, nz) of the monomial</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.find_subgroup_isomorphism">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">find_subgroup_isomorphism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subgroup_h1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subgroup_h2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#find_subgroup_isomorphism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.find_subgroup_isomorphism" title="Link to this definition">#</a></dt>
+<dd><p>”
+Finds the isomorphism between conjugate subgroups H1 and H2.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group G</p>
+</dd>
+<dt><strong>subgroup_h1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The subgroups H1</p>
+</dd>
+<dt><strong>subgroup_h2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The subgroups H2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>g, perm</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray, <code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">)</span></code> ndarray</span></dt><dd><p>The group element and permutation specifying the isomorphism via
+(g.H1.g^{inv})[perm] –&gt; H2 as an ordered set</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.force_hash">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">force_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#force_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.force_hash" title="Link to this definition">#</a></dt>
+<dd><p>Computes a hash for an array.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.get_nprod">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">get_nprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#get_nprod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.get_nprod" title="Link to this definition">#</a></dt>
+<dd><p>Gets the number of spin-1/2 copies present for a given half-integer j.</p>
+<p>For example, 3/2 = 1/2 otimes 1/2 otimes 1/2 –&gt; 3 copies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>j</strong><span class="classifier">int or float</span></dt><dd><p>The total spin.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The number of spin-1/2 copies present.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.identify_spin_dim">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">identify_spin_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irrep</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#identify_spin_dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.identify_spin_dim" title="Link to this definition">#</a></dt>
+<dd><p>Identifies the dimension of the specified spin irrep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>str</strong><span class="classifier">irrep</span></dt><dd><p>The name of the spin irrep, e.g., ‘A1m’ or ‘G1p’.</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——-</strong></dt><dd></dd>
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>The dimension of the irrep</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.identify_stabilizer">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">identify_stabilizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stabilizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#identify_stabilizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.identify_stabilizer" title="Link to this definition">#</a></dt>
+<dd><p>Identifies the name of the stabilizer group “H” by checking its order.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>stabilizer</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The stabilizer group.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>name</strong><span class="classifier">str</span></dt><dd><p>The name of the stabilizer group.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.levi_civita">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">levi_civita</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#levi_civita"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.levi_civita" title="Link to this definition">#</a></dt>
+<dd><p>The totally antisymmetric Levi-Civita tensor in arbitrary dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>The number of dimensions.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">ndarray</span></dt><dd><p>The Levi-Civita tensor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Implementation from StackOverflow user JGibs:
+<a class="reference external" href="https://stackoverflow.com/questions/59740966/levi-civita-tensor-in-numpy">https://stackoverflow.com/questions/59740966/levi-civita-tensor-in-numpy</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.load_particle_info">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">load_particle_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#load_particle_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.load_particle_info" title="Link to this definition">#</a></dt>
+<dd><p>Loads tabulated information for particle names, spins (boson vs fermion),
+and spin irreps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str or None</span></dt><dd><p>The path to the input yaml file with the tabulated data</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>table</strong><span class="classifier">dict</span></dt><dd><p>The particle information in the form {&lt;name&gt; : (&lt;fermion?&gt;, &lt;irrep&gt;}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_Dspin">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_Dspin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spin_irreps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">little</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">little_double</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_Dspin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_Dspin" title="Link to this definition">#</a></dt>
+<dd><p>Builds a list of spin irrep matrices for the specified particles.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>spin_irreps</strong><span class="classifier">list</span></dt><dd><p>The names of the particles’ spin irreps as strings, e.g., [‘A1m’, ‘G1p’]</p>
+</dd>
+<dt><strong>little</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The little-group matrices associated with some momenta</p>
+</dd>
+<dt><strong>little_double</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G^D|,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> array_like</span></dt><dd><p>The spinorial little-group matrices associated with some momenta</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Dspin</strong><span class="classifier">list</span></dt><dd><p>The “spin” irrep matrices for each particle</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_canonical_stabilizer">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_canonical_stabilizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_canonical_stabilizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_canonical_stabilizer" title="Link to this definition">#</a></dt>
+<dd><p>Computes the stabilizer subgroup with a canonical orientation inside the
+larger group Oh.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>name</strong><span class="classifier">str</span></dt><dd><p>The name of the desired stabilizer subgroup</p>
+</dd>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>stabilizer</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The stabilizer subgroup</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_exchange_group">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_exchange_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_exchange_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_exchange_group" title="Link to this definition">#</a></dt>
+<dd><p>Computes the exchange group associated with exchange of identical particles.
+The elements of this group are signed permuations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>labels</strong><span class="classifier">array_like or None</span></dt><dd><p>The labels associated with the particles.</p>
+</dd>
+<dt><strong>fermions</strong><span class="classifier">dict</span></dt><dd><p>Whether a given key (label) corresponds to a fermion.
+Values must be booleans: True for fermions and False for bosons.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>exchange_group</strong><span class="classifier">list or None</span></dt><dd><p>The exchange group, with namedtuple/WeightedPermutation elements.
+The result is None when no labels are specified.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Generic fermions are labeled ‘f{n}’ for integers n, e.g., ‘f1’, ‘f2, …
+Generic bosons are labeld ‘b{n}’ for integers n, e.g., ‘b1’, ‘b2’, …
+Support also exists for certain named particles like ‘pi’, ‘K’, ‘neutron’,
+‘proton’, ‘nucleon’.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_internal_symmetry_projector">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_internal_symmetry_projector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_symmetry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_internal_symmetry_projector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_internal_symmetry_projector" title="Link to this definition">#</a></dt>
+<dd><p>Computes the projection matrix associated with an internal symmetry group.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>momentum_spin_orbit</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>Array of SpinShellTuples, each of defines the (momenta, spin)
+configuration for a given element of the orbit</p>
+</dd>
+<dt><strong>internal_group</strong><span class="classifier">array_like</span></dt><dd><p>The internal group, with namedtuple/WeightedPermutation elements</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>proj</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>projection matrix, intended to be contracted against the extended
+momentum-spin representation matrices: “Dmm(R) -&gt; proj &#64; Dmm(R) &#64; proj”</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>As a projection matrix, “proj” is idempotent: proj &#64; proj = proj.</p>
+<p>The full internal symmetry operator can be thought of as a linear
+combination of permutations. The representation matrices can be computed
+either before or after taking the linear combination. This implementation
+takes the latter route, computing a representation matrix for each and
+taking a suitable linear combination.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_irrep">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_irrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polarizations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_irrep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_irrep" title="Link to this definition">#</a></dt>
+<dd><p>Computes the irrep matrices D_{mu, mu’}(g).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>polarizations</strong><span class="classifier">list</span></dt><dd><p>The polarization tensors specifying the basis functions for the irrep.</p>
+</dd>
+<dt><strong>group: ``(|G|, 3, 3)`` array_like</strong></dt><dd><p>The group matrices.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>irrep</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|irrep|,</span> <span class="pre">|irrep|)</span></code> ndarray</span></dt><dd><p>The irrep matrices.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_irrep_from_group">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_irrep_from_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">little_group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_irrep_from_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_irrep_from_group" title="Link to this definition">#</a></dt>
+<dd><p>Computes the irrep matrices associated with a particular little group.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>little_group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> ndarray</span></dt><dd><p>The matrices for the little group G.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Dmumu</strong><span class="classifier">dict</span></dt><dd><p>The irrep matrices as a dict. The keys give the name of the irrep.
+The values contain the irrep matrices themselves, each with shape
+<code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|irrep|,</span> <span class="pre">|irrep|)</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_irrep_from_groupD">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_irrep_from_groupD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">little_group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_irrep_from_groupD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_irrep_from_groupD" title="Link to this definition">#</a></dt>
+<dd><p>Computes double-cover irrep matrices associated with a given little group,
+including both spinorial and bosonic irreps.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>little_group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> ndarray</span></dt><dd><p>The matrices for the little group G.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Dmumu_double</strong><span class="classifier">dict</span></dt><dd><p>The irrep matrices as a dict. The keys give the name of the irrep.
+The values contain the irrep matrices themselves, each with shape
+<code class="docutils literal notranslate"><span class="pre">(|G^D|,</span> <span class="pre">|irrep|,</span> <span class="pre">|irrep|)</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_irrep_matrix">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_irrep_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polarizations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_irrep_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_irrep_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Computes the irrep matrix associated with a group element using the
+algebraic method in terms of polarization tensors.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>polarizations</strong><span class="classifier">list</span></dt><dd><p>The polarization tensors specifying the basis functions for the irrep</p>
+</dd>
+<dt><strong>group_element</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group element.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>irrep_matrix</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|irrep|)</span></code> ndarray</span></dt><dd><p>The irrep matrix.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_irrep_matrix_spinor">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_irrep_matrix_spinor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irrep_basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_irrep_matrix_spinor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_irrep_matrix_spinor" title="Link to this definition">#</a></dt>
+<dd><p>Computes the spinorial irrep matrix associated with a group element,
+given a basis for the irrep.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>irrep_basis</strong><span class="classifier">list</span></dt><dd><p>The spinor basis spanning the irrep</p>
+</dd>
+<dt><strong>group_element</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">4)</span></code> ndarray</span></dt><dd><p>The “spinorial” group element.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>irrep_matrix</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|irrep|)</span></code> ndarray</span></dt><dd><p>The irrep matrix.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Each basis state should be a list of tuples “(coefficient, SpinorTuple)”</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_irrep_spinor">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_irrep_spinor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_irrep_spinor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_irrep_spinor" title="Link to this definition">#</a></dt>
+<dd><p>Computes the spinorial irrep matrices D_{mu, mu’}(g).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>basis</strong><span class="classifier">list</span></dt><dd><p>The spinor basis spanning the irrep</p>
+</dd>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> list or array_like</span></dt><dd><p>The group matrices.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>irrep</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|irrep|,</span> <span class="pre">|irrep|)</span></code> ndarray</span></dt><dd><p>The irrep matrices.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_little_and_stabilizer">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_little_and_stabilizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_little_and_stabilizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_little_and_stabilizer" title="Link to this definition">#</a></dt>
+<dd><p>Computes the little group and stabilizer group of the ordered set of momenta.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nmomenta,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The momenta</p>
+</dd>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>groups</strong><span class="classifier">tuple = (ndarray, ndarray)</span></dt><dd><p>A pair of groups arranged as (“little group”, “stabilizer group”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A word on physics naming conventions.
+Let G be a group, let momenta be a set of ordered momenta, and let
+ktot be the total momentum (i.e., the sum of the momenta).
+The “little group” is the subgroup of G that leaves ktot invariant.
+The “stabilizer group” is the subgroup of G that leaves momenta invariant.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_momentum_orbit">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_momentum_orbit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_momentum_orbit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_momentum_orbit" title="Link to this definition">#</a></dt>
+<dd><p>Computes the orbit of an ordered set of vectors under a group action.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nmomenta,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The ordered momenta.</p>
+</dd>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group matrices</p>
+</dd>
+<dt><strong>exchange_group</strong><span class="classifier">array_like</span></dt><dd><p>The exchange group with namedtuple/WeightedPermutation elements</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>orbit</strong><span class="classifier">list</span></dt><dd><p>The matrices corresponding to ordered momenta in the orbit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>In abstract algebra, an orbit is often considered as an unordered set.
+For numerical work, it is useful to work with orbits ordered in a standard
+way. The convention in the present work is that the orbit inherits its
+order from that of the group elements acting on the original starting
+vector (or ordered list of vectors.) When a given (set of) vector(s) arises
+more than once, the first instance defines the location of the vector(s)
+within the orbit.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_momentum_orbit_rep">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_momentum_orbit_rep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_momentum_orbit_rep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_momentum_orbit_rep" title="Link to this definition">#</a></dt>
+<dd><p>Computes the representation “Dmm” of a group G acting on an orbit O.
+The representation is the set of matrices “D_{m,m’}(g)”.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>orbit</strong><span class="classifier">list</span></dt><dd><p>The orbit of an ordered set of vectors under the group</p>
+</dd>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group matrices.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>representation</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|O|,</span> <span class="pre">|O|)</span></code> ndarray</span></dt><dd><p>The momentum-representation matrices</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_momentum_orbit_rep_matrix">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_momentum_orbit_rep_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_momentum_orbit_rep_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_momentum_orbit_rep_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Computes the momentum-orbit representation matrix associated with the
+action of a group element on an orbit of vectors.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>orbit</strong><span class="classifier">list</span></dt><dd><p>The orbit of an ordered set of vectors under the group</p>
+</dd>
+<dt><strong>group_element</strong><span class="classifier">array_like</span></dt><dd><p>The group element which will act on all the elements of the orbit</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>permutation</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|O|,</span> <span class="pre">|O|)</span></code> ndarray</span></dt><dd><p>The representation matrix, which happens to be a permutation matrix.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A group acts on a vector to generate an orbit O. When the group then acts
+on the orbit, the result is a permutation of the vectors in the orbit.
+The permutation can be represented as a square matrix of size <code class="docutils literal notranslate"><span class="pre">|O|x|O|</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">|O|</span></code> is the size of the orbit. The full set of these matrices (with
+one for each group element) is itself a group representation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_momentum_spin_orbit">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_momentum_spin_orbit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_momentum_spin_orbit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_momentum_spin_orbit" title="Link to this definition">#</a></dt>
+<dd><p>Computes the momentum-spin orbit, i.e., the tensor product of the
+momentum orbit and the associated spinor orbit.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nmomenta,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The ordered momenta</p>
+</dd>
+<dt><strong>spin_dims</strong><span class="classifier">list of ints</span></dt><dd><p>The dimensions of the spinor spaces.</p>
+</dd>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group matrices.</p>
+</dd>
+<dt><strong>exchange</strong><span class="classifier">array_like or None</span></dt><dd><p>The exchange_group with namedtuple/WeightedPermutation elements</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>spin_shell</strong><span class="classifier">ndarray</span></dt><dd><p>The flattened tensor product.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Consider a spinor transforming in an N-dimensional irrep.
+By definition, the different basis vectors for the irrep transform
+into each other under the action of the group.
+Thus, the spinorial part of the shell is just the tensor product
+of all the individual spinor spaces.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_momentum_spin_rep">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_momentum_spin_rep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dmm</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">Dspin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_momentum_spin_rep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_momentum_spin_rep" title="Link to this definition">#</a></dt>
+<dd><p>Computes the combined momentum-spin representation matrices.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Dmm</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,|O|,|O|)</span></code> ndarray</span></dt><dd><p>The momentum-representation matrices.</p>
+</dd>
+<dt><strong>*Dspin</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G^D|,</span> <span class="pre">|irrep|,</span> <span class="pre">|irrep|)</span></code> ndarray(s)</span></dt><dd><p>The spin irrep matrices.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>Dmm_spin</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G^D|,</span> <span class="pre">dim_total,</span> <span class="pre">dim_total)</span></code> ndarray</span></dt><dd><p>The combined momomentum-spin representation matrices, where the total
+dimension is given by dim_total = <code class="docutils literal notranslate"><span class="pre">|O|x|irrep1|x|irrep2|x...x|irrepN|</span></code>.
+As should be expected, the proudct includes all the representations
+appearing in the list of “Dspin” matrices.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_oh">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_oh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_oh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_oh" title="Link to this definition">#</a></dt>
+<dd><p>Constructs a presentation of the cubic group Oh with a standardized
+ordering of group elements.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(48,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> ndarray</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_ohd">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_ohd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_ohd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_ohd" title="Link to this definition">#</a></dt>
+<dd><p>Constructs a presentation of the “spinorial” double cover <span class="math notranslate nohighlight">\(Oh^D\)</span> of
+the cubic group ordering of group elements.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(96,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> ndarray</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_pseudoscalar_irrep">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_pseudoscalar_irrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">little</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_pseudoscalar_irrep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_pseudoscalar_irrep" title="Link to this definition">#</a></dt>
+<dd><p>Instantiates the double-cover irrep matrices associated with a pseudoscalar
+particle, assumed to transform under the A1m irrep. Usually this function
+is used when constructing the “Dspin” matrices.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>little</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The little-group matrices associated with some momenta</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pseudoscalar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G^D|,</span> <span class="pre">1,</span> <span class="pre">1)</span></code> ndarray</span></dt><dd><p>The A1m irrep matrices restricted to the double cover of the little group.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_spin_half_irrep">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_spin_half_irrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">little_double</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_spin_half_irrep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_spin_half_irrep" title="Link to this definition">#</a></dt>
+<dd><p>Instantiates the double-cover irrep matrices associated with a spin-half
+particle, assumed to transform under the G_1^+ irrep. Usually this function
+is used when constructing the “Dspin” matrices.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>little_double</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G^D|,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> array_like</span></dt><dd><p>The spinorial little-group matrices associated with some momenta</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pseudoscalar</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G^D|,</span> <span class="pre">1,</span> <span class="pre">1)</span></code> ndarray</span></dt><dd><p>The G_1^+ irrep matrices restricted to the double cover of the little group.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_spinor_array">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_spinor_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spinor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_spinor_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_spinor_array" title="Link to this definition">#</a></dt>
+<dd><p>Builds a normalized “state” with total (j, jz, parity) inside a suitable
+tensor product space of spin-1/2 states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>spinor</strong><span class="classifier">SpinorTuple</span></dt><dd><p>The namedtuple specifying (j, jz, parity)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>vec</strong><span class="classifier">ndarray</span></dt><dd><p>The normalized vector of length 4**(2*j)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_spinorial_little_group">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_spinorial_little_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">little</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_spinorial_little_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_spinorial_little_group" title="Link to this definition">#</a></dt>
+<dd><p>Makes the “spinorial” little group associated with the double cover OhD,
+given a little group G in Oh.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>little</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The little group G.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(2*|G|,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> ndarray</span></dt><dd><p>The double-cover little group.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_stabilizer">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_stabilizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_stabilizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_stabilizer" title="Link to this definition">#</a></dt>
+<dd><p>Constructs the stabilizer subgroup of an ordered set of momenta.
+The stabilizer group is the subgroup that leaves the ordered set invariant.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nmomenta,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The ordered momenta</p>
+</dd>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>stabilizer</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> ndarray</span></dt><dd><p>The stabilizer group H.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.make_tensor_product_space">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_tensor_product_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_tensor_product_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_tensor_product_space" title="Link to this definition">#</a></dt>
+<dd><p>Makes a tensor product space with the specified dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dims</strong><span class="classifier">list</span></dt><dd><p>Integers specifying the dimensions</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>tensor_product_space</strong><span class="classifier">ndarray</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>These spaces arise naturally in the construction of combined “momentum-
+spin” orbits below. For the portion of the orbit associated with spin,
+it’s assumed that the spin has already been decomposed into irreps of
+known dimensions. By definition of the irrep space, group transformation
+simply permute the basis elements of the irrep space.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">make_tensor_product_space</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(4, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="go">array([</span>
+<span class="go">    [0, 0, 0],</span>
+<span class="go">    [0, 0, 1],</span>
+<span class="go">    [0, 0, 2],</span>
+<span class="go">    [0, 1, 0],</span>
+<span class="go">    [0, 1, 1],</span>
+<span class="go">    [0, 1, 2]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.mhi">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">mhi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_irreps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_symmetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#mhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.mhi" title="Link to this definition">#</a></dt>
+<dd><p>General-purpose driver function for construction of change-of-basis /
+block-diagonalization matrices which project linear combinations of plane-
+wave states onto irreps of the cubic group.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nparticles,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The ordered momenta</p>
+</dd>
+<dt><strong>particle_names</strong><span class="classifier">array_like</span></dt><dd><p>The particle names, e.g., [‘n’, ‘p’]</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to print extra diagnostic information.</p>
+</dd>
+<dt><strong>return_Dmm</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to return the momentum-(spin) representation matrices</p>
+</dd>
+<dt><strong>internal_symmetry</strong><span class="classifier">list of WeightedPermutations</span></dt><dd><p>The internal symmetry group</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>result</strong><span class="classifier">IrrepDecomposition</span></dt><dd><p>object containing the results of the irrep decomposition.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The algorithm is as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Compute the little group of the total momentum</p></li>
+<li><p>Compute irrep matrices of the little group, Dmumu(R)</p></li>
+<li><p>Compute the momentum(-spin) representation matrices, Dmm(R)</p></li>
+<li><p>Apply exchange-group projection to Dmm matrices, P &#64; Dmm(R) &#64; P</p></li>
+<li><p>Apply Schur’s algorithm and lowering operators to construct the
+block-diagonalization / change-of-basis matrices</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.orth">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">orth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#orth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.orth" title="Link to this definition">#</a></dt>
+<dd><p>Computes an orthonormal basis for the row space.</p>
+<p>This implementation constructs the basis for the row space using the
+Gram-Schmidt algorithm applied to the rows of the input array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">array_like</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>basis</strong><span class="classifier">ndarray</span></dt><dd><p>An orthonormal basis for the row space, with each row corresponding to
+a basis element.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.parity">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">parity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">permutation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#parity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.parity" title="Link to this definition">#</a></dt>
+<dd><p>Computes the parity of permutation, assumed to be specified as a list of
+contiguous integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>permutation: array_like</strong></dt><dd><p>The permutation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>sign: int</dt><dd><p>The parity, +/- 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parity</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parity</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="go">-1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.partition">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#partition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.partition" title="Link to this definition">#</a></dt>
+<dd><p>Computes the partitions of the array according to the unique elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">array_like</span></dt><dd><p>The array to partition</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>partitions</strong><span class="classifier">dict</span></dt><dd><p>The partitions, where the keys are the unique entries of the input array
+and the values are the associated indices in the input array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The keys are sorted according to the first appearance in arr</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">partition</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">]))</span>
+<span class="go">{&#39;a&#39;: array([0]), &#39;b&#39;: array([1, 2]), &#39;c&#39;: array([3])}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.polarize">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">polarize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fcn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#polarize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.polarize" title="Link to this definition">#</a></dt>
+<dd><p>Computes the polarization tensor associated with a basis function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fcn</strong><span class="classifier">sympy basis function</span></dt><dd><p>The basis function, a sum of monomials in {‘x’, ‘y’, ‘z’}.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">ndarray</span></dt><dd><p>The polarization tensor of rank d, where d is the degree of the
+monomials within the basis function.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.project">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.project" title="Link to this definition">#</a></dt>
+<dd><p>Computes the paralell or perpendicular projection of a vector with respect
+to the space spanned by a basis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vector</strong><span class="classifier">array_like</span></dt><dd></dd>
+<dt><strong>basis</strong><span class="classifier">array_like</span></dt><dd><p>Vectors specifying the basis, with each row corresponding to a vector.</p>
+</dd>
+<dt><strong>direction</strong><span class="classifier">{‘parallel’, ‘perpendicular’}</span></dt><dd><p>Whether to compute the parallel or perpendicular projection.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>vector_new</strong><span class="classifier">np.array</span></dt><dd><p>The projected vector.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.read_hdf5">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">read_hdf5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#read_hdf5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.read_hdf5" title="Link to this definition">#</a></dt>
+<dd><p>Reads saved block-diagonalization / change-of-basis coefficients from HDF5.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>h5fname</strong><span class="classifier">str</span></dt><dd><p>The name of HDF5 file to read</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>result_dict</strong><span class="classifier">dict</span></dt><dd><p>The block-diagonalization / change of basis matrices, where each key
+is a tuple the form (irrep_name, degeneracy) and each key is an ndarray
+with the coefficients.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.recombine">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">recombine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partition_keys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partition_idxs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#recombine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.recombine" title="Link to this definition">#</a></dt>
+<dd><p>Recombines indices from partitioned sets.
+This function is equivalent to concatenating the indices for contiguous labels.
+For instance, [‘b1’, ‘b1’, ‘b2] are contiguous, but [‘b1’, ‘b2’, ‘b1’] are not.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>labels</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The labels, e.g., [‘b1’, ‘b2’, ‘b1’]</p>
+</dd>
+<dt><strong>partition_keys</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The unique elements of the labels, ordered by first appearance.</p>
+</dd>
+<dt><strong>partition_idxs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">)</span></code> tuple of array_like</span></dt><dd><p>The indices to recombine, in the same order as the partition_keys</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>idxs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">)</span></code> ndarray</span></dt><dd><p>The recombined indices</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>This example builds the tensor product of permutations on the set of labels
+[‘b1’,’b2’,’b1’]. Since the label ‘b1’ is not contiguous, the permutations
+associated with this label should include the identity (0)(2) and the swap
+(0,2).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">,</span><span class="s1">&#39;b2&#39;</span><span class="p">,</span><span class="s1">&#39;b1&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">partitions</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">perms</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">permutations</span><span class="p">(</span><span class="n">idxs</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="n">partitions</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">partitions</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">perms</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">mhi</span><span class="o">.</span><span class="n">recombine</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">idxs</span><span class="p">),</span> <span class="s2">&quot;(correct)&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">idxs</span><span class="p">),</span> <span class="s2">&quot;(wrong)&quot;</span><span class="p">)</span>
+<span class="go">[0 1 2] (correct)</span>
+<span class="go">[0 2 1] (wrong)</span>
+<span class="go">[2 1 0] (correct)</span>
+<span class="go">[2 0 1] (wrong)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.rephase">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">rephase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irrep</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#rephase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.rephase" title="Link to this definition">#</a></dt>
+<dd><p>Applies a phase convention to block diagonalization / change-of-basis
+coefficieints.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>arr</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|O|)</span></code> array_like</span></dt><dd><p>Table specifiying the coefficients.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>arr</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|O|)</span></code> ndarray</span></dt><dd><p>The table with appropriate phases applied.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>The phase convention is as follows:</dt><dd><ul class="simple">
+<li><p>For a generic irrep, the phase is chosen such that the first nonzero
+entry of the first row (“mu=1”) is real and positive.</p></li>
+<li><p>For the irreps T2p and T2m only, the phase is chosen such that the second
+row (“mu=2”) is purely imaginary with a negative imaginary part. This
+choice matches the basis-vector conventions of Basak et al., where a
+particular combination of spheric harmonics <span class="math notranslate nohighlight">\((Y_2^2 - Y_2^{-2})\)</span> is
+used as the “mu=2” basis vector for T2.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="r134ac520551a-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>S. Basak et al., “Clebsch-Gordan construction of lattice interpolating
+fields for excited baryons”, Phys. Rev. D 72, 074501 (2005),
+[arXiv:hep-lat/0508018].</p>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.rotation">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.rotation" title="Link to this definition">#</a></dt>
+<dd><p>Computes the rotation matrix by the angle theta around a particular axis.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>theta</strong><span class="classifier">float</span></dt><dd><p>The angle</p>
+</dd>
+<dt><strong>direction: int</strong></dt><dd><p>The axis number, with {1,2,3} &lt;–&gt; {x,y,z}.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>arr</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code> ndarray</span></dt><dd><p>The rotation matrix</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.rotation_vec">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">rotation_vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#rotation_vec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.rotation_vec" title="Link to this definition">#</a></dt>
+<dd><p>Computes the rotation matrix associated with the three-vector omega.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>omega</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> ndarray or list</span></dt><dd><p>The vector defining the rotation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>arr</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code> ndarray</span></dt><dd><p>The rotation matrix</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.symmetrize">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">symmetrize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#symmetrize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.symmetrize" title="Link to this definition">#</a></dt>
+<dd><p>Computes the completely symmetrized version of the input array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">array_like</span></dt><dd><p>A tensor of arbitrary rank.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>arr_sym</strong><span class="classifier">ndarray</span></dt><dd><p>The completely symmetrized version of the input tensor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>In index notation symmetrization is the map which sends
+T_{ij…n} to  T_{(ij…n)}, where parantheses denote symmetrization.
+For instance, the symmetrization of a three-index tensor T_{ijk} is
+T_{(ijk)} = (T_{ijk} + T_{ikj} + T_{jik} + T_{jki} + T_{kij} + T_{kji})/6</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.tensor_inner">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">tensor_inner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#tensor_inner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.tensor_inner" title="Link to this definition">#</a></dt>
+<dd><p>Computes the inner product between two tensors a[i,j,…,k]*b[i,j,…,k].</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>a</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(M,</span> <span class="pre">M,</span> <span class="pre">...</span> <span class="pre">,</span> <span class="pre">M)</span></code> array_like</span></dt><dd></dd>
+<dt><strong>b</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(M,</span> <span class="pre">M,</span> <span class="pre">...</span> <span class="pre">,</span> <span class="pre">M)</span></code> array_like</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>c</strong><span class="classifier">float or complex</span></dt><dd><p>The result of the inner product across all free indices</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.tensor_nfold">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">tensor_nfold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tensors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#tensor_nfold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.tensor_nfold" title="Link to this definition">#</a></dt>
+<dd><p>Computes the n-fold tensor product between all the tensors in a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tensors</strong><span class="classifier">(variable number of) ndarray</span></dt><dd><p>The input tensors for the product.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd><p>The product of all the tensors.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Suppose the input tensors are {a[i], b[j,k], c[l,m,n]}.
+This function computes the product
+tensor[i,j,k,l,m,n] = a[i]*b[j,k]*c[l,m,n]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.tensor_product">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">tensor_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#tensor_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.tensor_product" title="Link to this definition">#</a></dt>
+<dd><p>Computes the tensor product between tensors a and b.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>a</strong><span class="classifier">array_like</span></dt><dd></dd>
+<dt><strong>b</strong><span class="classifier">array_like</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>tensor</strong><span class="classifier">array_like</span></dt><dd><p>The tensor product of arrays “a” and “b”.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>In index notation, this fuction computes
+tensor[i,j,…k,r,s,…t] = a[i,j,…k]*b[r,s,…,t].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.test_block_diagonalization">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_block_diagonalization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dmm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dmumu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_block_diagonalization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_block_diagonalization" title="Link to this definition">#</a></dt>
+<dd><p>Tests the block diagonalization property of the change-of-basis
+projection matrices which, schematically, reads: “Dmumu = F^* Dmm F”
+in terms of the momentum-shell representation “Dmm”, the projector “F”,
+and the block-diagonal irrep matrix “Dmumu”.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Dmm</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,|O|,|O|)</span></code> ndarray</span></dt><dd><p>The momentum-representation matrices.</p>
+</dd>
+<dt><strong>Dmumu</strong><span class="classifier">dict</span></dt><dd><p>The irrep matrices as a dict. The keys give the name of the irrep.
+The values contain the irrep matrices themselves, each with shape
+<code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|irrep|,</span> <span class="pre">|irrep|)</span></code>.</p>
+</dd>
+<dt><strong>projector</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix / change-of-basis coefficients.
+The keys are tuples of the form (irrep_name, degeneracy_number).
+The values are arrays containing the coefficients, each of shape
+<code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|O|)</span></code>.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.test_clifford">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_clifford</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_clifford"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_clifford" title="Link to this definition">#</a></dt>
+<dd><p>Tests the Clifford-algrebra condition,
+{gamma[mu], gamma[nu]} = 2*Id*eta[mu,nu].</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">)</span></code> list or <code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> array_like</span></dt><dd><p>The gamma matrices gamma[i], i=0,1,2,3.</p>
+</dd>
+<dt><strong>eta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,4)</span></code></span></dt><dd><p>The metric.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.test_degenerate_orthogonality">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_degenerate_orthogonality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_degenerate_orthogonality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_degenerate_orthogonality" title="Link to this definition">#</a></dt>
+<dd><p>Tests that tables corresponding to degenerate irreps are orthogonal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>projector</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix / change-of-basis coefficients.
+The keys are tuples of the form (irrep_name, degeneracy_number).
+The values are arrays containing the coefficients, each of shape
+<code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|O|)</span></code>.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.test_gamma5">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_gamma5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_gamma5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_gamma5" title="Link to this definition">#</a></dt>
+<dd><p>Tests anticommutation of gamma5, {gamma[mu], gamma5} = 0.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">)</span></code> list or <code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> array_like</span></dt><dd><p>The gamma matrices gamma[i], i=0,1,2,3.</p>
+</dd>
+<dt><strong>gamma5</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,4)</span></code></span></dt><dd><p>The matrix gamma5</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.test_row_orthogonality">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_row_orthogonality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_row_orthogonality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_row_orthogonality" title="Link to this definition">#</a></dt>
+<dd><p>Tests the row orthogonality of tables of block-diagonalization /
+change-of-basis coefficients, within each table for a given irrep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>projector</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix / change-of-basis coefficients.
+The keys are tuples of the form (irrep_name, degeneracy_number).
+The values are arrays containing the coefficients, each of shape
+<code class="docutils literal notranslate"><span class="pre">(|irrep|,</span> <span class="pre">|O|)</span></code>.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.test_stabilizer">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_stabilizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_stabilizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_stabilizer" title="Link to this definition">#</a></dt>
+<dd><p>Test identification of the stabilizer group by comparing to known results.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.transform">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.transform" title="Link to this definition">#</a></dt>
+<dd><p>Computes the “rotation” transformation of a tensor of arbitrary rank,
+A[a,b,…,c] –&gt; R[a,x] R[b,y] … R[c,z] A[x,y,…,z].</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>arr</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(M,</span> <span class="pre">M,</span> <span class="pre">...,</span> <span class="pre">M)</span></code> array_like</span></dt><dd><p>The tensor to transform.</p>
+</dd>
+<dt><strong>group_element</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(M,</span> <span class="pre">M)</span></code> array_like</span></dt><dd><p>The group element applying the transformation.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print the indices used in Einstein summation notation.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>arr_transformed</strong><span class="classifier">ndarray</span></dt><dd><p>The transformed tensor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.unique_permutations">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">unique_permutations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#unique_permutations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.unique_permutations" title="Link to this definition">#</a></dt>
+<dd><p>Yield only unique permutations of seq in an efficient way.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seq: array_like</strong></dt><dd><p>The elements to be permuted</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>seq: array_like</dt><dd><p>The permuated sequences</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A python implementation of Knuth’s “Algorithm L”, also known from the
+std::next_permutation function of C++, and as the permutation algorithm
+of Narayana Pandita.</p>
+<p>Code taken from a post by StackOverflow user Lauritz V. Thaulow:
+<a class="reference external" href="https://stackoverflow.com/questions/12836385/how-can-i-interleave-or-create-unique-permutations-of-two-strings-without-recur/12837695#12837695">https://stackoverflow.com/questions/12836385/how-can-i-interleave-or-create-unique-permutations-of-two-strings-without-recur/12837695#12837695</a></p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">unique_permutations</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>
+<span class="go">[1, 1, 2]</span>
+<span class="go">[1, 2, 1]</span>
+<span class="go">[2, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">unique_permutations</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>
+<span class="go">[&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;]</span>
+<span class="go">[&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;]</span>
+<span class="go">[&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;a&#39;]</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;]</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;]</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;]</span>
+<span class="go">[&#39;b&#39;, &#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;]</span>
+<span class="go">[&#39;b&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;]</span>
+<span class="go">[&#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;]</span>
+<span class="go">[&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;, &#39;a&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.write_hdf5">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">write_hdf5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#write_hdf5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.write_hdf5" title="Link to this definition">#</a></dt>
+<dd><p>Writes block-diagonalization / change-of-basis coefficients to HDF5.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>h5fname</strong><span class="classifier">str</span></dt><dd><p>The name of the output file</p>
+</dd>
+<dt><strong>result_dict</strong><span class="classifier">dict</span></dt><dd><p>The block-diagonalization / change of basis matrices, where each key
+is a tuple the form (irrep_name, degeneracy) and each key is an ndarray
+with the coefficients.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-mhi.basis_functions"></span><dl class="py class">
+<dt class="sig sig-object py" id="mhi.basis_functions.SpinorTuple">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">SpinorTuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mhi.basis_functions.SpinorTuple" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>j</strong></dt><dd><p>Alias for field number 0</p>
+</dd>
+<dt><strong>jz</strong></dt><dd><p>Alias for field number 1</p>
+</dd>
+<dt><strong>parity</strong></dt><dd><p>Alias for field number 2</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code>(value, /)</p></td>
+<td><p>Return number of occurrences of value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code>(value[, start, stop])</p></td>
+<td><p>Return first index of value.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.basis_functions.SpinorTuple.j">
+<span class="sig-name descname"><span class="pre">j</span></span><a class="headerlink" href="#mhi.basis_functions.SpinorTuple.j" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.basis_functions.SpinorTuple.jz">
+<span class="sig-name descname"><span class="pre">jz</span></span><a class="headerlink" href="#mhi.basis_functions.SpinorTuple.jz" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mhi.basis_functions.SpinorTuple.parity">
+<span class="sig-name descname"><span class="pre">parity</span></span><a class="headerlink" href="#mhi.basis_functions.SpinorTuple.parity" title="Link to this definition">#</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Overview</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.DiracPauli"><code class="docutils literal notranslate"><span class="pre">DiracPauli</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.DiracPauli.rotation"><code class="docutils literal notranslate"><span class="pre">DiracPauli.rotation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.DiracPauli.rotation_vec"><code class="docutils literal notranslate"><span class="pre">DiracPauli.rotation_vec()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.HashableArray"><code class="docutils literal notranslate"><span class="pre">HashableArray</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.IrrepDecomposition"><code class="docutils literal notranslate"><span class="pre">IrrepDecomposition</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.IrrepDecomposition.format"><code class="docutils literal notranslate"><span class="pre">IrrepDecomposition.format()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.IrrepDecomposition.little_name"><code class="docutils literal notranslate"><span class="pre">IrrepDecomposition.little_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.IrrepDecomposition.stab_name"><code class="docutils literal notranslate"><span class="pre">IrrepDecomposition.stab_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.Isomorphism"><code class="docutils literal notranslate"><span class="pre">Isomorphism</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.Isomorphism.g"><code class="docutils literal notranslate"><span class="pre">Isomorphism.g</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.Isomorphism.perm"><code class="docutils literal notranslate"><span class="pre">Isomorphism.perm</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.MomentumSpinOrbitElement"><code class="docutils literal notranslate"><span class="pre">MomentumSpinOrbitElement</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.SpinShellTuple"><code class="docutils literal notranslate"><span class="pre">SpinShellTuple</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.SpinShellTuple.momenta"><code class="docutils literal notranslate"><span class="pre">SpinShellTuple.momenta</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.SpinShellTuple.spins"><code class="docutils literal notranslate"><span class="pre">SpinShellTuple.spins</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.WeightedPermutation"><code class="docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.WeightedPermutation.perm"><code class="docutils literal notranslate"><span class="pre">WeightedPermutation.perm</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.WeightedPermutation.weight"><code class="docutils literal notranslate"><span class="pre">WeightedPermutation.weight</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.anticommutator"><code class="docutils literal notranslate"><span class="pre">anticommutator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.apply_isomorphism"><code class="docutils literal notranslate"><span class="pre">apply_isomorphism()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.apply_schur_and_lower"><code class="docutils literal notranslate"><span class="pre">apply_schur_and_lower()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.commutator"><code class="docutils literal notranslate"><span class="pre">commutator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.compute_lowering_coefficients"><code class="docutils literal notranslate"><span class="pre">compute_lowering_coefficients()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.compute_polarization"><code class="docutils literal notranslate"><span class="pre">compute_polarization()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.compute_restitution"><code class="docutils literal notranslate"><span class="pre">compute_restitution()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.conjugate"><code class="docutils literal notranslate"><span class="pre">conjugate()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.conjugate_group"><code class="docutils literal notranslate"><span class="pre">conjugate_group()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.contract_across"><code class="docutils literal notranslate"><span class="pre">contract_across()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.count_degeneracy"><code class="docutils literal notranslate"><span class="pre">count_degeneracy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.decompose"><code class="docutils literal notranslate"><span class="pre">decompose()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.find_subgroup_isomorphism"><code class="docutils literal notranslate"><span class="pre">find_subgroup_isomorphism()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.force_hash"><code class="docutils literal notranslate"><span class="pre">force_hash()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.get_nprod"><code class="docutils literal notranslate"><span class="pre">get_nprod()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.identify_spin_dim"><code class="docutils literal notranslate"><span class="pre">identify_spin_dim()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.identify_stabilizer"><code class="docutils literal notranslate"><span class="pre">identify_stabilizer()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.levi_civita"><code class="docutils literal notranslate"><span class="pre">levi_civita()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.load_particle_info"><code class="docutils literal notranslate"><span class="pre">load_particle_info()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_Dspin"><code class="docutils literal notranslate"><span class="pre">make_Dspin()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_canonical_stabilizer"><code class="docutils literal notranslate"><span class="pre">make_canonical_stabilizer()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_exchange_group"><code class="docutils literal notranslate"><span class="pre">make_exchange_group()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_internal_symmetry_projector"><code class="docutils literal notranslate"><span class="pre">make_internal_symmetry_projector()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_irrep"><code class="docutils literal notranslate"><span class="pre">make_irrep()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_irrep_from_group"><code class="docutils literal notranslate"><span class="pre">make_irrep_from_group()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_irrep_from_groupD"><code class="docutils literal notranslate"><span class="pre">make_irrep_from_groupD()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_irrep_matrix"><code class="docutils literal notranslate"><span class="pre">make_irrep_matrix()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_irrep_matrix_spinor"><code class="docutils literal notranslate"><span class="pre">make_irrep_matrix_spinor()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_irrep_spinor"><code class="docutils literal notranslate"><span class="pre">make_irrep_spinor()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_little_and_stabilizer"><code class="docutils literal notranslate"><span class="pre">make_little_and_stabilizer()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_momentum_orbit"><code class="docutils literal notranslate"><span class="pre">make_momentum_orbit()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_momentum_orbit_rep"><code class="docutils literal notranslate"><span class="pre">make_momentum_orbit_rep()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_momentum_orbit_rep_matrix"><code class="docutils literal notranslate"><span class="pre">make_momentum_orbit_rep_matrix()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_momentum_spin_orbit"><code class="docutils literal notranslate"><span class="pre">make_momentum_spin_orbit()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_momentum_spin_rep"><code class="docutils literal notranslate"><span class="pre">make_momentum_spin_rep()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_oh"><code class="docutils literal notranslate"><span class="pre">make_oh()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_ohd"><code class="docutils literal notranslate"><span class="pre">make_ohd()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_pseudoscalar_irrep"><code class="docutils literal notranslate"><span class="pre">make_pseudoscalar_irrep()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_spin_half_irrep"><code class="docutils literal notranslate"><span class="pre">make_spin_half_irrep()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_spinor_array"><code class="docutils literal notranslate"><span class="pre">make_spinor_array()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_spinorial_little_group"><code class="docutils literal notranslate"><span class="pre">make_spinorial_little_group()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_stabilizer"><code class="docutils literal notranslate"><span class="pre">make_stabilizer()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_tensor_product_space"><code class="docutils literal notranslate"><span class="pre">make_tensor_product_space()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.mhi"><code class="docutils literal notranslate"><span class="pre">mhi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.orth"><code class="docutils literal notranslate"><span class="pre">orth()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.parity"><code class="docutils literal notranslate"><span class="pre">parity()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.partition"><code class="docutils literal notranslate"><span class="pre">partition()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.polarize"><code class="docutils literal notranslate"><span class="pre">polarize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.project"><code class="docutils literal notranslate"><span class="pre">project()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.read_hdf5"><code class="docutils literal notranslate"><span class="pre">read_hdf5()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.recombine"><code class="docutils literal notranslate"><span class="pre">recombine()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.rephase"><code class="docutils literal notranslate"><span class="pre">rephase()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.rotation"><code class="docutils literal notranslate"><span class="pre">rotation()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.rotation_vec"><code class="docutils literal notranslate"><span class="pre">rotation_vec()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.symmetrize"><code class="docutils literal notranslate"><span class="pre">symmetrize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.tensor_inner"><code class="docutils literal notranslate"><span class="pre">tensor_inner()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.tensor_nfold"><code class="docutils literal notranslate"><span class="pre">tensor_nfold()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.tensor_product"><code class="docutils literal notranslate"><span class="pre">tensor_product()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.test_block_diagonalization"><code class="docutils literal notranslate"><span class="pre">test_block_diagonalization()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.test_clifford"><code class="docutils literal notranslate"><span class="pre">test_clifford()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.test_degenerate_orthogonality"><code class="docutils literal notranslate"><span class="pre">test_degenerate_orthogonality()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.test_gamma5"><code class="docutils literal notranslate"><span class="pre">test_gamma5()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.test_row_orthogonality"><code class="docutils literal notranslate"><span class="pre">test_row_orthogonality()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.test_stabilizer"><code class="docutils literal notranslate"><span class="pre">test_stabilizer()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.unique_permutations"><code class="docutils literal notranslate"><span class="pre">unique_permutations()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.write_hdf5"><code class="docutils literal notranslate"><span class="pre">write_hdf5()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.basis_functions.SpinorTuple"><code class="docutils literal notranslate"><span class="pre">SpinorTuple</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.basis_functions.SpinorTuple.j"><code class="docutils literal notranslate"><span class="pre">SpinorTuple.j</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.basis_functions.SpinorTuple.jz"><code class="docutils literal notranslate"><span class="pre">SpinorTuple.jz</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.basis_functions.SpinorTuple.parity"><code class="docutils literal notranslate"><span class="pre">SpinorTuple.parity</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/code.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, William Detmold, William I. Jay, Gurtej Kanwar, Phiala E. Shanahan, and Michael L. Wagman.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
