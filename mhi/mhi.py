@@ -1353,15 +1353,18 @@ def multiply_perms(a, b):
     return b[a]
 
 def compose_permutation_algebra_elements(a, b):
-    out = []
+    out = {}
     for w_perm1, w_perm2 in itertools.product(a, b):
         w = w_perm1.weight * w_perm2.weight
         perm = multiply_perms(w_perm1.perm, w_perm2.perm)
-        out.append(WeightedPermutation(weight=w, perm=perm))
-    return out
+        key = tuple(perm)
+        if key not in out:
+            out[key] = WeightedPermutation(weight=0.0, perm=perm)
+        out[key] = WeightedPermutation(weight=out[key].weight+w, perm=out[key].perm)
+    return list(out.values())
 
 def transpose_tableau(tableau):
-    tableau_t = [[] for _ in range(tableau[0])]
+    tableau_t = [[] for _ in range(len(tableau[0]))]
     for row in tableau:
         for i,elt in enumerate(row):
             tableau_t[i].append(elt)
@@ -1369,34 +1372,45 @@ def transpose_tableau(tableau):
 
 def symmetrizer(row, *, signed, n):
     assert signed in [0,1]
+    row = np.array(row)
     out = []
     for perm in itertools.permutations(tuple(range(len(row)))):
+        perm = np.array(perm)
         sign = parity(perm)
         w = sign**signed
         tot_perm = np.arange(n)
-        tot_perm[row] = tot_perm[row[perm]]
+        tot_perm[row-1] = tot_perm[row[perm]-1]
         out.append(WeightedPermutation(weight=w, perm=tot_perm))
     return out
 
 def make_young_projector(tableau, *, n):
     if tableau == [[1]]:
-        return WeightedPermutation(weight=1, perm=np.arange(n))
+        return [WeightedPermutation(weight=1, perm=np.arange(n))]
     l = sum([len(t) for t in tableau])
-    tableau_bar = [t.remove(l) for t in tableau]
+    def remove_l(t):
+        t2 = t[:]
+        if l in t:
+            t2.remove(l)
+        return t2
+    tableau_bar = [remove_l(t) for t in tableau]
     if tableau_bar[-1] == []:
         tableau_bar = tableau_bar[:-1]
     e_bar = make_young_projector(tableau_bar, n=n)
     tableau_t = transpose_tableau(tableau)
     def mul(*args):
+        if len(args) == 1:
+            return args[0]
         if len(args) == 2:
             return compose_permutation_algebra_elements(*args)
         return mul(*args[:-2], compose_permutation_algebra_elements(*args[-2:]))
     ps = []
     for row in tableau:
-        ps.append(symmetrizer(row, signed=0, n=n))
+        if len(row) > 0:
+            ps.append(symmetrizer(row, signed=0, n=n))
     ns = []
     for col in tableau_t:
-        ns.append(symmetrizer(col, signed=1, n=n))
+        if len(col) > 0:
+            ns.append(symmetrizer(col, signed=1, n=n))
     p = mul(*ps)
     n = mul(*ns)
     return mul(e_bar, p, n, e_bar)
