@@ -1352,6 +1352,9 @@ def make_internal_symmetry_projector(orbit, internal_symmetry):
 def multiply_perms(a, b):
     return b[a]
 
+def invert_perm(a):
+    return np.argsort(a)
+
 def compose_permutation_algebra_elements(a, b):
     out = {}
     for w_perm1, w_perm2 in itertools.product(a, b):
@@ -1413,7 +1416,18 @@ def make_young_projector(tableau, *, n):
             ns.append(symmetrizer(col, signed=1, n=n))
     p = mul(*ps)
     n = mul(*ns)
-    return mul(e_bar, p, n, e_bar)
+    hook_norm = 1
+    for i,row in enumerate(tableau):
+        hook_r = len(row) - i
+        for j in range(len(row)):
+            col = tableau_t[j]
+            hook_c = len(col) - j
+            hook_norm *= (hook_r + hook_c - 1)
+    proj_unnorm = mul(e_bar, p, n, e_bar)
+    proj = [
+        WeightedPermutation(weight / hook_norm, perm)
+        for (weight,perm) in proj_unnorm ]
+    return proj
 
 
 #################################
