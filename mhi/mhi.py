@@ -1223,6 +1223,7 @@ def recombine(labels, partition_keys, partition_idxs):
     return idxs
 
 
+# TODO: Consider giving this a better name
 def make_exchange_group(labels):
     """
     Computes the exchange group associated with exchange of identical particles.
@@ -1416,7 +1417,7 @@ def make_momentum_spin_rep(Dmm, *Dspin):
     ----------
     Dmm : ``(|G|,|O|,|O|)`` ndarray
         The momentum-representation matrices.
-    *Dspin : ``(|G^D|, |irrep|, |irrep|)`` ndarray(s)
+    *Dspin : ``(|G^D|, |\Gamma|, |\Gamma|)`` ndarray(s)
         The spin irrep matrices.
 
     Returns
@@ -1459,7 +1460,7 @@ def make_irrep_matrix(polarizations, group_element):
 
     Returns
     -------
-    irrep_matrix : ``(|irrep|, |irrep|)`` ndarray
+    irrep_matrix : ``(|\Gamma|, |\Gamma|)`` ndarray
         The irrep matrix.
     """
     dim = len(polarizations)
@@ -1485,7 +1486,7 @@ def make_irrep(polarizations, group):
 
     Returns
     -------
-    irrep : ``(|G|, |irrep|, |irrep|)`` ndarray
+    irrep : ``(|G|, |\Gamma|, |\Gamma|)`` ndarray
         The irrep matrices.
     """
     return np.array([make_irrep_matrix(polarizations, g) for g in group])
@@ -1508,7 +1509,7 @@ def make_irrep_matrix_spinor(irrep_basis, group_element):
 
     Returns
     -------
-    irrep_matrix : ``(|irrep|, |irrep|)`` ndarray
+    irrep_matrix : ``(|\Gamma|, |\Gamma|)`` ndarray
         The irrep matrix.
 
     Notes
@@ -1556,7 +1557,7 @@ def make_irrep_spinor(basis, group):
 
     Returns
     -------
-    irrep : ``(|G|, |irrep|, |irrep|)`` ndarray
+    irrep : ``(|G|, |\Gamma|, |\Gamma|)`` ndarray
         The irrep matrices.
     """
     return np.array([make_irrep_matrix_spinor(basis, g) for g in group])
@@ -1576,7 +1577,7 @@ def make_irrep_from_group(little_group):
     Dmumu : dict
         The irrep matrices as a dict. The keys give the name of the irrep.
         The values contain the irrep matrices themselves, each with shape
-        ``(|G|, |irrep|, |irrep|)``.
+        ``(|G|, |\Gamma|, |\Gamma|)``.
     """
     little_group_name = identify_stabilizer(little_group)
 
@@ -1613,7 +1614,7 @@ def make_irrep_from_groupD(little_group):
     Dmumu_double : dict
         The irrep matrices as a dict. The keys give the name of the irrep.
         The values contain the irrep matrices themselves, each with shape
-        ``(|G^D|, |irrep|, |irrep|)``.
+        ``(|G^D|, |\Gamma|, |\Gamma|)``.
     """
     little_name = identify_stabilizer(little_group)
     little_double = make_spinorial_little_group(little_group)
@@ -1631,49 +1632,9 @@ def make_irrep_from_groupD(little_group):
     return Dmumu_double
 
 
-########################################################
-# Block diagonalization / change-of-basis coefficients #
-########################################################
-
-
-def compute_lowering_coefficients(irrep_matrices):
-    """
-    Computes lowering coefficients for moving between rows of an irrep.
-
-    Parameters
-    ----------
-    irrep_matrices : ``(|G|, |irrep|, |irrep|)`` array_like
-        The irrep matrices.
-
-    Returns
-    -------
-    coeffs : ``(|G|,)`` np.ndarray
-        The lowering coefficients.
-
-    Notes
-    -----
-    The linear algebra problem is to find "lowering coefficients" c[i] such
-    that c[i] D[i,a,b] = L[a,b] (with sum over group index i implied),
-    where D[i,a,b] are irrep matrices and L[a,b] is lowering operator. By
-    flattening the irrep indices {a,b}, the problem can be cast as a linear
-    system of the form A.x=b. This system is generically underdetermined. The
-    current implementation singles out a particular solution using the
-    Moore-Penrose pseudo-inverse.
-    """
-    assert irrep_matrices.shape[1] == irrep_matrices.shape[2],\
-        "Representation matrices must be square"
-    dim_group, dim_rep, _ = irrep_matrices.shape
-    irrep_matrices_flat = irrep_matrices.reshape(dim_group, dim_rep**2)
-
-    # Lowering operators
-    lower = np.eye(dim_rep, k=-1)
-    lower_flat = lower.reshape(dim_rep**2)
-
-    # Solve the flattened problem
-    coeffs = np.linalg.pinv(irrep_matrices_flat.T) @ lower_flat
-    assert np.allclose(np.einsum("i,iab", coeffs, irrep_matrices), lower),\
-        "Failed to construct lowering coefficients."
-    return coeffs
+##################################
+# Block diagonalization matrices #
+##################################
 
 
 def orth(arr):
@@ -1758,10 +1719,10 @@ def project(vector, basis, direction):
     return v_parallel  # parallel
 
 
-def apply_schur_and_lower(Dmm, Dmumu, verbose=False):
+def apply_schur(Dmm, Dmumu, verbose):
     """
-    Computes the block diagonalization matrix / change-of-basis coefficients,
-    using Schur's algorithm and lowering operators to construct the full tables.
+    Computes the block diagonalization matrices using Schur's algorithm,
+    including transition operators to move between rows in a given irrep.
 
     Parameters
     ----------
@@ -1769,89 +1730,82 @@ def apply_schur_and_lower(Dmm, Dmumu, verbose=False):
         Momentum-(spin)-representation matrices
     Dmumu : dict
         The irrep matrices. The keys give the name of the irrep. The values
-        contain the group irrep matrices, with shape ``(|G|, |irrep|, |irrep|)``.
+        contain the group irrep matrices, with shape ``(|G|, |\Gamma|, |\Gamma|)``.
     Returns
     -------
-    projector : dict
-        The block diagonalization matrix / change-of-basis coefficients.
+    u_matrix : dict
+        The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
-        The values are arrays containing the coefficients, each of shape
-        ``(|irrep|, |O|)``.
+        The values are arrays containing the matrices, each of shape
+        ``(|\Gamma|, |O|)``.
+    transition_operators: dict
+        Column of transition operators ``T_{\mu,0}``.
+        The keys are irrep names.
+        The values are ndarrays of shape ``(|\Gamma|, |O|, |O|)``.
     """
-    projector = {}
+    u_matrix = {}
+    transition_operators = {}
     for irrep_name in Dmumu:
         _, dim, _  = Dmumu[irrep_name].shape
-
-        # Apply the Wonderful orthogonality theorem, i.e., Schur's lemma
-        # Lowering moves from the top of the irrep down the matrix, so start
-        # explicitly with row 0.
-        f_projector = np.einsum("i,ijk->jk",
-                                Dmumu[irrep_name][:,0,0].conj(),  # mu = 0
+        # Construct transition operators using Wonderful orthogonality theorem
+        # Comute the column T_{mu,0}, since that's all that's needed.
+        T = np.zeros((dim, Dmm.shape[1], Dmm.shape[2]), dtype=complex)
+        for mu in range(dim):
+            T[mu] = np.einsum("i,ijk->jk",
+                                Dmumu[irrep_name][:,mu,0].conj(),
                                 Dmm)
-        if np.all(np.isclose(f_projector, 0)):
+            T[mu] *= dim/len(Dmumu)
+
+        if np.allclose(T[0], 0):
             # The present irrep doesn't appear in the decompostion. Carry on.
             continue
-
-        # Construct the lowering operator...
-        if dim > 1: # ... but only if the irrep has several rows.
-            try:
-                coeffs = compute_lowering_coefficients(Dmumu[irrep_name])
-            except AssertionError:
-                raise AssertionError(f"Failed to locate lowering coefficients: {irrep_name}")
-            lowering_op = np.einsum("i,iab", coeffs, Dmm)
+        transition_operators[irrep_name] = T
 
         # Count the number of degenerate copies
-        rank = np.linalg.matrix_rank(f_projector)
-
-        # The following commented-out line works and is more idiomatic.
-        # However, the method differs from the Gram-Schmidt algorithm
-        # described in the paper.
-        # basis = scipy.linalg.orth(f_projector).T
-        basis = orth(f_projector.T)
+        rank = np.linalg.matrix_rank(T[0])
+        basis = orth(T[0].T)
         assert len(basis) == rank, (
             "Failure: expected len(basis)=rank. "
             f"Found len(basis)={len(basis)} and rank={rank}.")
         if verbose:
             print(f"Located irrep {irrep_name} with degeneracy {rank}.")
-
-        # Compute coefficients for each degenerate copy
         for kappa in range(rank):
             vecs = [basis[kappa]]
-            # Compute each row using lowering operators
-            for _ in range(dim-1):
-                new_vec = lowering_op @ vecs[-1]
+            # Construct subsequent rows with transition operators T_{mu,0}
+            for mu in range(1, dim):
+                new_vec = T[mu] @ basis[kappa]
+                new_vec /= np.linalg.norm(new_vec)
                 if np.isclose(np.linalg.norm(new_vec), 0):
-                    raise ValueError("Zero vector encountered while lowering")
+                    raise ValueError(f"Zero vector encountered by T[{mu},0]")
                 if not np.isclose(np.linalg.norm(new_vec), 1):
-                    raise ValueError("Normalization broken during lowering.")
+                    raise ValueError(f"Normalization broken during T[{mu},0].")
                 vecs.append(new_vec)
             vecs = rephase(np.array(vecs), irrep_name)
-            projector[(irrep_name, kappa)] = vecs
+            u_matrix[(irrep_name, kappa)] = vecs
+
         for kappa, vec in enumerate(vecs):
             if not np.allclose(np.linalg.norm(vec), 1):
                 print(irrep_name, kappa, "norm", np.linalg.norm(vec))
 
-
     # Check results for consistency
-    test_row_orthogonality(projector, verbose=verbose)
-    test_degenerate_orthogonality(projector, verbose=verbose)
-    test_block_diagonalization(Dmm, Dmumu, projector, verbose=verbose)
-    return projector
+    test_row_orthogonality(u_matrix, verbose=verbose)
+    test_degenerate_orthogonality(u_matrix, verbose=verbose)
+    test_block_diagonalization(Dmm, Dmumu, u_matrix, verbose=verbose)
+    return u_matrix, transition_operators
 
 
 def rephase(arr, irrep):
     """
-    Applies a phase convention to block diagonalization / change-of-basis
-    coefficieints.
+    Applies a phase convention to block diagonalization matrices
 
     Parameters
     ----------
-    arr : ``(|irrep|, |O|)`` array_like
-        Table specifiying the coefficients.
+    arr : ``(|\Gamma|, |O|)`` array_like
+        Table specifiying the matrix
 
     Returns
     -------
-    arr : ``(|irrep|, |O|)`` ndarray
+    arr : ``(|\Gamma|, |O|)`` ndarray
         The table with appropriate phases applied.
 
     Notes
@@ -2026,7 +1980,7 @@ def identify_spin_dim(irrep):
 
 
 class IrrepDecomposition:
-    def __init__(self, decomp, orbit, Dmm, little_name, stab_name):
+    def __init__(self, decomp, orbit, Dmm, Dmumu, little_name, stab_name, transition_operators):
         """
         Container for results of computing the block-diagonalization matrices
         which project linear combinations of plane-wave states onto irreps of
@@ -2038,17 +1992,24 @@ class IrrepDecomposition:
             The irrep decomposition and change-of-basis matrices.
             The keys are tuples (irrep_name, degeneracy_idx).
             The values are the block-diagonalization matrices, given as arrays
-            of shape ``(|irrep|, |O|)``.
+            of shape ``(|\Gamma|, |O|)``.
         orbit : ``(|O|, )`` , ndarray
             The "extended" spin-momentum orbit, where each element is a
             SpinShellTuple specifying momentum and spin indices.
         Dmm : ``(|G|, |O|, |O|)``, ndarray
             The (reducible) representation matrices associated with the orbit.
+        Dmumu : ``(|G|, |\Gamma|, |\Gamma|)``, ndarray
+            The irrep matrices
         little_name : str
             The name of the little group leaving the total momentum invariant
         stab_name : str
             The name of the stabilizer group leaving the ordered set of
             momenta invariant.
+        transition_operators: dict
+            Column of transition operators ``T_{\mu,0}``.
+            The keys are irrep names.
+            The values are ndarrays of shape ``(|\Gamma|, |O|, |O|)``.
+
 
         Notes
         -----
@@ -2059,7 +2020,7 @@ class IrrepDecomposition:
 
         To carry out this projection, the basis of correlation functions must
         have the same order as the orbit used to compute the block-diagonalization
-        coefficients. The required ordering can be seen by examining the
+        matrices. The required ordering can be seen by examining the
         "orbit."
         """
         # Check expected shape of block diagonalization matrices
@@ -2072,8 +2033,10 @@ class IrrepDecomposition:
         self.decomp = decomp
         self.orbit = orbit
         self.Dmm = Dmm
+        self.Dmumu = Dmumu
         self._little_name = little_name
         self._stab_name = stab_name
+        self.transition_operators = transition_operators
 
     def format(self, latex=False):
         """
@@ -2282,8 +2245,8 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
       - Compute irrep matrices of the little group, Dmumu(R)
       - Compute the momentum(-spin) representation matrices, Dmm(R)
       - Apply exchange-group projection to Dmm matrices, P @ Dmm(R) @ P
-      - Apply Schur's algorithm and lowering operators to construct the
-        block-diagonalization / change-of-basis matrices
+      - Apply Schur's algorithm and transition operators to construct the
+        block-diagonalization  matrices
     """
     if (spin_irreps is not None) and len(spin_irreps) > 0:
         if len(spin_irreps) != len(momenta):
@@ -2336,16 +2299,16 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
         else:
             Dmm_momspin = np.einsum("ajk,kl", Dmm_momspin, proj, optimize='greedy')
 
-    # 5. Apply Schur's lemma and lowering operators
+    # 5. Apply Schur's lemma
     if Dmm_momspin is None:
         result = {}
     else:
-        result = apply_schur_and_lower(Dmm_momspin, Dmumu, verbose)
+        result, transition_operators = apply_schur(Dmm_momspin, Dmumu, verbose)
 
     if verbose and (len(result) == 0):
         print("Decomposition vanishes for specified inputs.")
 
-    return IrrepDecomposition(result, orbit_momspin, Dmm_momspin, little_name, stab_name)
+    return IrrepDecomposition(result, orbit_momspin, Dmm_momspin, Dmumu, little_name, stab_name, transition_operators)
 
 
 ##################
@@ -2476,18 +2439,18 @@ def test_gamma5(gamma, gamma5, verbose):
         print("Success: gamma5 anticommutes.")
 
 
-def test_row_orthogonality(projector, verbose=False):
+def test_row_orthogonality(u_matrix, verbose=False):
     """
-    Tests the row orthogonality of tables of block-diagonalization /
-    change-of-basis coefficients, within each table for a given irrep.
+    Tests the row orthogonality of tables of block-diagonalization matrices,
+    for a given irrep.
 
     Parameters
     ----------
-    projector : dict
-        The block diagonalization matrix / change-of-basis coefficients.
+    u_matrix : dict
+        The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
-        The values are arrays containing the coefficients, each of shape
-        ``(|irrep|, |O|)``.
+        The values are arrays containing the matrices, each of shape
+        ``(|\Gamma|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 
@@ -2495,8 +2458,8 @@ def test_row_orthogonality(projector, verbose=False):
     -------
     None
     """
-    for irrep_name, kappa in projector:
-        arr = projector[(irrep_name, kappa)]
+    for irrep_name, kappa in u_matrix:
+        arr = u_matrix[(irrep_name, kappa)]
         dim = arr.shape[0]
         assert np.allclose(arr.conj() @ arr.T, np.eye(dim)),\
             f"Failure of row orthogonality {irrep_name} {kappa}"
@@ -2504,18 +2467,18 @@ def test_row_orthogonality(projector, verbose=False):
             print(f"Success: orthogonal rows for {irrep_name}, kappa={kappa}")
 
 
-def count_degeneracy(projector):
+def count_degeneracy(u_matrix):
     """
-    Counts the degeneracy of irreps within the tables of block-diagnoalization/
-    change-of-basis coefficients.
+    Counts the degeneracy of irreps within the tables of block-diagnoalization
+    matrices.
 
     Parameters
     ----------
-    projector : dict
-        The block diagonalization matrix / change-of-basis coefficients.
+    u_matrix : dict
+        The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
-        The values are arrays containing the coefficients, each of shape
-        ``(|irrep|, |O|)``.
+        The values are arrays containing the matrices, each of shape
+        ``(|\Gamma|, |O|)``.
 
     Returns
     -------
@@ -2524,7 +2487,7 @@ def count_degeneracy(projector):
         to the counts.
     """
     degeneracy = {}
-    for irrep_name, _ in projector:
+    for irrep_name, _ in u_matrix:
         if irrep_name in degeneracy:
             degeneracy[irrep_name] += 1
         else:
@@ -2532,17 +2495,17 @@ def count_degeneracy(projector):
     return degeneracy
 
 
-def test_degenerate_orthogonality(projector, verbose=False):
+def test_degenerate_orthogonality(u_matrix, verbose=False):
     """
     Tests that tables corresponding to degenerate irreps are orthogonal.
 
     Parameters
     ----------
-    projector : dict
-        The block diagonalization matrix / change-of-basis coefficients.
+    u_matrix : dict
+        The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
-        The values are arrays containing the coefficients, each of shape
-        ``(|irrep|, |O|)``.
+        The values are arrays containing the matrices, each of shape
+        ``(|\Gamma|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 
@@ -2550,15 +2513,15 @@ def test_degenerate_orthogonality(projector, verbose=False):
     -------
     None
     """
-    degeneracy = count_degeneracy(projector)
+    degeneracy = count_degeneracy(u_matrix)
     for irrep_name, rank in degeneracy.items():
         if rank == 1:
             continue
         for k1, k2 in itertools.product(range(rank), repeat=2):
             if k1 == k2:
                 continue
-            arr1 = projector[(irrep_name, k1)]
-            arr2 = projector[(irrep_name, k2)]
+            arr1 = u_matrix[(irrep_name, k1)]
+            arr2 = u_matrix[(irrep_name, k2)]
             dim = arr1.shape[0]
             assert np.allclose(arr1.conj() @ arr2.T, np.zeros(dim)),\
                 f"Failure of orthogonality {irrep_name} {k1} {k2}"
@@ -2566,12 +2529,12 @@ def test_degenerate_orthogonality(projector, verbose=False):
         print("Success: all irreps orthogonal")
 
 
-def test_block_diagonalization(Dmm, Dmumu, projector, verbose=False):
+def test_block_diagonalization(Dmm, Dmumu, u_matrix, verbose=False):
     """
     Tests the block diagonalization property of the change-of-basis
-    projection matrices which, schematically, reads: "Dmumu = F^* Dmm F"
-    in terms of the momentum-shell representation "Dmm", the projector "F",
-    and the block-diagonal irrep matrix "Dmumu".
+    projection matrices which, schematically, reads: "Dmumu = U^dagger Dmm U"
+    in terms of the momentum-shell representation "Dmm", the block-diagonalization
+    matrix "U", and the block-diagonal irrep matrix "Dmumu".
 
     Parameters
     ----------
@@ -2580,12 +2543,12 @@ def test_block_diagonalization(Dmm, Dmumu, projector, verbose=False):
     Dmumu : dict
         The irrep matrices as a dict. The keys give the name of the irrep.
         The values contain the irrep matrices themselves, each with shape
-        ``(|G|, |irrep|, |irrep|)``.
-    projector : dict
-        The block diagonalization matrix / change-of-basis coefficients.
+        ``(|G|, |\Gamma|, |\Gamma|)``.
+    u_matrix : dict
+        The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
-        The values are arrays containing the coefficients, each of shape
-        ``(|irrep|, |O|)``.
+        The values are arrays containing the matrix, each of shape
+        ``(|\Gamma|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 
@@ -2593,10 +2556,10 @@ def test_block_diagonalization(Dmm, Dmumu, projector, verbose=False):
     -------
     None
     """
-    for (irrep, _), F in projector.items():
+    for (irrep, _), umat in u_matrix.items():
         test = np.allclose(
             Dmumu[irrep],
-            np.einsum("ia,rab,jb->rij", F.conj(), Dmm, F))
+            np.einsum("ia,rab,jb->rij", umat.conj(), Dmm, umat))
         assert test, f"Failure: block diagonalization {irrep}"
     if verbose:
         print("Success: block diagonalization using projection matrices")
@@ -2608,7 +2571,7 @@ def test_block_diagonalization(Dmm, Dmumu, projector, verbose=False):
 
 def write_hdf5(h5fname, result_dict):
     """
-    Writes block-diagonalization / change-of-basis coefficients to HDF5.
+    Writes block-diagonalization matrices to HDF5.
 
     Parameters
     ----------
@@ -2617,7 +2580,7 @@ def write_hdf5(h5fname, result_dict):
     result_dict : dict
         The block-diagonalization / change of basis matrices, where each key
         is a tuple the form (irrep_name, degeneracy) and each key is an ndarray
-        with the coefficients.
+        with the associated matrix.
 
     Returns
     -------
@@ -2640,7 +2603,7 @@ def write_hdf5(h5fname, result_dict):
 
 def read_hdf5(h5fname):
     """
-    Reads saved block-diagonalization / change-of-basis coefficients from HDF5.
+    Reads saved block-diagonalization matrices from HDF5.
 
     Parameters
     ----------
@@ -2652,7 +2615,7 @@ def read_hdf5(h5fname):
     result_dict : dict
         The block-diagonalization / change of basis matrices, where each key
         is a tuple the form (irrep_name, degeneracy) and each key is an ndarray
-        with the coefficients.
+        with the associated matrix.
 
     """
     result_dict = {}
