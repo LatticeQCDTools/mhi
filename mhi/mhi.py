@@ -1223,8 +1223,63 @@ def recombine(labels, partition_keys, partition_idxs):
     return idxs
 
 
-# TODO: Consider giving this a better name
-def make_exchange_group(labels):
+def make_exchange_projector(labels, tableau_map):
+    """
+    Computes a projector in the group algebra of the particle-exchange group.
+
+    Parameters
+    ----------
+    labels : list
+        Particle labels, e.g., ['a','b','c','b','c','b']
+    tableau_map : dict
+        Young tableaux associated with each label, e.g.,
+        {'a': [[1]], 'b': [[1,2],[3]], 'c': [[1],[2]],}
+
+    Returns
+    -------
+    projector : list of WeightedPermutation objects
+        The projection operator in the group algebra of the exchange group
+    """
+    partitions = partition(labels)
+    for key in partitions:
+        if key not in tableau_map:
+            raise KeyError(f"Key '{key}' missing from tableau_map.")
+        if not is_valid_tableau(tableau_map[key]):
+            raise ValueError(f"Invalid Young tableau for key '{key}'.")
+        if len(partitions[key]) != len(np.concatenate(tableau_map[key])):
+            raise ValueError(f"Incorrect tableau size for key '{key}'.")
+
+    def remap_indices(idxs, wp):
+        return WeightedPermutation(wp.weight, idxs[wp.perm])
+
+    # Compute individual projectors associated with each label
+    projectors = {}
+    for key in partitions:
+        idxs = partitions[key]
+        # Compute Young projector on contiguous indices 1,2,...,len(idxs)
+        proj_tmp =  make_young_projector(tableau_map[key], n=len(idxs))
+        # Remap contiguous indices to the indices of the label
+        projectors[key] = [remap_indices(idxs, wp) for wp in proj_tmp]
+
+    # Compute tensor product of the projectors from each label
+    projector = []
+    keys = np.array(list(partitions.keys()))
+    for wps in itertools.product(*projectors.values()):
+        idxs = [wp.perm for wp in wps]
+        weight = np.product([wp.weight for wp in wps])
+        projector.append(
+            WeightedPermutation(
+                weight=weight,
+                perm=recombine(labels, keys, idxs)))
+
+    assert algebra_elements_are_close(
+        projector,
+        compose_permutation_algebra_elements(projector, projector)),\
+        "Error: Projector not idempotent!"
+    return projector
+
+
+def make_exchange_projector_identical(labels):
     """
     Computes the exchange group associated with exchange of identical particles.
     The elements of this group are signed permuations.
@@ -1285,7 +1340,6 @@ def make_exchange_group(labels):
         sign = np.prod([
             parity(np.argsort(perm))**power for perm, power in zip(idxs, powers)
         ])
-        # perm = np.concatenate(idxs)  # wrong if labels non-contiguous
         perm = recombine(labels, keys, idxs)
         exchange_group.append(WeightedPermutation(weight=sign, perm=perm))
     return exchange_group
@@ -1350,13 +1404,57 @@ def make_internal_symmetry_projector(orbit, internal_symmetry):
     assert np.allclose(proj @ proj, proj), "Error: projector not idempotent"
     return proj
 
+
 def multiply_perms(a, b):
+    """
+    Multiply the permutations a and b via composition ``b \circ a``.
+
+    Parameters
+    ----------
+    a, b : (n, ) ndarray
+        The permutations
+
+    Returns
+    -------
+    ndarray
+        The product of permutations
+    """
     return b[a]
 
+
 def invert_perm(a):
+    """
+    Compute the inverse permutation such that
+    ``a \circ a^{-1} = a^{-1} \circ a = (1)``
+
+    Parameters
+    ----------
+    a : (n, ) array_like
+        The permutation
+
+    Returns
+    -------
+    ainv : (n, ) ndarray
+        Inverse permutation
+    """
     return np.argsort(a)
 
+
 def compose_permutation_algebra_elements(a, b):
+    """
+    Compute the composition (i.e., product) of elements algebra of a
+    permutation group.
+
+    Parameters
+    ----------
+    a, b : array_like
+        The algebra elements, specified as lists of WeightedPermutation objects
+
+    Returns
+    -------
+    out : list
+        The product, as a list of WeightedPermutation objects
+    """
     out = {}
     for w_perm1, w_perm2 in itertools.product(a, b):
         w = w_perm1.weight * w_perm2.weight
@@ -1367,14 +1465,116 @@ def compose_permutation_algebra_elements(a, b):
         out[key] = WeightedPermutation(weight=out[key].weight+w, perm=out[key].perm)
     return list(out.values())
 
+
+def algebra_elements_are_close(x1, x2):
+    """
+    Checks whether elements of the group algebra of Sn are numerically close.
+
+    Parameters
+    ----------
+    x1 : list of WeightedPermutation objects
+    x2 : list of WeightedPermutation objects
+        The group algebra elements
+
+    Returns
+    -------
+    bool : are_close
+        Whether the elements are numerically close
+    """
+    if len(x1) != len(x2):return False
+    inds1 = np.lexsort(np.stack([wp.perm for wp in x1], axis=-1))
+    inds2 = np.lexsort(np.stack([wp.perm for wp in x2], axis=-1))
+    for i in range(len(x1)):
+        wp1 = x1[inds1[i]]
+        wp2 = x2[inds2[i]]
+        if not np.all(wp1.perm == wp2.perm):
+            return False
+        if not np.isclose(wp1.weight, wp2.weight):
+            return False
+    return True
+
+
+def is_valid_tableau(tableau):
+    """
+    Checks whether ragged list is a valid Young tableau.
+
+    Parameters
+    ----------
+    tableau : list of lists
+        The candidate Young tableau
+    Returns
+    -------
+    is_valid : bool
+    """
+    # Row lengths never increase
+    if np.any(np.diff([len(row) for row in tableau]) > 0):
+        return False
+    # Values in rows strictly increasing
+    if np.any(np.concatenate([np.diff(row) for row in tableau]) <= 0):
+        return False
+    # Values in columns strictly increasing
+    tableau_t = transpose_tableau(tableau)
+    if np.any(np.concatenate([np.diff(row) for row in tableau_t]) <= 0):
+        return False
+    return True
+
+
 def transpose_tableau(tableau):
+    """
+    Transposes a Young tableau.
+
+    Parameters
+    ----------
+    tableau : list of lists
+        The tableau, given as a ragged list of integers
+
+    Returns
+    -------
+    tableau_t : list
+        The transposed tableau, as a ragged list of integers
+    """
     tableau_t = [[] for _ in range(len(tableau[0]))]
     for row in tableau:
         for i,elt in enumerate(row):
             tableau_t[i].append(elt)
     return tableau_t
 
+
 def symmetrizer(row, *, signed, n):
+    """
+    Computes a symmetrizer (i.e., an element of the algebra of the group Sn)
+    over the specified indices in a "row."
+
+    Parameters
+    ----------
+    row : array_like
+        The (1-indexed) indices over which to symmetrize.
+    signed : 0 or 1
+        Whether to symmetrize (0) or antisymmetrize (1)
+    n : The total number of indices
+
+    Returns
+    -------
+    out : list
+        The symmetrizer in the group algebra, represented as a list of
+        WeightedPermutation objects.
+
+    Notes
+    -----
+    Indices less than or equal to 1 are taken from the back of the list.
+
+    Examples
+    --------
+    >>> mhi.symmetrizer([1,2], signed=1, n=3)
+    [WeightedPermutation(weight=1, perm=array([0, 1, 2])),
+     WeightedPermutation(weight=-1, perm=array([1, 0, 2]))]
+    >>> mhi.symmetrizer([2,3], signed=0, n=3)
+    [WeightedPermutation(weight=1, perm=array([0, 1, 2])),
+     WeightedPermutation(weight=1, perm=array([1, 0, 2]))]
+    >>> mhi.symmetrizer([0,-1], signed=0, n=3)
+    [WeightedPermutation(weight=1, perm=array([0, 1, 2])),
+     WeightedPermutation(weight=1, perm=array([0, 2, 1]))]
+    """
     assert signed in [0,1]
     row = np.array(row)
     out = []
@@ -1387,10 +1587,54 @@ def symmetrizer(row, *, signed, n):
         out.append(WeightedPermutation(weight=w, perm=tot_perm))
     return out
 
+
 def make_young_projector(tableau, *, n):
+    """
+    Makes the projection operator, acting on n indices, associated with the
+    given Young tableau.
+
+    Parameters
+    ----------
+    tableau : list of lists
+        The Young tableau
+    n : int
+        The number of indices for which to construct the projector.
+
+    Returns
+    -------
+    proj : list of WeightedPermutation objects
+        The projection operator in the group algebra
+
+    Notes
+    -----
+    Young tableaux are specified by indices 1,2,3,.... starting with 1.
+    Indices in python arrays are zero indexed.
+
+    References
+    ----------
+    This implementation uses definition of the Hermitian projection operators
+    given by
+        J. Alcock-Zeilinger and H. Weigert
+        "Compact Hermitian Young Projection Operators"
+        J.Math.Phys. 58 (2017) 5, 051702
+        https://arxiv.org/abs/1610.10088.
+    In particular, this function uses Eq (86) in Theorem 3 (KS Hermitian Young
+    projectors). For large tableaux, it would likely advantageous to switch to
+    the Measure Of Lexical Disorder (MOLD) definition of the projection
+    operators given in Theorem 5.
+    """
+    if not is_valid_tableau(tableau):
+        raise ValueError("Invalid tableau")
+    if n < len(np.concatenate(tableau)):
+        raise ValueError("Too few indices for specified tableau.")
+
+    # Base case for the recursive definition
     if tableau == [[1]]:
         return [WeightedPermutation(weight=1, perm=np.arange(n))]
-    l = sum([len(t) for t in tableau])
+
+    # Apply the "parent map" of Definition 1 in Eqs (37) and (38).
+    # This map removes the box with the highest number from the tableau
+    l = sum(len(t) for t in tableau)
     def remove_l(t):
         t2 = t[:]
         if l in t:
@@ -1399,35 +1643,47 @@ def make_young_projector(tableau, *, n):
     tableau_bar = [remove_l(t) for t in tableau]
     if tableau_bar[-1] == []:
         tableau_bar = tableau_bar[:-1]
+
+    # Compute the projector associated with the parent tableau
     e_bar = make_young_projector(tableau_bar, n=n)
-    tableau_t = transpose_tableau(tableau)
+
     def mul(*args):
         if len(args) == 1:
             return args[0]
         if len(args) == 2:
             return compose_permutation_algebra_elements(*args)
         return mul(*args[:-2], compose_permutation_algebra_elements(*args[-2:]))
+
+    # Get symmetrizer each row
     ps = []
     for row in tableau:
         if len(row) > 0:
             ps.append(symmetrizer(row, signed=0, n=n))
+    p = mul(*ps)
+
+    # Get antisymmetrizer for each column
     ns = []
+    tableau_t = transpose_tableau(tableau)
     for col in tableau_t:
         if len(col) > 0:
             ns.append(symmetrizer(col, signed=1, n=n))
-    p = mul(*ps)
     n = mul(*ns)
+
+    # Compute the normalizaiton
     hook_norm = 1
-    for i,row in enumerate(tableau):
+    for i, row in enumerate(tableau):
         hook_r = len(row) - i
         for j in range(len(row)):
             col = tableau_t[j]
             hook_c = len(col) - j
             hook_norm *= (hook_r + hook_c - 1)
+
+    # Apply the recursive definition in Eq (86)
+    # The product "(symmetrizer) x (antisymmetrizer)" is Eq (26)
     proj_unnorm = mul(e_bar, p, n, e_bar)
     proj = [
         WeightedPermutation(weight / hook_norm, perm)
-        for (weight,perm) in proj_unnorm ]
+        for (weight, perm) in proj_unnorm ]
     return proj
 
 
