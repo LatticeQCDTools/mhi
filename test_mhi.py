@@ -557,25 +557,12 @@ def test_perm_group():
     assert np.allclose(
         mhi.multiply_perms(perm1, perm2),
         np.array([2,0,1]))
-    print(f"Success for multiply_perms")
+    print("Success for multiply_perms")
 
     perm = np.array([1,3,2,6,4,0,5])
     perm_inv = mhi.invert_perm(perm)
     assert np.allclose(mhi.multiply_perms(perm, perm_inv), np.arange(7))
-    print(f"Success for invert_perm")
-
-    def algebra_elements_are_close(x1, x2):
-        if len(x1) != len(x2):return False
-        inds1 = np.lexsort(np.stack([wp.perm for wp in x1], axis=-1))
-        inds2 = np.lexsort(np.stack([wp.perm for wp in x2], axis=-1))
-        for i in range(len(x1)):
-            wp1 = x1[inds1[i]]
-            wp2 = x2[inds2[i]]
-            if not np.all(wp1.perm == wp2.perm):
-                return False
-            if not np.isclose(wp1.weight, wp2.weight):
-                return False
-        return True
+    print("Success for invert_perm")
 
     a,b,c,d = np.random.random(size=4)
     perm1 = np.array([0,1,3,2])
@@ -586,13 +573,13 @@ def test_perm_group():
         [mhi.WeightedPermutation(a, perm1), mhi.WeightedPermutation(b, perm2)],
         [mhi.WeightedPermutation(c, perm3), mhi.WeightedPermutation(d, perm4)]
     )
-    assert algebra_elements_are_close(
+    assert mhi.algebra_elements_are_close(
         composed,
         [mhi.WeightedPermutation(a*c, mhi.multiply_perms(perm1, perm3)),
          mhi.WeightedPermutation(a*d, mhi.multiply_perms(perm1, perm4)),
          mhi.WeightedPermutation(b*c, mhi.multiply_perms(perm2, perm3)),
          mhi.WeightedPermutation(b*d, mhi.multiply_perms(perm2, perm4)),])
-    print(f"Success for compose_permutation_algebra_elements")
+    print("Success for compose_permutation_algebra_elements")
 
     tableau = [[1]]
     tableau_t = mhi.transpose_tableau(tableau)
@@ -600,10 +587,10 @@ def test_perm_group():
     tableau = [[3,2,4],[5,1,8],[6],[7]]
     tableau_t = mhi.transpose_tableau(tableau)
     assert tableau_t == [[3,5,6,7],[2,1],[4,8]]
-    print(f"Success for transpose_tableau")
+    print("Success for transpose_tableau")
 
     s = mhi.symmetrizer([2,4,5], signed=0, n=5)
-    assert algebra_elements_are_close(
+    assert mhi.algebra_elements_are_close(
         s,
         [mhi.WeightedPermutation(1, np.array([0,1,2,3,4])),
          mhi.WeightedPermutation(1, np.array([0,3,2,4,1])),
@@ -613,9 +600,9 @@ def test_perm_group():
          mhi.WeightedPermutation(1, np.array([0,3,2,1,4])),])
     s2 = mhi.compose_permutation_algebra_elements(s, s)
     s2 = [mhi.WeightedPermutation(weight / 6, perm) for (weight,perm) in s2]
-    assert algebra_elements_are_close(s, s2)
+    assert mhi.algebra_elements_are_close(s, s2)
     s = mhi.symmetrizer([2,4,5], signed=1, n=5)
-    assert algebra_elements_are_close(
+    assert mhi.algebra_elements_are_close(
         s,
         [mhi.WeightedPermutation(1, np.array([0,1,2,3,4])),
          mhi.WeightedPermutation(1, np.array([0,3,2,4,1])),
@@ -625,36 +612,46 @@ def test_perm_group():
          mhi.WeightedPermutation(-1, np.array([0,3,2,1,4])),])
     s2 = mhi.compose_permutation_algebra_elements(s, s)
     s2 = [mhi.WeightedPermutation(weight / 6, perm) for (weight,perm) in s2]
-    assert algebra_elements_are_close(s, s2)
-    print(f"Success for symmetrizer")
+    assert mhi.algebra_elements_are_close(s, s2)
+    print("Success for symmetrizer")
 
     tableau = [[1,3,4],[2,5]]
     p = mhi.make_young_projector(tableau, n=5)
     p2 = mhi.compose_permutation_algebra_elements(p, p)
-    assert algebra_elements_are_close(p, p2)
+    assert mhi.algebra_elements_are_close(p, p2)
     p_dag = [
         mhi.WeightedPermutation(weight, mhi.invert_perm(perm))
         for (weight, perm) in p ]
-    assert algebra_elements_are_close(p, p_dag)
+    assert mhi.algebra_elements_are_close(p, p_dag)
 
     tableau = [[1,2,3,4,5]]
     p = mhi.make_young_projector(tableau, n=5)
     p2 = mhi.compose_permutation_algebra_elements(p, p)
-    assert algebra_elements_are_close(p, p2)
+    assert mhi.algebra_elements_are_close(p, p2)
     p_dag = [
         mhi.WeightedPermutation(weight, mhi.invert_perm(perm))
         for (weight, perm) in p ]
-    assert algebra_elements_are_close(p, p_dag)
-    
+    assert mhi.algebra_elements_are_close(p, p_dag)
+
     tableau = [[1],[2],[3],[4],[5]]
     p = mhi.make_young_projector(tableau, n=5)
     p2 = mhi.compose_permutation_algebra_elements(p, p)
-    assert algebra_elements_are_close(p, p2)
+    assert mhi.algebra_elements_are_close(p, p2)
     p_dag = [
         mhi.WeightedPermutation(weight, mhi.invert_perm(perm))
         for (weight, perm) in p ]
-    assert algebra_elements_are_close(p, p_dag)
-    print(f"Success for make_young_projector")
+    assert mhi.algebra_elements_are_close(p, p_dag)
+    print("Success for make_young_projector")
+
+    p1 = mhi.make_young_projector([[1,3,5],[2,4]], n=5)
+    p2 = mhi.make_young_projector([[1,2,3],[4,5]], n=5)
+    tmp = mhi.compose_permutation_algebra_elements(p1, p2)
+    assert len([elt for elt in tmp if not np.isclose(elt.weight, 0)]) == 0
+    tmp = mhi.compose_permutation_algebra_elements(p2, p1)
+    assert len([elt for elt in tmp if not np.isclose(elt.weight, 0)]) == 0
+    print("Success for orthogonality of five-box diagrams.")
+
+
 
 def test_mhi(momenta, particle_names, spin_irreps, fname_rep, fname_basis):
     """
