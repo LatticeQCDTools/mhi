@@ -2640,7 +2640,7 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
 
     # 5. Apply Schur's lemma
     if Dmm_momspin is None:
-        result = {}
+        result, transition_operators = {}, {}
     else:
         result, transition_operators = apply_schur(Dmm_momspin, Dmumu, verbose)
 
