@@ -33,12 +33,25 @@ def main():
             # Format the results as rows of a table
             if len(result.decomp) == 0:
                 continue
+            print("#"*40)
+            print("Orbit length", len(result.orbit))
+            print("Dmm shape", result.Dmm.shape)
+            ranks = []
+            for elt in result.Dmm:
+                ranks.append(np.linalg.matrix_rank(elt))
+            rank = np.unique(ranks).item()
+            print("Unique ranks in Dmm", rank)
+            irrep_sum = 0
+            for val in result.decomp.values():
+                irrep_sum += val.shape[0]
+            print("sum of irrep dimensions", irrep_sum)
+            assert rank == irrep_sum
             columns = [
                 result.little_name(latex=True),
                 result.stab_name(latex=True),
                 irrep.capitalize(),
                 state,
-                str(len(result.orbit)),
+                str(rank),
                 result.format(latex=True)
             ]
             row = " & ".join(columns) + r"\\"
