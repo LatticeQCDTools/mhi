@@ -12,7 +12,13 @@ KnownResult = namedtuple("KnownResult", ['trivial', 'standard', 'sign'])
 
 def main():
 
-    internal_symmetries = get_projectors()
+    internal_symmetries = {
+        'trivial': mhi.make_exchange_projector(['pi','pi','pi'], {'pi': [[1,2,3]]}),
+        'sign': mhi.make_exchange_projector(['pi','pi','pi'], {'pi': [[1],[2],[3]]}),
+        'standard:1': mhi.make_exchange_projector(['pi','pi','pi'], {'pi': [[1,2],[3]]}),
+        'standard:2': mhi.make_exchange_projector(['pi','pi','pi'], {'pi': [[1,3],[2]]}),
+    }
+
     for momenta in get_momenta_variations():
         print("#"*40)
         print("Starting momenta=", momenta)
@@ -43,40 +49,6 @@ def main():
                 print(ref)
                 raise ValueError(f"Mismatch for {irrep}")
 
-def get_projectors():
-    """
-    Gets projectors in the group algebra of permutation group S3 for each irrep.
-
-    Parameters
-    ----------
-    None
-
-    Returns
-    -------
-    internal_symmetries : dict
-        The projectors, where the keys are the irrep name and the values are
-        lists of weighted permutations.
-    """
-    # Permutations in S3
-    perms = [np.array(perm) for perm in itertools.permutations([0,1,2])]
-
-    # Projections in the group algebra
-    return {
-        'trivial': [mhi.WeightedPermutation(1, perm) for perm in perms],
-        'sign': [mhi.WeightedPermutation(mhi.parity(perm), perm) for perm in perms],
-        'standard:1': [
-            mhi.WeightedPermutation(+1, [0,1,2]),
-            mhi.WeightedPermutation(+1, [1,0,2]),
-            mhi.WeightedPermutation(-1, [2,0,1]),
-            mhi.WeightedPermutation(-1, [0,2,1]),
-        ],
-        'standard:2': [
-            mhi.WeightedPermutation(+1, [0,1,2]),
-            mhi.WeightedPermutation(+1, [2,1,0]),
-            mhi.WeightedPermutation(-1, [1,0,2]),
-            mhi.WeightedPermutation(-1, [1,2,0]),
-        ],
-    }
 
 def get_momenta_variations():
     """
