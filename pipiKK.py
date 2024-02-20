@@ -34,26 +34,38 @@ def main():
 
         example_state = format_example_state(labels, momenta)
 
-        internal_symmetry = mhi.make_exchange_group(labels)
+        internal_symmetry = mhi.make_exchange_projector_identical(labels)
 
         result = mhi.mhi(
             momenta=momenta,
             spin_irreps=['A1m', 'A1m', 'A1m', 'A1m'],
             internal_symmetry=internal_symmetry)
 
-        orbit_dim = len(result.orbit)
+        print("Orbit length", len(result.orbit))
+        print("Dmm shape", result.Dmm.shape)
+        ranks = []
+        for elt in result.Dmm:
+            ranks.append(np.linalg.matrix_rank(elt))
+        rank = np.unique(ranks).item()
+        print("Unique rank(s) in Dmm matrices", rank)
+        irrep_sum = 0
+        for val in result.decomp.values():
+            irrep_sum += val.shape[0]
+        print("sum of irrep dimensions", irrep_sum)
+        assert irrep_sum == rank
 
         columns = [
             result.little_name(latex=True),
             result.stab_name(latex=True),
             exchange_name,
             example_state,
-            str(orbit_dim),
+            str(rank),
             result.format(latex=True)
         ]
         row = " & ".join(columns) + r"\\"
         rows.append(row)
 
+    print("#"*40)
     print("The table of irrep decompositions is given by:")
     for row in rows:
         print(row)
