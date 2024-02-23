@@ -4,9 +4,6 @@ MHI -- "Multi-Hadron Interpolators"
 Module for constructing block-diagonalization / change-of-basis matrices to map
 products of N local plane-wave operators into irreps of the cubic group.
 Includes appropriate generalizations for spin and internal symmetries.
-
-Authors:
-William Detmold, William I. Jay, Gurtej Kanwar, Phiala E. Shanahan, and Michael L. Wagman
 """
 
 import functools
@@ -26,9 +23,47 @@ import yaml
 import h5py
 from . import basis_functions
 
-WeightedPermutation = namedtuple("WeightedPermutation", ['weight', 'perm'])
-Isomorphism = namedtuple("Isomorphism", ['g', 'perm'])
-SpinShellTuple = namedtuple("SpinShellTuple", ['momenta', 'spins'])
+class WeightedPermutation(namedtuple('WeightedPermutation', ['weight', 'perm'])):
+    """A complex scalar weight times a permutation group element.
+
+    Attributes
+    ----------
+    weight : complex or float
+        Scalar weight multiplying the permutation.
+    perm : ``(n,)`` ndarray
+        Permutation expressed as an array.
+    """
+    # def __init__(self, weight, perm):
+    #     self.weight = weight
+    #     self.perm = perm
+class Isomorphism(namedtuple('Isomorphism', ['g', 'perm'])):
+    """The group element and permutation specifying a subgroup isomorphism.
+
+    Attributes
+    ----------
+    g : ``(n, n)`` ndarray
+        Group element used to conjugate the subgroup as
+        :math:`g \cdot H \cdot g^{-1}`
+    perm : ``(|H|,)`` ndarray
+        Permutation p mapping from conjugated elements to target subgroup as
+        :math:`H' = g \cdot H \cdot g^{-1}[p]`
+    """
+    # def __init__(self, g, perm):
+    #     self.g = g
+    #     self.perm = perm
+class SpinShellTuple(namedtuple('SpinShellTuple', ['momenta', 'spins'])):
+    """Pairing of momenta and spins making up an orbit with non-zero spins.
+
+    Attributes
+    ----------
+    momenta : ``(norbit, nmomenta, 3)`` ndarray
+        List of momentum lists in the orbit.
+    spins : ``(norbit, nspin)`` ndarray
+        List of spin configurations in the orbit.
+    """
+    # def __init__(self, momenta, spins):
+    #     self.momenta = momenta
+    #     self.spins = spins
 
 ####################
 # Tensor utilities #
@@ -429,7 +464,7 @@ def make_tensor_product_space(dims):
     --------
     >>> arr = make_tensor_product_space([1,2,3])
     >>> print(arr.shape)
-    (4, 2)
+    (6, 3)
     >>> print(arr)
     array([
         [0, 0, 0],
@@ -486,7 +521,7 @@ class DiracPauli:
 
         Parameters
         ----------
-        omega: ``(3, )`` ndarray or list
+        omega: ``(3,)`` ndarray or list
             The vector specifying the rotation
 
         Returns
@@ -893,7 +928,7 @@ def conjugate_group(g, group):
 
 
 def find_subgroup_isomorphism(group, subgroup_h1 , subgroup_h2):
-    """"
+    """
     Finds the isomorphism between conjugate subgroups H1 and H2.
 
     Parameters
@@ -1609,19 +1644,19 @@ def make_young_projector(tableau, *, n):
     -----
     Young tableaux are specified by indices 1,2,3,.... starting with 1.
     Indices in python arrays are zero indexed.
+    This implementation uses definition of the Hermitian projection operators
+    given by Ref. [1]_. In particular, this function uses Eq (86) in Theorem 3
+    (KS Hermitian Young projectors). For large tableaux, it would likely
+    advantageous to switch to the Measure Of Lexical Disorder (MOLD) definition
+    of the projection operators given in Theorem 5.
+
 
     References
     ----------
-    This implementation uses definition of the Hermitian projection operators
-    given by
-        J. Alcock-Zeilinger and H. Weigert
-        "Compact Hermitian Young Projection Operators"
-        J.Math.Phys. 58 (2017) 5, 051702
-        https://arxiv.org/abs/1610.10088.
-    In particular, this function uses Eq (86) in Theorem 3 (KS Hermitian Young
-    projectors). For large tableaux, it would likely advantageous to switch to
-    the Measure Of Lexical Disorder (MOLD) definition of the projection
-    operators given in Theorem 5.
+    .. [1] J. Alcock-Zeilinger and H. Weigert
+       "Compact Hermitian Young Projection Operators"
+       J.Math.Phys. 58 (2017) 5, 051702
+       [arXiv:1610.10088].
     """
     if not is_valid_tableau(tableau):
         raise ValueError("Invalid tableau")

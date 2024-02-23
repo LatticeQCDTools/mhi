@@ -1,10 +1,14 @@
-Module documentation
-====================
+Package documentation
+=====================
+
+Main module
+-----------
 
 .. automodule:: mhi.mhi
    :members:
-   :undoc-members:
+
+Basis functions module
+----------------------
 
 .. automodule:: mhi.basis_functions
    :members:
-   :undoc-members:

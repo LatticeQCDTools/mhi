@@ -671,7 +671,7 @@ def test_mhi(momenta, particle_names, spin_irreps, fname_rep, fname_basis):
         Path to the input file containing the data for the change-of-basis
         coefficients
     """
-    internal_symmetry = mhi.make_exchange_group(particle_names)
+    internal_symmetry = mhi.make_exchange_projector_identical(particle_names)
     result = mhi.mhi(
         momenta,
         spin_irreps,

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mhi.mhi &#8212; Multi-hadron Interpolators</title>
+    <title>mhi.mhi &#8212; Multi-Hadron Interpolators</title>
   
   
   
@@ -34,7 +34,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mhi/mhi';</script>
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">Multi-hadron Interpolators</p>
+    <p class="title logo__title">Multi-Hadron Interpolators</p>
   
 </a></div>
     
@@ -128,7 +128,7 @@
     
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../code.html">
-                        Module documentation
+                        Package documentation
                       </a>
                     </li>
                 
@@ -214,7 +214,7 @@ document.write(`
     
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../code.html">
-                        Module documentation
+                        Package documentation
                       </a>
                     </li>
                 
@@ -302,9 +302,6 @@ document.write(`
 <span class="sd">Module for constructing block-diagonalization / change-of-basis matrices to map</span>
 <span class="sd">products of N local plane-wave operators into irreps of the cubic group.</span>
 <span class="sd">Includes appropriate generalizations for spin and internal symmetries.</span>
-
-<span class="sd">Authors:</span>
-<span class="sd">William Detmold, William I. Jay, Gurtej Kanwar, Phiala E. Shanahan, and Michael L. Wagman</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
@@ -324,9 +321,56 @@ document.write(`
 <span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">basis_functions</span>
 
-<span class="n">WeightedPermutation</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;WeightedPermutation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;perm&quot;</span><span class="p">])</span>
-<span class="n">Isomorphism</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Isomorphism&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;perm&#39;</span><span class="p">])</span>
-<span class="n">SpinShellTuple</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;SpinShellTuple&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;momenta&#39;</span><span class="p">,</span> <span class="s1">&#39;spins&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="WeightedPermutation">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.WeightedPermutation">[docs]</a>
+<span class="k">class</span> <span class="nc">WeightedPermutation</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;WeightedPermutation&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;perm&#39;</span><span class="p">])):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A complex scalar weight times a permutation group element.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    weight : complex or float</span>
+<span class="sd">        Scalar weight multiplying the permutation.</span>
+<span class="sd">    perm : ``(n,)`` ndarray</span>
+<span class="sd">        Permutation expressed as an array.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+    <span class="c1"># def __init__(self, weight, perm):</span>
+    <span class="c1">#     self.weight = weight</span>
+    <span class="c1">#     self.perm = perm</span>
+<div class="viewcode-block" id="Isomorphism">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.Isomorphism">[docs]</a>
+<span class="k">class</span> <span class="nc">Isomorphism</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Isomorphism&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;perm&#39;</span><span class="p">])):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The group element and permutation specifying a subgroup isomorphism.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    g : ``(n, n)`` ndarray</span>
+<span class="sd">        Group element used to conjugate the subgroup as</span>
+<span class="sd">        :math:`g \cdot H \cdot g^{-1}`</span>
+<span class="sd">    perm : ``(|H|,)`` ndarray</span>
+<span class="sd">        Permutation p mapping from conjugated elements to target subgroup as</span>
+<span class="sd">        :math:`H&#39; = g \cdot H \cdot g^{-1}[p]`</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+    <span class="c1"># def __init__(self, g, perm):</span>
+    <span class="c1">#     self.g = g</span>
+    <span class="c1">#     self.perm = perm</span>
+<div class="viewcode-block" id="SpinShellTuple">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.SpinShellTuple">[docs]</a>
+<span class="k">class</span> <span class="nc">SpinShellTuple</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;SpinShellTuple&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;momenta&#39;</span><span class="p">,</span> <span class="s1">&#39;spins&#39;</span><span class="p">])):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pairing of momenta and spins making up an orbit with non-zero spins.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    momenta : ``(norbit, nmomenta, 3)`` ndarray</span>
+<span class="sd">        List of momentum lists in the orbit.</span>
+<span class="sd">    spins : ``(norbit, nspin)`` ndarray</span>
+<span class="sd">        List of spin configurations in the orbit.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+    <span class="c1"># def __init__(self, momenta, spins):</span>
+    <span class="c1">#     self.momenta = momenta</span>
+    <span class="c1">#     self.spins = spins</span>
 
 <span class="c1">####################</span>
 <span class="c1"># Tensor utilities #</span>
@@ -765,7 +809,7 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; arr = make_tensor_product_space([1,2,3])</span>
 <span class="sd">    &gt;&gt;&gt; print(arr.shape)</span>
-<span class="sd">    (4, 2)</span>
+<span class="sd">    (6, 3)</span>
 <span class="sd">    &gt;&gt;&gt; print(arr)</span>
 <span class="sd">    array([</span>
 <span class="sd">        [0, 0, 0],</span>
@@ -827,7 +871,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        omega: ``(3, )`` ndarray or list</span>
+<span class="sd">        omega: ``(3,)`` ndarray or list</span>
 <span class="sd">            The vector specifying the rotation</span>
 
 <span class="sd">        Returns</span>
@@ -1280,7 +1324,7 @@ document.write(`
 <div class="viewcode-block" id="find_subgroup_isomorphism">
 <a class="viewcode-back" href="../../code.html#mhi.mhi.find_subgroup_isomorphism">[docs]</a>
 <span class="k">def</span> <span class="nf">find_subgroup_isomorphism</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">subgroup_h1</span> <span class="p">,</span> <span class="n">subgroup_h2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the isomorphism between conjugate subgroups H1 and H2.</span>
 
 <span class="sd">    Parameters</span>
@@ -1638,9 +1682,68 @@ document.write(`
 
 
 
-<div class="viewcode-block" id="make_exchange_group">
-<a class="viewcode-back" href="../../code.html#mhi.mhi.make_exchange_group">[docs]</a>
-<span class="k">def</span> <span class="nf">make_exchange_group</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+<div class="viewcode-block" id="make_exchange_projector">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.make_exchange_projector">[docs]</a>
+<span class="k">def</span> <span class="nf">make_exchange_projector</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">tableau_map</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes a projector in the group algebra of the particle-exchange group.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    labels : list</span>
+<span class="sd">        Particle labels, e.g., [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;b&#39;,&#39;c&#39;,&#39;b&#39;]</span>
+<span class="sd">    tableau_map : dict</span>
+<span class="sd">        Young tableaux associated with each label, e.g.,</span>
+<span class="sd">        {&#39;a&#39;: [[1]], &#39;b&#39;: [[1,2],[3]], &#39;c&#39;: [[1],[2]],}</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    projector : list of WeightedPermutation objects</span>
+<span class="sd">        The projection operator in the group algebra of the exchange group</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">partitions</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">partitions</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tableau_map</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; missing from tableau_map.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_tableau</span><span class="p">(</span><span class="n">tableau_map</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid Young tableau for key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">tableau_map</span><span class="p">[</span><span class="n">key</span><span class="p">])):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Incorrect tableau size for key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">remap_indices</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">wp</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">WeightedPermutation</span><span class="p">(</span><span class="n">wp</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">idxs</span><span class="p">[</span><span class="n">wp</span><span class="o">.</span><span class="n">perm</span><span class="p">])</span>
+
+    <span class="c1"># Compute individual projectors associated with each label</span>
+    <span class="n">projectors</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">partitions</span><span class="p">:</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="n">partitions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="c1"># Compute Young projector on contiguous indices 1,2,...,len(idxs)</span>
+        <span class="n">proj_tmp</span> <span class="o">=</span>  <span class="n">make_young_projector</span><span class="p">(</span><span class="n">tableau_map</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">idxs</span><span class="p">))</span>
+        <span class="c1"># Remap contiguous indices to the indices of the label</span>
+        <span class="n">projectors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">remap_indices</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">wp</span><span class="p">)</span> <span class="k">for</span> <span class="n">wp</span> <span class="ow">in</span> <span class="n">proj_tmp</span><span class="p">]</span>
+
+    <span class="c1"># Compute tensor product of the projectors from each label</span>
+    <span class="n">projector</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">partitions</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="k">for</span> <span class="n">wps</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">projectors</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="n">wp</span><span class="o">.</span><span class="n">perm</span> <span class="k">for</span> <span class="n">wp</span> <span class="ow">in</span> <span class="n">wps</span><span class="p">]</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="n">wp</span><span class="o">.</span><span class="n">weight</span> <span class="k">for</span> <span class="n">wp</span> <span class="ow">in</span> <span class="n">wps</span><span class="p">])</span>
+        <span class="n">projector</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">WeightedPermutation</span><span class="p">(</span>
+                <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+                <span class="n">perm</span><span class="o">=</span><span class="n">recombine</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">idxs</span><span class="p">)))</span>
+
+    <span class="k">assert</span> <span class="n">algebra_elements_are_close</span><span class="p">(</span>
+        <span class="n">projector</span><span class="p">,</span>
+        <span class="n">compose_permutation_algebra_elements</span><span class="p">(</span><span class="n">projector</span><span class="p">,</span> <span class="n">projector</span><span class="p">)),</span>\
+        <span class="s2">&quot;Error: Projector not idempotent!&quot;</span>
+    <span class="k">return</span> <span class="n">projector</span></div>
+
+
+
+<div class="viewcode-block" id="make_exchange_projector_identical">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.make_exchange_projector_identical">[docs]</a>
+<span class="k">def</span> <span class="nf">make_exchange_projector_identical</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the exchange group associated with exchange of identical particles.</span>
 <span class="sd">    The elements of this group are signed permuations.</span>
@@ -1698,8 +1801,9 @@ document.write(`
     <span class="n">exchange_group</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">perms</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
         <span class="c1"># Overall sign = product of the parities of the individual permuations</span>
-        <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="n">parity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">perm</span><span class="p">))</span><span class="o">**</span><span class="n">power</span> <span class="k">for</span> <span class="n">perm</span><span class="p">,</span> <span class="n">power</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)])</span>
-        <span class="c1"># perm = np.concatenate(idxs)  # wrong if labels non-contiguous</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span>
+            <span class="n">parity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">perm</span><span class="p">))</span><span class="o">**</span><span class="n">power</span> <span class="k">for</span> <span class="n">perm</span><span class="p">,</span> <span class="n">power</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+        <span class="p">])</span>
         <span class="n">perm</span> <span class="o">=</span> <span class="n">recombine</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">idxs</span><span class="p">)</span>
         <span class="n">exchange_group</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WeightedPermutation</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">exchange_group</span></div>
@@ -1766,6 +1870,313 @@ document.write(`
     <span class="n">proj</span> <span class="o">=</span> <span class="n">proj</span> <span class="o">/</span> <span class="n">norm</span>
     <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">proj</span> <span class="o">@</span> <span class="n">proj</span><span class="p">,</span> <span class="n">proj</span><span class="p">),</span> <span class="s2">&quot;Error: projector not idempotent&quot;</span>
     <span class="k">return</span> <span class="n">proj</span></div>
+
+
+
+<div class="viewcode-block" id="multiply_perms">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.multiply_perms">[docs]</a>
+<span class="k">def</span> <span class="nf">multiply_perms</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multiply the permutations a and b via composition ``b \circ a``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b : (n, ) ndarray</span>
+<span class="sd">        The permutations</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        The product of permutations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">b</span><span class="p">[</span><span class="n">a</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="invert_perm">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.invert_perm">[docs]</a>
+<span class="k">def</span> <span class="nf">invert_perm</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the inverse permutation such that</span>
+<span class="sd">    ``a \circ a^{-1} = a^{-1} \circ a = (1)``</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : (n, ) array_like</span>
+<span class="sd">        The permutation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ainv : (n, ) ndarray</span>
+<span class="sd">        Inverse permutation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="compose_permutation_algebra_elements">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.compose_permutation_algebra_elements">[docs]</a>
+<span class="k">def</span> <span class="nf">compose_permutation_algebra_elements</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the composition (i.e., product) of elements algebra of a</span>
+<span class="sd">    permutation group.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b : array_like</span>
+<span class="sd">        The algebra elements, specified as lists of WeightedPermutation objects</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : list</span>
+<span class="sd">        The product, as a list of WeightedPermutation objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">w_perm1</span><span class="p">,</span> <span class="n">w_perm2</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w_perm1</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w_perm2</span><span class="o">.</span><span class="n">weight</span>
+        <span class="n">perm</span> <span class="o">=</span> <span class="n">multiply_perms</span><span class="p">(</span><span class="n">w_perm1</span><span class="o">.</span><span class="n">perm</span><span class="p">,</span> <span class="n">w_perm2</span><span class="o">.</span><span class="n">perm</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">WeightedPermutation</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">WeightedPermutation</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">+</span><span class="n">w</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">perm</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="algebra_elements_are_close">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.algebra_elements_are_close">[docs]</a>
+<span class="k">def</span> <span class="nf">algebra_elements_are_close</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether elements of the group algebra of Sn are numerically close.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x1 : list of WeightedPermutation objects</span>
+<span class="sd">    x2 : list of WeightedPermutation objects</span>
+<span class="sd">        The group algebra elements</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool : are_close</span>
+<span class="sd">        Whether the elements are numerically close</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x2</span><span class="p">):</span><span class="k">return</span> <span class="kc">False</span>
+    <span class="n">inds1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">wp</span><span class="o">.</span><span class="n">perm</span> <span class="k">for</span> <span class="n">wp</span> <span class="ow">in</span> <span class="n">x1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">inds2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">wp</span><span class="o">.</span><span class="n">perm</span> <span class="k">for</span> <span class="n">wp</span> <span class="ow">in</span> <span class="n">x2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x1</span><span class="p">)):</span>
+        <span class="n">wp1</span> <span class="o">=</span> <span class="n">x1</span><span class="p">[</span><span class="n">inds1</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="n">wp2</span> <span class="o">=</span> <span class="n">x2</span><span class="p">[</span><span class="n">inds2</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">wp1</span><span class="o">.</span><span class="n">perm</span> <span class="o">==</span> <span class="n">wp2</span><span class="o">.</span><span class="n">perm</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">wp1</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">wp2</span><span class="o">.</span><span class="n">weight</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="is_valid_tableau">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.is_valid_tableau">[docs]</a>
+<span class="k">def</span> <span class="nf">is_valid_tableau</span><span class="p">(</span><span class="n">tableau</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether ragged list is a valid Young tableau.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tableau : list of lists</span>
+<span class="sd">        The candidate Young tableau</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    is_valid : bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Row lengths never increase</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tableau</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1"># Values in rows strictly increasing</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tableau</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1"># Values in columns strictly increasing</span>
+    <span class="n">tableau_t</span> <span class="o">=</span> <span class="n">transpose_tableau</span><span class="p">(</span><span class="n">tableau</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tableau_t</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="transpose_tableau">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.transpose_tableau">[docs]</a>
+<span class="k">def</span> <span class="nf">transpose_tableau</span><span class="p">(</span><span class="n">tableau</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transposes a Young tableau.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tableau : list of lists</span>
+<span class="sd">        The tableau, given as a ragged list of integers</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tableau_t : list</span>
+<span class="sd">        The transposed tableau, as a ragged list of integers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tableau_t</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tableau</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tableau</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">elt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="n">tableau_t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tableau_t</span></div>
+
+
+
+<div class="viewcode-block" id="symmetrizer">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.symmetrizer">[docs]</a>
+<span class="k">def</span> <span class="nf">symmetrizer</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">signed</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes a symmetrizer (i.e., an element of the algebra of the group Sn)</span>
+<span class="sd">    over the specified indices in a &quot;row.&quot;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    row : array_like</span>
+<span class="sd">        The (1-indexed) indices over which to symmetrize.</span>
+<span class="sd">    signed : 0 or 1</span>
+<span class="sd">        Whether to symmetrize (0) or antisymmetrize (1)</span>
+<span class="sd">    n : The total number of indices</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : list</span>
+<span class="sd">        The symmetrizer in the group algebra, represented as a list of</span>
+<span class="sd">        WeightedPermutation objects.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Indices less than or equal to 1 are taken from the back of the list.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; mhi.symmetrizer([1,2], signed=1, n=3)</span>
+<span class="sd">    [WeightedPermutation(weight=1, perm=array([0, 1, 2])),</span>
+<span class="sd">     WeightedPermutation(weight=-1, perm=array([1, 0, 2]))]</span>
+<span class="sd">    &gt;&gt;&gt; mhi.symmetrizer([2,3], signed=0, n=3)</span>
+<span class="sd">    [WeightedPermutation(weight=1, perm=array([0, 1, 2])),</span>
+<span class="sd">     WeightedPermutation(weight=1, perm=array([1, 0, 2]))]</span>
+<span class="sd">    &gt;&gt;&gt; mhi.symmetrizer([0,-1], signed=0, n=3)</span>
+<span class="sd">    [WeightedPermutation(weight=1, perm=array([0, 1, 2])),</span>
+<span class="sd">     WeightedPermutation(weight=1, perm=array([0, 2, 1]))]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">signed</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">permutations</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)))):</span>
+        <span class="n">perm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">parity</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">sign</span><span class="o">**</span><span class="n">signed</span>
+        <span class="n">tot_perm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">tot_perm</span><span class="p">[</span><span class="n">row</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tot_perm</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WeightedPermutation</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">tot_perm</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="make_young_projector">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.make_young_projector">[docs]</a>
+<span class="k">def</span> <span class="nf">make_young_projector</span><span class="p">(</span><span class="n">tableau</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes the projection operator, acting on n indices, associated with the</span>
+<span class="sd">    given Young tableau.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tableau : list of lists</span>
+<span class="sd">        The Young tableau</span>
+<span class="sd">    n : int</span>
+<span class="sd">        The number of indices for which to construct the projector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    proj : list of WeightedPermutation objects</span>
+<span class="sd">        The projection operator in the group algebra</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Young tableaux are specified by indices 1,2,3,.... starting with 1.</span>
+<span class="sd">    Indices in python arrays are zero indexed.</span>
+<span class="sd">    This implementation uses definition of the Hermitian projection operators</span>
+<span class="sd">    given by Ref. [1]_. In particular, this function uses Eq (86) in Theorem 3</span>
+<span class="sd">    (KS Hermitian Young projectors). For large tableaux, it would likely</span>
+<span class="sd">    advantageous to switch to the Measure Of Lexical Disorder (MOLD) definition</span>
+<span class="sd">    of the projection operators given in Theorem 5.</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] J. Alcock-Zeilinger and H. Weigert</span>
+<span class="sd">       &quot;Compact Hermitian Young Projection Operators&quot;</span>
+<span class="sd">       J.Math.Phys. 58 (2017) 5, 051702</span>
+<span class="sd">       [arXiv:1610.10088].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_tableau</span><span class="p">(</span><span class="n">tableau</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid tableau&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">tableau</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Too few indices for specified tableau.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Base case for the recursive definition</span>
+    <span class="k">if</span> <span class="n">tableau</span> <span class="o">==</span> <span class="p">[[</span><span class="mi">1</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">WeightedPermutation</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))]</span>
+
+    <span class="c1"># Apply the &quot;parent map&quot; of Definition 1 in Eqs (37) and (38).</span>
+    <span class="c1"># This map removes the box with the highest number from the tableau</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tableau</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">remove_l</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">t</span><span class="p">[:]</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+            <span class="n">t2</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t2</span>
+    <span class="n">tableau_bar</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_l</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tableau</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">tableau_bar</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="n">tableau_bar</span> <span class="o">=</span> <span class="n">tableau_bar</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Compute the projector associated with the parent tableau</span>
+    <span class="n">e_bar</span> <span class="o">=</span> <span class="n">make_young_projector</span><span class="p">(</span><span class="n">tableau_bar</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">compose_permutation_algebra_elements</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mul</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">compose_permutation_algebra_elements</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))</span>
+
+    <span class="c1"># Get symmetrizer each row</span>
+    <span class="n">ps</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tableau</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symmetrizer</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="o">*</span><span class="n">ps</span><span class="p">)</span>
+
+    <span class="c1"># Get antisymmetrizer for each column</span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tableau_t</span> <span class="o">=</span> <span class="n">transpose_tableau</span><span class="p">(</span><span class="n">tableau</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">tableau_t</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symmetrizer</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="o">*</span><span class="n">ns</span><span class="p">)</span>
+
+    <span class="c1"># Compute the normalizaiton</span>
+    <span class="n">hook_norm</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tableau</span><span class="p">):</span>
+        <span class="n">hook_r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)):</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="n">tableau_t</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">hook_c</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">-</span> <span class="n">j</span>
+            <span class="n">hook_norm</span> <span class="o">*=</span> <span class="p">(</span><span class="n">hook_r</span> <span class="o">+</span> <span class="n">hook_c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Apply the recursive definition in Eq (86)</span>
+    <span class="c1"># The product &quot;(symmetrizer) x (antisymmetrizer)&quot; is Eq (26)</span>
+    <span class="n">proj_unnorm</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">e_bar</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">e_bar</span><span class="p">)</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">WeightedPermutation</span><span class="p">(</span><span class="n">weight</span> <span class="o">/</span> <span class="n">hook_norm</span><span class="p">,</span> <span class="n">perm</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">perm</span><span class="p">)</span> <span class="ow">in</span> <span class="n">proj_unnorm</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">proj</span></div>
+
 
 
 <span class="c1">#################################</span>
@@ -1845,7 +2256,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    Dmm : ``(|G|,|O|,|O|)`` ndarray</span>
 <span class="sd">        The momentum-representation matrices.</span>
-<span class="sd">    *Dspin : ``(|G^D|, |irrep|, |irrep|)`` ndarray(s)</span>
+<span class="sd">    *Dspin : ``(|G^D|, |\Gamma|, |\Gamma|)`` ndarray(s)</span>
 <span class="sd">        The spin irrep matrices.</span>
 
 <span class="sd">    Returns</span>
@@ -1891,7 +2302,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    irrep_matrix : ``(|irrep|, |irrep|)`` ndarray</span>
+<span class="sd">    irrep_matrix : ``(|\Gamma|, |\Gamma|)`` ndarray</span>
 <span class="sd">        The irrep matrix.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">polarizations</span><span class="p">)</span>
@@ -1920,7 +2331,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    irrep : ``(|G|, |irrep|, |irrep|)`` ndarray</span>
+<span class="sd">    irrep : ``(|G|, |\Gamma|, |\Gamma|)`` ndarray</span>
 <span class="sd">        The irrep matrices.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">make_irrep_matrix</span><span class="p">(</span><span class="n">polarizations</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group</span><span class="p">])</span></div>
@@ -1946,7 +2357,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    irrep_matrix : ``(|irrep|, |irrep|)`` ndarray</span>
+<span class="sd">    irrep_matrix : ``(|\Gamma|, |\Gamma|)`` ndarray</span>
 <span class="sd">        The irrep matrix.</span>
 
 <span class="sd">    Notes</span>
@@ -1997,7 +2408,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    irrep : ``(|G|, |irrep|, |irrep|)`` ndarray</span>
+<span class="sd">    irrep : ``(|G|, |\Gamma|, |\Gamma|)`` ndarray</span>
 <span class="sd">        The irrep matrices.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">make_irrep_matrix_spinor</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group</span><span class="p">])</span></div>
@@ -2020,7 +2431,7 @@ document.write(`
 <span class="sd">    Dmumu : dict</span>
 <span class="sd">        The irrep matrices as a dict. The keys give the name of the irrep.</span>
 <span class="sd">        The values contain the irrep matrices themselves, each with shape</span>
-<span class="sd">        ``(|G|, |irrep|, |irrep|)``.</span>
+<span class="sd">        ``(|G|, |\Gamma|, |\Gamma|)``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">little_group_name</span> <span class="o">=</span> <span class="n">identify_stabilizer</span><span class="p">(</span><span class="n">little_group</span><span class="p">)</span>
 
@@ -2060,7 +2471,7 @@ document.write(`
 <span class="sd">    Dmumu_double : dict</span>
 <span class="sd">        The irrep matrices as a dict. The keys give the name of the irrep.</span>
 <span class="sd">        The values contain the irrep matrices themselves, each with shape</span>
-<span class="sd">        ``(|G^D|, |irrep|, |irrep|)``.</span>
+<span class="sd">        ``(|G^D|, |\Gamma|, |\Gamma|)``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">little_name</span> <span class="o">=</span> <span class="n">identify_stabilizer</span><span class="p">(</span><span class="n">little_group</span><span class="p">)</span>
     <span class="n">little_double</span> <span class="o">=</span> <span class="n">make_spinorial_little_group</span><span class="p">(</span><span class="n">little_group</span><span class="p">)</span>
@@ -2079,52 +2490,9 @@ document.write(`
 
 
 
-<span class="c1">########################################################</span>
-<span class="c1"># Block diagonalization / change-of-basis coefficients #</span>
-<span class="c1">########################################################</span>
-
-
-<div class="viewcode-block" id="compute_lowering_coefficients">
-<a class="viewcode-back" href="../../code.html#mhi.mhi.compute_lowering_coefficients">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_lowering_coefficients</span><span class="p">(</span><span class="n">irrep_matrices</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes lowering coefficients for moving between rows of an irrep.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    irrep_matrices : ``(|G|, |irrep|, |irrep|)`` array_like</span>
-<span class="sd">        The irrep matrices.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    coeffs : ``(|G|,)`` np.ndarray</span>
-<span class="sd">        The lowering coefficients.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    The linear algebra problem is to find &quot;lowering coefficients&quot; c[i] such</span>
-<span class="sd">    that c[i] D[i,a,b] = L[a,b] (with sum over group index i implied),</span>
-<span class="sd">    where D[i,a,b] are irrep matrices and L[a,b] is lowering operator. By</span>
-<span class="sd">    flattening the irrep indices {a,b}, the problem can be cast as a linear</span>
-<span class="sd">    system of the form A.x=b. This system is generically underdetermined. The</span>
-<span class="sd">    current implementation singles out a particular solution using the</span>
-<span class="sd">    Moore-Penrose pseudo-inverse.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="n">irrep_matrices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">irrep_matrices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>\
-        <span class="s2">&quot;Representation matrices must be square&quot;</span>
-    <span class="n">dim_group</span><span class="p">,</span> <span class="n">dim_rep</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">irrep_matrices</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">irrep_matrices_flat</span> <span class="o">=</span> <span class="n">irrep_matrices</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dim_group</span><span class="p">,</span> <span class="n">dim_rep</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-    <span class="c1"># Lowering operators</span>
-    <span class="n">lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim_rep</span><span class="p">,</span> <span class="n">k</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">lower_flat</span> <span class="o">=</span> <span class="n">lower</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dim_rep</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-    <span class="c1"># Solve the flattened problem</span>
-    <span class="n">coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">irrep_matrices_flat</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">@</span> <span class="n">lower_flat</span>
-    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,iab&quot;</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">,</span> <span class="n">irrep_matrices</span><span class="p">),</span> <span class="n">lower</span><span class="p">),</span>\
-        <span class="s2">&quot;Failed to construct lowering coefficients.&quot;</span>
-    <span class="k">return</span> <span class="n">coeffs</span></div>
-
+<span class="c1">##################################</span>
+<span class="c1"># Block diagonalization matrices #</span>
+<span class="c1">##################################</span>
 
 
 <div class="viewcode-block" id="orth">
@@ -2203,7 +2571,7 @@ document.write(`
     <span class="n">_</span><span class="p">,</span> <span class="n">ncols</span> <span class="o">=</span> <span class="n">basis</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">dim</span><span class="p">,</span> <span class="o">=</span> <span class="n">vector</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">if</span> <span class="n">ncols</span> <span class="o">!=</span> <span class="n">dim</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="sa">f</span><span class="s2">&quot;Incomensurate shapes, </span><span class="si">{</span><span class="n">basis</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">vector</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Incomensurate shapes, </span><span class="si">{</span><span class="n">basis</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">vector</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Compute projections</span>
     <span class="n">v_parallel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">vector</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -2215,12 +2583,12 @@ document.write(`
 
 
 
-<div class="viewcode-block" id="apply_schur_and_lower">
-<a class="viewcode-back" href="../../code.html#mhi.mhi.apply_schur_and_lower">[docs]</a>
-<span class="k">def</span> <span class="nf">apply_schur_and_lower</span><span class="p">(</span><span class="n">Dmm</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="apply_schur">
+<a class="viewcode-back" href="../../code.html#mhi.mhi.apply_schur">[docs]</a>
+<span class="k">def</span> <span class="nf">apply_schur</span><span class="p">(</span><span class="n">Dmm</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes the block diagonalization matrix / change-of-basis coefficients,</span>
-<span class="sd">    using Schur&#39;s algorithm and lowering operators to construct the full tables.</span>
+<span class="sd">    Computes the block diagonalization matrices using Schur&#39;s algorithm,</span>
+<span class="sd">    including transition operators to move between rows in a given irrep.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2228,74 +2596,68 @@ document.write(`
 <span class="sd">        Momentum-(spin)-representation matrices</span>
 <span class="sd">    Dmumu : dict</span>
 <span class="sd">        The irrep matrices. The keys give the name of the irrep. The values</span>
-<span class="sd">        contain the group irrep matrices, with shape ``(|G|, |irrep|, |irrep|)``.</span>
+<span class="sd">        contain the group irrep matrices, with shape ``(|G|, |\Gamma|, |\Gamma|)``.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    projector : dict</span>
-<span class="sd">        The block diagonalization matrix / change-of-basis coefficients.</span>
+<span class="sd">    u_matrix : dict</span>
+<span class="sd">        The block diagonalization matrix.</span>
 <span class="sd">        The keys are tuples of the form (irrep_name, degeneracy_number).</span>
-<span class="sd">        The values are arrays containing the coefficients, each of shape</span>
-<span class="sd">        ``(|irrep|, |O|)``.</span>
+<span class="sd">        The values are arrays containing the matrices, each of shape</span>
+<span class="sd">        ``(|\Gamma|, |O|)``.</span>
+<span class="sd">    transition_operators: dict</span>
+<span class="sd">        Column of transition operators ``T_{\mu,0}``.</span>
+<span class="sd">        The keys are irrep names.</span>
+<span class="sd">        The values are ndarrays of shape ``(|\Gamma|, |O|, |O|)``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">projector</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">u_matrix</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">transition_operators</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">irrep_name</span> <span class="ow">in</span> <span class="n">Dmumu</span><span class="p">:</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">_</span>  <span class="o">=</span> <span class="n">Dmumu</span><span class="p">[</span><span class="n">irrep_name</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
-
-        <span class="c1"># Apply the Wonderful orthogonality theorem, i.e., Schur&#39;s lemma</span>
-        <span class="c1"># Lowering moves from the top of the irrep down the matrix, so start</span>
-        <span class="c1"># explicitly with row 0.</span>
-        <span class="n">f_projector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ijk-&gt;jk&quot;</span><span class="p">,</span>
-                                <span class="n">Dmumu</span><span class="p">[</span><span class="n">irrep_name</span><span class="p">][:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span>  <span class="c1"># mu = 0</span>
+        <span class="c1"># Construct transition operators using Wonderful orthogonality theorem</span>
+        <span class="c1"># Comute the column T_{mu,0}, since that&#39;s all that&#39;s needed.</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="n">Dmm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Dmm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+            <span class="n">T</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ijk-&gt;jk&quot;</span><span class="p">,</span>
+                                <span class="n">Dmumu</span><span class="p">[</span><span class="n">irrep_name</span><span class="p">][:,</span><span class="n">mu</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span>
                                 <span class="n">Dmm</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">f_projector</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="n">T</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span> <span class="o">*=</span> <span class="n">dim</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Dmumu</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">):</span>
             <span class="c1"># The present irrep doesn&#39;t appear in the decompostion. Carry on.</span>
             <span class="k">continue</span>
-
-        <span class="c1"># Construct the lowering operator...</span>
-        <span class="k">if</span> <span class="n">dim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># ... but only if the irrep has several rows.</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">coeffs</span> <span class="o">=</span> <span class="n">compute_lowering_coefficients</span><span class="p">(</span><span class="n">Dmumu</span><span class="p">[</span><span class="n">irrep_name</span><span class="p">])</span>
-            <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to locate lowering coefficients: </span><span class="si">{</span><span class="n">irrep_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">lowering_op</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,iab&quot;</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">,</span> <span class="n">Dmm</span><span class="p">)</span>
+        <span class="n">transition_operators</span><span class="p">[</span><span class="n">irrep_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span>
 
         <span class="c1"># Count the number of degenerate copies</span>
-        <span class="n">rank</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">f_projector</span><span class="p">)</span>
-
-        <span class="c1"># The following commented-out line works and is more idiomatic.</span>
-        <span class="c1"># However, the method differs from the Gram-Schmidt algorithm</span>
-        <span class="c1"># described in the paper.</span>
-        <span class="c1"># basis = scipy.linalg.orth(f_projector).T</span>
-        <span class="n">basis</span> <span class="o">=</span> <span class="n">orth</span><span class="p">(</span><span class="n">f_projector</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">basis</span> <span class="o">=</span> <span class="n">orth</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">basis</span><span class="p">)</span> <span class="o">==</span> <span class="n">rank</span><span class="p">,</span> <span class="p">(</span>
             <span class="s2">&quot;Failure: expected len(basis)=rank. &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;Found len(basis)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">basis</span><span class="p">)</span><span class="si">}</span><span class="s2"> and rank=</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Located irrep </span><span class="si">{</span><span class="n">irrep_name</span><span class="si">}</span><span class="s2"> with degeneracy </span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Compute coefficients for each degenerate copy</span>
         <span class="k">for</span> <span class="n">kappa</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
             <span class="n">vecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">basis</span><span class="p">[</span><span class="n">kappa</span><span class="p">]]</span>
-            <span class="c1"># Compute each row using lowering operators</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-                <span class="n">new_vec</span> <span class="o">=</span> <span class="n">lowering_op</span> <span class="o">@</span> <span class="n">vecs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># Construct subsequent rows with transition operators T_{mu,0}</span>
+            <span class="k">for</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+                <span class="n">new_vec</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span> <span class="o">@</span> <span class="n">basis</span><span class="p">[</span><span class="n">kappa</span><span class="p">]</span>
+                <span class="n">new_vec</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">new_vec</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">new_vec</span><span class="p">),</span> <span class="mi">0</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Zero vector encountered while lowering&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zero vector encountered by T[</span><span class="si">{</span><span class="n">mu</span><span class="si">}</span><span class="s2">,0]&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">new_vec</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Normalization broken during lowering.&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Normalization broken during T[</span><span class="si">{</span><span class="n">mu</span><span class="si">}</span><span class="s2">,0].&quot;</span><span class="p">)</span>
                 <span class="n">vecs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_vec</span><span class="p">)</span>
             <span class="n">vecs</span> <span class="o">=</span> <span class="n">rephase</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vecs</span><span class="p">),</span> <span class="n">irrep_name</span><span class="p">)</span>
-            <span class="n">projector</span><span class="p">[(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)]</span> <span class="o">=</span> <span class="n">vecs</span>
+            <span class="n">u_matrix</span><span class="p">[(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)]</span> <span class="o">=</span> <span class="n">vecs</span>
+
         <span class="k">for</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">vec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vecs</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="s2">&quot;norm&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span>
 
-
     <span class="c1"># Check results for consistency</span>
-    <span class="n">test_row_orthogonality</span><span class="p">(</span><span class="n">projector</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-    <span class="n">test_degenerate_orthogonality</span><span class="p">(</span><span class="n">projector</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-    <span class="n">test_block_diagonalization</span><span class="p">(</span><span class="n">Dmm</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">projector</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">projector</span></div>
+    <span class="n">test_row_orthogonality</span><span class="p">(</span><span class="n">u_matrix</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="n">test_degenerate_orthogonality</span><span class="p">(</span><span class="n">u_matrix</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="n">test_block_diagonalization</span><span class="p">(</span><span class="n">Dmm</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">u_matrix</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">u_matrix</span><span class="p">,</span> <span class="n">transition_operators</span></div>
 
 
 
@@ -2303,17 +2665,16 @@ document.write(`
 <a class="viewcode-back" href="../../code.html#mhi.mhi.rephase">[docs]</a>
 <span class="k">def</span> <span class="nf">rephase</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">irrep</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Applies a phase convention to block diagonalization / change-of-basis</span>
-<span class="sd">    coefficieints.</span>
+<span class="sd">    Applies a phase convention to block diagonalization matrices</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    arr : ``(|irrep|, |O|)`` array_like</span>
-<span class="sd">        Table specifiying the coefficients.</span>
+<span class="sd">    arr : ``(|\Gamma|, |O|)`` array_like</span>
+<span class="sd">        Table specifiying the matrix</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    arr : ``(|irrep|, |O|)`` ndarray</span>
+<span class="sd">    arr : ``(|\Gamma|, |O|)`` ndarray</span>
 <span class="sd">        The table with appropriate phases applied.</span>
 
 <span class="sd">    Notes</span>
@@ -2503,10 +2864,8 @@ document.write(`
 
 
 
-<div class="viewcode-block" id="IrrepDecomposition">
-<a class="viewcode-back" href="../../code.html#mhi.mhi.IrrepDecomposition">[docs]</a>
 <span class="k">class</span> <span class="nc">IrrepDecomposition</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decomp</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span> <span class="n">Dmm</span><span class="p">,</span> <span class="n">little_name</span><span class="p">,</span> <span class="n">stab_name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decomp</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span> <span class="n">Dmm</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">little_name</span><span class="p">,</span> <span class="n">stab_name</span><span class="p">,</span> <span class="n">transition_operators</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Container for results of computing the block-diagonalization matrices</span>
 <span class="sd">        which project linear combinations of plane-wave states onto irreps of</span>
@@ -2518,17 +2877,24 @@ document.write(`
 <span class="sd">            The irrep decomposition and change-of-basis matrices.</span>
 <span class="sd">            The keys are tuples (irrep_name, degeneracy_idx).</span>
 <span class="sd">            The values are the block-diagonalization matrices, given as arrays</span>
-<span class="sd">            of shape ``(|irrep|, |O|)``.</span>
+<span class="sd">            of shape ``(|\Gamma|, |O|)``.</span>
 <span class="sd">        orbit : ``(|O|, )`` , ndarray</span>
 <span class="sd">            The &quot;extended&quot; spin-momentum orbit, where each element is a</span>
 <span class="sd">            SpinShellTuple specifying momentum and spin indices.</span>
 <span class="sd">        Dmm : ``(|G|, |O|, |O|)``, ndarray</span>
 <span class="sd">            The (reducible) representation matrices associated with the orbit.</span>
+<span class="sd">        Dmumu : ``(|G|, |\Gamma|, |\Gamma|)``, ndarray</span>
+<span class="sd">            The irrep matrices</span>
 <span class="sd">        little_name : str</span>
 <span class="sd">            The name of the little group leaving the total momentum invariant</span>
 <span class="sd">        stab_name : str</span>
 <span class="sd">            The name of the stabilizer group leaving the ordered set of</span>
 <span class="sd">            momenta invariant.</span>
+<span class="sd">        transition_operators: dict</span>
+<span class="sd">            Column of transition operators ``T_{\mu,0}``.</span>
+<span class="sd">            The keys are irrep names.</span>
+<span class="sd">            The values are ndarrays of shape ``(|\Gamma|, |O|, |O|)``.</span>
+
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -2539,7 +2905,7 @@ document.write(`
 
 <span class="sd">        To carry out this projection, the basis of correlation functions must</span>
 <span class="sd">        have the same order as the orbit used to compute the block-diagonalization</span>
-<span class="sd">        coefficients. The required ordering can be seen by examining the</span>
+<span class="sd">        matrices. The required ordering can be seen by examining the</span>
 <span class="sd">        &quot;orbit.&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check expected shape of block diagonalization matrices</span>
@@ -2552,13 +2918,13 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">decomp</span> <span class="o">=</span> <span class="n">decomp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">orbit</span> <span class="o">=</span> <span class="n">orbit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Dmm</span> <span class="o">=</span> <span class="n">Dmm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Dmumu</span> <span class="o">=</span> <span class="n">Dmumu</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_little_name</span> <span class="o">=</span> <span class="n">little_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stab_name</span> <span class="o">=</span> <span class="n">stab_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transition_operators</span> <span class="o">=</span> <span class="n">transition_operators</span>
 
-<div class="viewcode-block" id="IrrepDecomposition.format">
-<a class="viewcode-back" href="../../code.html#mhi.mhi.IrrepDecomposition.format">[docs]</a>
     <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Formats the irrep decomposition as text string.</span>
 
 <span class="sd">        Parameters</span>
@@ -2569,8 +2935,8 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        output : str</span>
-<span class="sd">            The irrep decomposition, e.g., &quot;A1p + A2p + 2*Ep&quot; or</span>
-<span class="sd">            &quot;$A_1^+ \oplus A_2^+ \oplus 2E^+$&quot;.</span>
+<span class="sd">            The irrep decomposition, e.g., ``&quot;A1p + A2p + 2*Ep&quot;`` or</span>
+<span class="sd">            ``&quot;$A_1^+ \oplus A_2^+ \oplus 2E^+$&quot;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Count the degenerate copies</span>
         <span class="n">irrep_counts</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2593,8 +2959,7 @@ document.write(`
             <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;$&quot;</span> <span class="o">+</span> <span class="n">output</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">degen</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="n">irrep</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">degen</span><span class="p">,</span> <span class="n">irrep</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">degeneracies</span><span class="p">,</span> <span class="n">names</span><span class="p">)])</span>
-        <span class="k">return</span> <span class="n">output</span></div>
-
+        <span class="k">return</span> <span class="n">output</span>
 
     <span class="k">def</span> <span class="nf">_irrep_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">irrep_name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2696,8 +3061,6 @@ document.write(`
         <span class="p">}</span>
         <span class="k">return</span> <span class="s1">&#39;$&#39;</span> <span class="o">+</span> <span class="n">name_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;$&#39;</span>
 
-<div class="viewcode-block" id="IrrepDecomposition.little_name">
-<a class="viewcode-back" href="../../code.html#mhi.mhi.IrrepDecomposition.little_name">[docs]</a>
     <span class="k">def</span> <span class="nf">little_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the name of the little group.</span>
@@ -2714,11 +3077,8 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">latex</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_group_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_little_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_little_name</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_little_name</span>
 
-
-<div class="viewcode-block" id="IrrepDecomposition.stab_name">
-<a class="viewcode-back" href="../../code.html#mhi.mhi.IrrepDecomposition.stab_name">[docs]</a>
     <span class="k">def</span> <span class="nf">stab_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the name of the stabilizer group.</span>
@@ -2735,9 +3095,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">latex</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_group_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stab_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stab_name</span></div>
-</div>
-
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stab_name</span>
 
 
 <div class="viewcode-block" id="mhi">
@@ -2774,8 +3132,8 @@ document.write(`
 <span class="sd">      - Compute irrep matrices of the little group, Dmumu(R)</span>
 <span class="sd">      - Compute the momentum(-spin) representation matrices, Dmm(R)</span>
 <span class="sd">      - Apply exchange-group projection to Dmm matrices, P @ Dmm(R) @ P</span>
-<span class="sd">      - Apply Schur&#39;s algorithm and lowering operators to construct the</span>
-<span class="sd">        block-diagonalization / change-of-basis matrices</span>
+<span class="sd">      - Apply Schur&#39;s algorithm and transition operators to construct the</span>
+<span class="sd">        block-diagonalization  matrices</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">spin_irreps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">spin_irreps</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spin_irreps</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">momenta</span><span class="p">):</span>
@@ -2828,16 +3186,16 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="n">Dmm_momspin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ajk,kl&quot;</span><span class="p">,</span> <span class="n">Dmm_momspin</span><span class="p">,</span> <span class="n">proj</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="s1">&#39;greedy&#39;</span><span class="p">)</span>
 
-    <span class="c1"># 5. Apply Schur&#39;s lemma and lowering operators</span>
+    <span class="c1"># 5. Apply Schur&#39;s lemma</span>
     <span class="k">if</span> <span class="n">Dmm_momspin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">transition_operators</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">apply_schur_and_lower</span><span class="p">(</span><span class="n">Dmm_momspin</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">transition_operators</span> <span class="o">=</span> <span class="n">apply_schur</span><span class="p">(</span><span class="n">Dmm_momspin</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Decomposition vanishes for specified inputs.&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">IrrepDecomposition</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">orbit_momspin</span><span class="p">,</span> <span class="n">Dmm_momspin</span><span class="p">,</span> <span class="n">little_name</span><span class="p">,</span> <span class="n">stab_name</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">IrrepDecomposition</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">orbit_momspin</span><span class="p">,</span> <span class="n">Dmm_momspin</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">little_name</span><span class="p">,</span> <span class="n">stab_name</span><span class="p">,</span> <span class="n">transition_operators</span><span class="p">)</span></div>
 
 
 
@@ -2986,18 +3344,18 @@ document.write(`
 
 <div class="viewcode-block" id="test_row_orthogonality">
 <a class="viewcode-back" href="../../code.html#mhi.mhi.test_row_orthogonality">[docs]</a>
-<span class="k">def</span> <span class="nf">test_row_orthogonality</span><span class="p">(</span><span class="n">projector</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_row_orthogonality</span><span class="p">(</span><span class="n">u_matrix</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Tests the row orthogonality of tables of block-diagonalization /</span>
-<span class="sd">    change-of-basis coefficients, within each table for a given irrep.</span>
+<span class="sd">    Tests the row orthogonality of tables of block-diagonalization matrices,</span>
+<span class="sd">    for a given irrep.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    projector : dict</span>
-<span class="sd">        The block diagonalization matrix / change-of-basis coefficients.</span>
+<span class="sd">    u_matrix : dict</span>
+<span class="sd">        The block diagonalization matrix.</span>
 <span class="sd">        The keys are tuples of the form (irrep_name, degeneracy_number).</span>
-<span class="sd">        The values are arrays containing the coefficients, each of shape</span>
-<span class="sd">        ``(|irrep|, |O|)``.</span>
+<span class="sd">        The values are arrays containing the matrices, each of shape</span>
+<span class="sd">        ``(|\Gamma|, |O|)``.</span>
 <span class="sd">    verbose : bool</span>
 <span class="sd">        Whether to print additional information about successful tests.</span>
 
@@ -3005,8 +3363,8 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">irrep_name</span><span class="p">,</span> <span class="n">kappa</span> <span class="ow">in</span> <span class="n">projector</span><span class="p">:</span>
-        <span class="n">arr</span> <span class="o">=</span> <span class="n">projector</span><span class="p">[(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">irrep_name</span><span class="p">,</span> <span class="n">kappa</span> <span class="ow">in</span> <span class="n">u_matrix</span><span class="p">:</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">u_matrix</span><span class="p">[(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)]</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">@</span> <span class="n">arr</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">)),</span>\
             <span class="sa">f</span><span class="s2">&quot;Failure of row orthogonality </span><span class="si">{</span><span class="n">irrep_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">kappa</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -3017,18 +3375,18 @@ document.write(`
 
 <div class="viewcode-block" id="count_degeneracy">
 <a class="viewcode-back" href="../../code.html#mhi.mhi.count_degeneracy">[docs]</a>
-<span class="k">def</span> <span class="nf">count_degeneracy</span><span class="p">(</span><span class="n">projector</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">count_degeneracy</span><span class="p">(</span><span class="n">u_matrix</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Counts the degeneracy of irreps within the tables of block-diagnoalization/</span>
-<span class="sd">    change-of-basis coefficients.</span>
+<span class="sd">    Counts the degeneracy of irreps within the tables of block-diagnoalization</span>
+<span class="sd">    matrices.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    projector : dict</span>
-<span class="sd">        The block diagonalization matrix / change-of-basis coefficients.</span>
+<span class="sd">    u_matrix : dict</span>
+<span class="sd">        The block diagonalization matrix.</span>
 <span class="sd">        The keys are tuples of the form (irrep_name, degeneracy_number).</span>
-<span class="sd">        The values are arrays containing the coefficients, each of shape</span>
-<span class="sd">        ``(|irrep|, |O|)``.</span>
+<span class="sd">        The values are arrays containing the matrices, each of shape</span>
+<span class="sd">        ``(|\Gamma|, |O|)``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -3037,7 +3395,7 @@ document.write(`
 <span class="sd">        to the counts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">degeneracy</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">irrep_name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">projector</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">irrep_name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">u_matrix</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">irrep_name</span> <span class="ow">in</span> <span class="n">degeneracy</span><span class="p">:</span>
             <span class="n">degeneracy</span><span class="p">[</span><span class="n">irrep_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
@@ -3048,17 +3406,17 @@ document.write(`
 
 <div class="viewcode-block" id="test_degenerate_orthogonality">
 <a class="viewcode-back" href="../../code.html#mhi.mhi.test_degenerate_orthogonality">[docs]</a>
-<span class="k">def</span> <span class="nf">test_degenerate_orthogonality</span><span class="p">(</span><span class="n">projector</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_degenerate_orthogonality</span><span class="p">(</span><span class="n">u_matrix</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Tests that tables corresponding to degenerate irreps are orthogonal.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    projector : dict</span>
-<span class="sd">        The block diagonalization matrix / change-of-basis coefficients.</span>
+<span class="sd">    u_matrix : dict</span>
+<span class="sd">        The block diagonalization matrix.</span>
 <span class="sd">        The keys are tuples of the form (irrep_name, degeneracy_number).</span>
-<span class="sd">        The values are arrays containing the coefficients, each of shape</span>
-<span class="sd">        ``(|irrep|, |O|)``.</span>
+<span class="sd">        The values are arrays containing the matrices, each of shape</span>
+<span class="sd">        ``(|\Gamma|, |O|)``.</span>
 <span class="sd">    verbose : bool</span>
 <span class="sd">        Whether to print additional information about successful tests.</span>
 
@@ -3066,15 +3424,15 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">degeneracy</span> <span class="o">=</span> <span class="n">count_degeneracy</span><span class="p">(</span><span class="n">projector</span><span class="p">)</span>
+    <span class="n">degeneracy</span> <span class="o">=</span> <span class="n">count_degeneracy</span><span class="p">(</span><span class="n">u_matrix</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">irrep_name</span><span class="p">,</span> <span class="n">rank</span> <span class="ow">in</span> <span class="n">degeneracy</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">for</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">k1</span> <span class="o">==</span> <span class="n">k2</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">arr1</span> <span class="o">=</span> <span class="n">projector</span><span class="p">[(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">k1</span><span class="p">)]</span>
-            <span class="n">arr2</span> <span class="o">=</span> <span class="n">projector</span><span class="p">[(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">k2</span><span class="p">)]</span>
+            <span class="n">arr1</span> <span class="o">=</span> <span class="n">u_matrix</span><span class="p">[(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">k1</span><span class="p">)]</span>
+            <span class="n">arr2</span> <span class="o">=</span> <span class="n">u_matrix</span><span class="p">[(</span><span class="n">irrep_name</span><span class="p">,</span> <span class="n">k2</span><span class="p">)]</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">arr1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">arr1</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">@</span> <span class="n">arr2</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dim</span><span class="p">)),</span>\
                 <span class="sa">f</span><span class="s2">&quot;Failure of orthogonality </span><span class="si">{</span><span class="n">irrep_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">k1</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">k2</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -3085,12 +3443,12 @@ document.write(`
 
 <div class="viewcode-block" id="test_block_diagonalization">
 <a class="viewcode-back" href="../../code.html#mhi.mhi.test_block_diagonalization">[docs]</a>
-<span class="k">def</span> <span class="nf">test_block_diagonalization</span><span class="p">(</span><span class="n">Dmm</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">projector</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">test_block_diagonalization</span><span class="p">(</span><span class="n">Dmm</span><span class="p">,</span> <span class="n">Dmumu</span><span class="p">,</span> <span class="n">u_matrix</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Tests the block diagonalization property of the change-of-basis</span>
-<span class="sd">    projection matrices which, schematically, reads: &quot;Dmumu = F^* Dmm F&quot;</span>
-<span class="sd">    in terms of the momentum-shell representation &quot;Dmm&quot;, the projector &quot;F&quot;,</span>
-<span class="sd">    and the block-diagonal irrep matrix &quot;Dmumu&quot;.</span>
+<span class="sd">    projection matrices which, schematically, reads: &quot;Dmumu = U^dagger Dmm U&quot;</span>
+<span class="sd">    in terms of the momentum-shell representation &quot;Dmm&quot;, the block-diagonalization</span>
+<span class="sd">    matrix &quot;U&quot;, and the block-diagonal irrep matrix &quot;Dmumu&quot;.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3099,12 +3457,12 @@ document.write(`
 <span class="sd">    Dmumu : dict</span>
 <span class="sd">        The irrep matrices as a dict. The keys give the name of the irrep.</span>
 <span class="sd">        The values contain the irrep matrices themselves, each with shape</span>
-<span class="sd">        ``(|G|, |irrep|, |irrep|)``.</span>
-<span class="sd">    projector : dict</span>
-<span class="sd">        The block diagonalization matrix / change-of-basis coefficients.</span>
+<span class="sd">        ``(|G|, |\Gamma|, |\Gamma|)``.</span>
+<span class="sd">    u_matrix : dict</span>
+<span class="sd">        The block diagonalization matrix.</span>
 <span class="sd">        The keys are tuples of the form (irrep_name, degeneracy_number).</span>
-<span class="sd">        The values are arrays containing the coefficients, each of shape</span>
-<span class="sd">        ``(|irrep|, |O|)``.</span>
+<span class="sd">        The values are arrays containing the matrix, each of shape</span>
+<span class="sd">        ``(|\Gamma|, |O|)``.</span>
 <span class="sd">    verbose : bool</span>
 <span class="sd">        Whether to print additional information about successful tests.</span>
 
@@ -3112,10 +3470,10 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">F</span> <span class="ow">in</span> <span class="n">projector</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">umat</span> <span class="ow">in</span> <span class="n">u_matrix</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span>
             <span class="n">Dmumu</span><span class="p">[</span><span class="n">irrep</span><span class="p">],</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ia,rab,jb-&gt;rij&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">Dmm</span><span class="p">,</span> <span class="n">F</span><span class="p">))</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ia,rab,jb-&gt;rij&quot;</span><span class="p">,</span> <span class="n">umat</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">Dmm</span><span class="p">,</span> <span class="n">umat</span><span class="p">))</span>
         <span class="k">assert</span> <span class="n">test</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Failure: block diagonalization </span><span class="si">{</span><span class="n">irrep</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Success: block diagonalization using projection matrices&quot;</span><span class="p">)</span></div>
@@ -3130,7 +3488,7 @@ document.write(`
 <a class="viewcode-back" href="../../code.html#mhi.mhi.write_hdf5">[docs]</a>
 <span class="k">def</span> <span class="nf">write_hdf5</span><span class="p">(</span><span class="n">h5fname</span><span class="p">,</span> <span class="n">result_dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Writes block-diagonalization / change-of-basis coefficients to HDF5.</span>
+<span class="sd">    Writes block-diagonalization matrices to HDF5.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3139,7 +3497,7 @@ document.write(`
 <span class="sd">    result_dict : dict</span>
 <span class="sd">        The block-diagonalization / change of basis matrices, where each key</span>
 <span class="sd">        is a tuple the form (irrep_name, degeneracy) and each key is an ndarray</span>
-<span class="sd">        with the coefficients.</span>
+<span class="sd">        with the associated matrix.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -3165,7 +3523,7 @@ document.write(`
 <a class="viewcode-back" href="../../code.html#mhi.mhi.read_hdf5">[docs]</a>
 <span class="k">def</span> <span class="nf">read_hdf5</span><span class="p">(</span><span class="n">h5fname</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reads saved block-diagonalization / change-of-basis coefficients from HDF5.</span>
+<span class="sd">    Reads saved block-diagonalization matrices from HDF5.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3177,7 +3535,7 @@ document.write(`
 <span class="sd">    result_dict : dict</span>
 <span class="sd">        The block-diagonalization / change of basis matrices, where each key</span>
 <span class="sd">        is a tuple the form (irrep_name, degeneracy) and each key is an ndarray</span>
-<span class="sd">        with the coefficients.</span>
+<span class="sd">        with the associated matrix.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result_dict</span> <span class="o">=</span> <span class="p">{}</span>
