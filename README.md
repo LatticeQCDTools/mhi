@@ -1,9 +1,14 @@
 # mhi
 Irrep Projection for Multi-Hadron Interpolators
 
+This package is associated with the paper
+
+    W. Detmold, W. I. Jay, G. Kanwar, P. E. Shanahan, and M. L. Wagman,
+    "Multi-particle interpolating operators in quantum field theories with cubic symmetries."
+
 ## Installation
 
-After cloning the repo, move the top-level directory containing setup.py.
+After cloning the repo, move to the top-level directory containing setup.py.
 Then use pip to install the module:
 
 `$ pip install -e ./`

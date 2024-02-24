@@ -189,6 +189,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </header>
@@ -276,6 +280,23 @@ associated with the paper</p>
 <div><p>W. Detmold, W. I. Jay, G. Kanwar, P. E. Shanahan, and M. L. Wagman,
 “Multi-particle interpolating operators in quantum field theories with cubic symmetries.”</p>
 </div></blockquote>
+</section>
+<section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<p>After cloning the repo, move to the top-level directory containing setup.py. Then
+use pip to install the module:</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">./</span></code></p>
+<p>The flag “-e” is an “editable install”, which means that local changes to the
+code will appear code is run.</p>
+</section>
+<section id="tests">
+<h1>Tests<a class="headerlink" href="#tests" title="Link to this heading">#</a></h1>
+<p>To test the command-line interface, run the command</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">mhi</span> <span class="pre">example_input.yaml</span> <span class="pre">&lt;output_name.h5&gt;</span> <span class="pre">--verbose</span></code></p>
+<p>The flag “-m” is necessary and directs python to run the module’s main function. After running the main function, it is possible to test the ability to read the hdf5 file using</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">read.py</span> <span class="pre">&lt;output_name.h5&gt;</span></code></p>
+<p>To test the module against previously tabulated data, run the command</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">test.py</span> <span class="pre">&lt;path/to/reference/data&gt;</span></code></p>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -306,7 +327,25 @@ associated with the paper</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Overview</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">Tests</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
