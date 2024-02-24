@@ -1309,10 +1309,10 @@ Support also exists for certain named particles like ‘pi’, ‘K’, ‘neutr
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>momentum_spin_orbit</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>Array of SpinShellTuples, each of defines the (momenta, spin)
-configuration for a given element of the orbit</p>
+<dt><strong>momentum_spin_orbit</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">)</span></code> list of <a class="reference internal" href="#mhi.mhi.SpinShellTuple" title="mhi.mhi.SpinShellTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpinShellTuple</span></code></a></span></dt><dd><p>Each element in the list defines the (momenta, spin) configuration for a
+given element of the orbit.</p>
 </dd>
-<dt><strong>internal_group</strong><span class="classifier">array_like</span></dt><dd><p>The internal group, with namedtuple/WeightedPermutation elements</p>
+<dt><strong>internal_group</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></span></dt><dd><p>The exchange group projector in the group algebra.</p>
 </dd>
 </dl>
 </dd>
@@ -1503,7 +1503,7 @@ given Young tableau.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tableau</strong><span class="classifier">list of lists</span></dt><dd><p>The Young tableau</p>
+<dt><strong>tableau</strong><span class="classifier">list of lists</span></dt><dd><p>The Young tableau.</p>
 </dd>
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The number of indices for which to construct the projector.</p>
 </dd>
@@ -1511,7 +1511,7 @@ given Young tableau.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>proj</strong><span class="classifier">list of WeightedPermutation objects</span></dt><dd><p>The projection operator in the group algebra</p>
+<dt><strong>proj</strong><span class="classifier">list of WeightedPermutation objects</span></dt><dd><p>The projection operator in the group algebra.</p>
 </dd>
 </dl>
 </dd>
@@ -1995,7 +1995,7 @@ wave states onto irreps of the cubic group.</p>
 </dd>
 <dt><strong>return_Dmm</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to return the momentum-(spin) representation matrices.</p>
 </dd>
-<dt><strong>internal_symmetry</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></span></dt><dd><p>The internal symmetry group.</p>
+<dt><strong>internal_symmetry</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></span></dt><dd><p>The exchange group projector defined in the group algebra.</p>
 </dd>
 </dl>
 </dd>

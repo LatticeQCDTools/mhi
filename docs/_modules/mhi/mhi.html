@@ -1818,11 +1818,11 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    momentum_spin_orbit : ``(n, )`` array_like</span>
-<span class="sd">        Array of SpinShellTuples, each of defines the (momenta, spin)</span>
-<span class="sd">        configuration for a given element of the orbit</span>
-<span class="sd">    internal_group : array_like</span>
-<span class="sd">         The internal group, with namedtuple/WeightedPermutation elements</span>
+<span class="sd">    momentum_spin_orbit : ``(n, )`` list of :class:`SpinShellTuple`</span>
+<span class="sd">        Each element in the list defines the (momenta, spin) configuration for a</span>
+<span class="sd">        given element of the orbit.</span>
+<span class="sd">    internal_group : list of :class:`WeightedPermutation`</span>
+<span class="sd">         The exchange group projector in the group algebra.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -2090,14 +2090,14 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tableau : list of lists</span>
-<span class="sd">        The Young tableau</span>
+<span class="sd">        The Young tableau.</span>
 <span class="sd">    n : int</span>
 <span class="sd">        The number of indices for which to construct the projector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    proj : list of WeightedPermutation objects</span>
-<span class="sd">        The projection operator in the group algebra</span>
+<span class="sd">        The projection operator in the group algebra.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -2883,9 +2883,9 @@ document.write(`
 <span class="sd">            The keys are tuples (irrep_name, degeneracy_idx).</span>
 <span class="sd">            The values are the block-diagonalization matrices, given as arrays</span>
 <span class="sd">            of shape ``(|\Gamma|, |O|)``.</span>
-<span class="sd">        orbit : ``(|O|, )`` , ndarray</span>
+<span class="sd">        orbit : ``(|O|,)`` list of :class:`SpinShellTuple`</span>
 <span class="sd">            The &quot;extended&quot; spin-momentum orbit, where each element is a</span>
-<span class="sd">            SpinShellTuple specifying momentum and spin indices.</span>
+<span class="sd">            :class:`SpinShellTuple` specifying momentum and spin indices.</span>
 <span class="sd">        Dmm : ``(|G|, |O|, |O|)``, ndarray</span>
 <span class="sd">            The (reducible) representation matrices associated with the orbit.</span>
 <span class="sd">        Dmumu : ``(|G|, |\Gamma|, |\Gamma|)``, ndarray</span>
@@ -3122,7 +3122,7 @@ document.write(`
 <span class="sd">    return_Dmm : bool</span>
 <span class="sd">        Whether or not to return the momentum-(spin) representation matrices.</span>
 <span class="sd">    internal_symmetry : list of :class:`WeightedPermutation`</span>
-<span class="sd">        The internal symmetry group.</span>
+<span class="sd">        The exchange group projector defined in the group algebra.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>

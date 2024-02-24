@@ -1386,11 +1386,11 @@ def make_internal_symmetry_projector(orbit, internal_symmetry):
 
     Parameters
     ----------
-    momentum_spin_orbit : ``(n, )`` array_like
-        Array of SpinShellTuples, each of defines the (momenta, spin)
-        configuration for a given element of the orbit
-    internal_group : array_like
-         The internal group, with namedtuple/WeightedPermutation elements
+    momentum_spin_orbit : ``(n, )`` list of :class:`SpinShellTuple`
+        Each element in the list defines the (momenta, spin) configuration for a
+        given element of the orbit.
+    internal_group : list of :class:`WeightedPermutation`
+         The exchange group projector in the group algebra.
 
     Returns
     -------
@@ -1634,14 +1634,14 @@ def make_young_projector(tableau, *, n):
     Parameters
     ----------
     tableau : list of lists
-        The Young tableau
+        The Young tableau.
     n : int
         The number of indices for which to construct the projector.
 
     Returns
     -------
     proj : list of WeightedPermutation objects
-        The projection operator in the group algebra
+        The projection operator in the group algebra.
 
     Notes
     -----
@@ -2372,9 +2372,9 @@ class IrrepDecomposition:
             The keys are tuples (irrep_name, degeneracy_idx).
             The values are the block-diagonalization matrices, given as arrays
             of shape ``(|\Gamma|, |O|)``.
-        orbit : ``(|O|, )`` , ndarray
+        orbit : ``(|O|,)`` list of :class:`SpinShellTuple`
             The "extended" spin-momentum orbit, where each element is a
-            SpinShellTuple specifying momentum and spin indices.
+            :class:`SpinShellTuple` specifying momentum and spin indices.
         Dmm : ``(|G|, |O|, |O|)``, ndarray
             The (reducible) representation matrices associated with the orbit.
         Dmumu : ``(|G|, |\Gamma|, |\Gamma|)``, ndarray
@@ -2609,7 +2609,7 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
     return_Dmm : bool
         Whether or not to return the momentum-(spin) representation matrices.
     internal_symmetry : list of :class:`WeightedPermutation`
-        The internal symmetry group.
+        The exchange group projector defined in the group algebra.
 
     Returns
     -------
