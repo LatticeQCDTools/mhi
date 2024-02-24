@@ -309,11 +309,11 @@ document.write(`
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    j : float</span>
-<span class="sd">        Half-integer total spin.</span>
+<span class="sd">        The half-integer total spin.</span>
 <span class="sd">    jz : float</span>
-<span class="sd">        Half-integer z component of spin.</span>
-<span class="sd">    parity : int</span>
-<span class="sd">        Parity defined as one of [+1,-1].</span>
+<span class="sd">        The half-integer z component of spin.</span>
+<span class="sd">    parity : +1 or -1</span>
+<span class="sd">        The parity.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
@@ -322,43 +322,43 @@ document.write(`
 
 <span class="n">basis_fcns</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="c1">#: Basis functions for irrep A1+ of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{1}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_Oh_A1p</span> <span class="o">=</span> <span class="p">[(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">Z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-<span class="c1">#: Basis functions for irrep A1- of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{1}^{-}` of :math:`O_h`.</span>
 <span class="n">basis_Oh_A1m</span> <span class="o">=</span> <span class="p">[(</span><span class="n">X</span><span class="o">*</span><span class="n">Y</span><span class="o">*</span><span class="n">Z</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">Y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span> <span class="n">Y</span><span class="o">**</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Z</span><span class="o">**</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
-<span class="c1">#: Basis functions for irrep A2+ of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{2}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_Oh_A2p</span> <span class="o">=</span> <span class="p">[(</span><span class="n">X</span><span class="o">**</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">Y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Y</span><span class="o">**</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Z</span><span class="o">**</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
-<span class="c1">#: Basis functions for irrep A2- of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{2}^{-}` of :math:`O_h`.</span>
 <span class="n">basis_Oh_A2m</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="o">*</span><span class="n">Y</span><span class="o">*</span><span class="n">Z</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep E+ of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`E^{+}` of :math:`O_h`.</span>
 <span class="n">basis_Oh_Ep</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span>
     <span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="c1">#: Basis functions for irrep E- of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`E^{-}` of :math:`O_h`.</span>
 <span class="n">basis_Oh_Em</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">X</span><span class="o">*</span><span class="n">Y</span><span class="o">*</span><span class="n">Z</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
     <span class="o">-</span><span class="n">X</span><span class="o">*</span><span class="n">Y</span><span class="o">*</span><span class="n">Z</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="c1">#: Basis functions for irrep T1- of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`T_1^-` of :math:`O_h`.</span>
 <span class="n">basis_Oh_T1m</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">Z</span><span class="p">,</span>
     <span class="o">-</span><span class="n">X</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">Y</span><span class="p">,</span>
     <span class="n">X</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">Y</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="c1">#: Basis functions for irrep T1+ of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`T_1^+` of :math:`O_h`.</span>
 <span class="n">basis_Oh_T1p</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="o">*</span><span class="n">Y</span><span class="o">*</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
     <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">Z</span><span class="o">*</span><span class="n">X</span><span class="o">*</span><span class="p">(</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Y</span><span class="o">*</span><span class="n">Z</span><span class="o">*</span><span class="p">(</span><span class="n">Y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Z</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
     <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">Z</span><span class="o">*</span><span class="n">X</span><span class="o">*</span><span class="p">(</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Y</span><span class="o">*</span><span class="n">Z</span><span class="o">*</span><span class="p">(</span><span class="n">Y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Z</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="c1">#: Basis functions for irrep T2- of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`T_2^-` of :math:`O_h`.</span>
 <span class="n">basis_Oh_T2m</span> <span class="o">=</span> <span class="p">[</span>
     <span class="o">-</span><span class="n">Y</span><span class="o">*</span><span class="p">(</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">X</span><span class="o">*</span><span class="p">(</span><span class="n">Y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Z</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
     <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">Z</span><span class="o">*</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
     <span class="n">Y</span><span class="o">*</span><span class="p">(</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">X</span><span class="o">*</span><span class="p">(</span><span class="n">Y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">Z</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="c1">#: Basis functions for irrep T2+ of group Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`T_2^+` of :math:`O_h`.</span>
 <span class="n">basis_Oh_T2p</span> <span class="o">=</span> <span class="p">[</span>
     <span class="o">-</span><span class="n">Z</span><span class="o">*</span><span class="n">X</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">Y</span><span class="o">*</span><span class="n">Z</span><span class="p">,</span>
     <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="o">*</span><span class="n">Y</span><span class="p">,</span>
@@ -377,15 +377,15 @@ document.write(`
     <span class="s2">&quot;T2p&quot;</span><span class="p">:</span> <span class="n">basis_Oh_T2p</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis functions for irrep A1 of C4v = A1+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{1}` of :math:`C_{4v}` = :math:`A_{1}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C4v_A1</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1p&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep A2 of C4v = A1- of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{2}` of :math:`C_{4v}` = :math:`A_{1}^{-}` of :math:`O_h`.</span>
 <span class="n">basis_C4v_A2</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1m&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep B1 of C4v = E1+[1] of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`B_{1}` of :math:`C_{4v}` = :math:`E_{1}^{+} (\mu=2)` of :math:`O_h`.</span>
 <span class="n">basis_C4v_B1</span> <span class="o">=</span> <span class="p">[</span><span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;Ep&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],]</span>
-<span class="c1">#: Basis functions for irrep B2 of C4v = T2+[1] of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`B_{2}` of :math:`C_{4v}` = :math:`T_2^+ (\mu=2)` of :math:`O_h`.</span>
 <span class="n">basis_C4v_B2</span> <span class="o">=</span> <span class="p">[</span><span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;T2p&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],]</span>
-<span class="c1">#: Basis functions for irrep E of C4v.</span>
+<span class="c1">#: Basis functions for irrep :math:`E` of :math:`C_{4v}`.</span>
 <span class="n">basis_C4v_E</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">X</span><span class="o">*</span><span class="n">Z</span><span class="p">,</span> <span class="o">-</span><span class="n">Y</span><span class="o">*</span><span class="n">Z</span><span class="p">]</span>
 <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;C4v&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;A1&quot;</span><span class="p">:</span> <span class="n">basis_C4v_A1</span><span class="p">,</span>
@@ -395,11 +395,11 @@ document.write(`
     <span class="s2">&quot;E&quot;</span> <span class="p">:</span> <span class="n">basis_C4v_E</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis functions for irrep A1 of C3v = A1+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{1}` of :math:`C_{3v}` = :math:`A_{1}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C3v_A1</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1p&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep A2 of C3v = A2+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{2}` of :math:`C_{3v}` = :math:`A_{2}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C3v_A2</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A2p&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep E of C3v = E+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`E` of :math:`C_{3v}` = :math:`E_{}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C3v_E</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;Ep&quot;</span><span class="p">]</span>
 <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;C3v&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;A1&quot;</span><span class="p">:</span> <span class="n">basis_C3v_A1</span><span class="p">,</span>
@@ -407,13 +407,13 @@ document.write(`
     <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="n">basis_C3v_E</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis functions for irrep A1 of C2v = A1+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{1}` of :math:`C_{2v}` = :math:`A_{1}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C2v_A1</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1p&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep A2 of C2v = A1- of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A_{2}` of :math:`C_{2v}` = :math:`A_{1}^{-}` of :math:`O_h`.</span>
 <span class="n">basis_C2v_A2</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1m&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep B1 of C2v = A2- of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`B_{1}` of :math:`C_{2v}` = :math:`A_{2}^{-}` of :math:`O_h`.</span>
 <span class="n">basis_C2v_B1</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A2m&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep B2 of C2v = A2+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`B_{2}` of :math:`C_{2v}` = :math:`A_{2}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C2v_B2</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A2p&quot;</span><span class="p">]</span>
 <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;C2v&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;A1&quot;</span><span class="p">:</span> <span class="n">basis_C2v_A1</span><span class="p">,</span>
@@ -422,25 +422,25 @@ document.write(`
     <span class="s2">&quot;B2&quot;</span><span class="p">:</span> <span class="n">basis_C2v_B2</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis functions for irrep A of C2R = A1+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A` of :math:`C_2^R` = :math:`A_{1}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C2R_A</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1p&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep B of C2R = A1- of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`B` of :math:`C_2^R` = :math:`A_{1}^{-}` of :math:`O_h`.</span>
 <span class="n">basis_C2R_B</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1m&quot;</span><span class="p">]</span>
 <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;C2R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">basis_C2R_A</span><span class="p">,</span>
     <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">basis_C2R_B</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis functions for irrep A of C2P = A1+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A` of :math:`C_2^P` = :math:`A_{1}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C2P_A</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1p&quot;</span><span class="p">]</span>
-<span class="c1">#: Basis functions for irrep B of C2P = A2+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`B` of :math:`C_2^P` = :math:`A_{2}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C2P_B</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A2p&quot;</span><span class="p">]</span>
 <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;C2P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">basis_C2P_A</span><span class="p">,</span>
     <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">basis_C2P_B</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis functions for irrep A of C1 = A1+ of Oh.</span>
+<span class="c1">#: Basis functions for irrep :math:`A` of :math:`C_1` = :math:`A_{1}^{+}` of :math:`O_h`.</span>
 <span class="n">basis_C1_A</span> <span class="o">=</span> <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;Oh&quot;</span><span class="p">][</span><span class="s2">&quot;A1p&quot;</span><span class="p">]</span>
 <span class="n">basis_fcns</span><span class="p">[</span><span class="s2">&quot;C1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">basis_C1_A</span><span class="p">,</span>
@@ -448,34 +448,34 @@ document.write(`
 
 
 <span class="n">basis_spinors</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="c1">#: Basis spinors for irrep G1+ of OhD.</span>
+<span class="c1">#: Basis spinors for irrep :math:`G_{1}^{+}` of :math:`O_h^D`.</span>
 <span class="n">basis_OhD_G1p</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep G1- of OhD.</span>
+<span class="c1">#: Basis spinors for irrep :math:`G_{1}^{-}` of :math:`O_h^D`.</span>
 <span class="n">basis_OhD_G1m</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep G2+ of OhD.</span>
+<span class="c1">#: Basis spinors for irrep :math:`G_{2}^{+}` of :math:`O_h^D`.</span>
 <span class="n">basis_OhD_G2p</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep G2- of OhD.</span>
+<span class="c1">#: Basis spinors for irrep :math:`G_{2}^{-}` of :math:`O_h^D`.</span>
 <span class="n">basis_OhD_G2m</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep H+ of OhD.</span>
+<span class="c1">#: Basis spinors for irrep :math:`H^{+}` of :math:`O_h^D`.</span>
 <span class="n">basis_OhD_Hp</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep H- of OhD.</span>
+<span class="c1">#: Basis spinors for irrep :math:`H^{-}` of :math:`O_h^D`.</span>
 <span class="n">basis_OhD_Hm</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),],</span>
@@ -493,12 +493,12 @@ document.write(`
     <span class="s2">&quot;Hm&quot;</span><span class="p">:</span> <span class="n">basis_OhD_Hm</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis spinors for irrep G1 of Dic4.</span>
+<span class="c1">#: Basis spinors for irrep :math:`G_{1}` of :math:`\mathrm{Dic}_4`.</span>
 <span class="n">basis_Dic4_G1</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep G2 of Dic4.</span>
+<span class="c1">#: Basis spinors for irrep :math:`G_{2}` of :math:`\mathrm{Dic}_4`.</span>
 <span class="n">basis_Dic4_G2</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
@@ -508,19 +508,19 @@ document.write(`
     <span class="s2">&quot;G2&quot;</span><span class="p">:</span> <span class="n">basis_Dic4_G2</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis spinors for irrep G of Dic3.</span>
+<span class="c1">#: Basis spinors for irrep :math:`G` of :math:`\mathrm{Dic}_3`.</span>
 <span class="n">basis_Dic3_G</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep F1 of Dic3.</span>
+<span class="c1">#: Basis spinors for irrep :math:`F_{1}` of :math:`\mathrm{Dic}_3`.</span>
 <span class="n">basis_Dic3_F1</span> <span class="o">=</span> <span class="p">[[</span>
     <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
     <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
     <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
     <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep F2 of Dic3.</span>
+<span class="c1">#: Basis spinors for irrep :math:`F_{2}` of :math:`\mathrm{Dic}_3`.</span>
 <span class="n">basis_Dic3_F2</span> <span class="o">=</span> <span class="p">[[</span>
     <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
     <span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
@@ -533,7 +533,7 @@ document.write(`
     <span class="s2">&quot;F2&quot;</span><span class="p">:</span> <span class="n">basis_Dic3_F2</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis spinors for irrep G of Dic2.</span>
+<span class="c1">#: Basis spinors for irrep :math:`G` of :math:`\mathrm{Dic}_2`.</span>
 <span class="n">basis_Dic2_G</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
     <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
@@ -542,21 +542,21 @@ document.write(`
     <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="n">basis_Dic2_G</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis spinors for irrep F1 of C4R.</span>
+<span class="c1">#: Basis spinors for irrep :math:`F_{1}` of :math:`C_4^R`.</span>
 <span class="n">basis_C4R_F1</span> <span class="o">=</span> <span class="p">[[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],]</span>
-<span class="c1">#: Basis spinors for irrep F2 of C4R.</span>
+<span class="c1">#: Basis spinors for irrep :math:`F_{2}` of :math:`C_4^R`.</span>
 <span class="n">basis_C4R_F2</span> <span class="o">=</span> <span class="p">[[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],]</span>
 <span class="n">basis_spinors</span><span class="p">[</span><span class="s2">&quot;C4R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;F1&quot;</span><span class="p">:</span> <span class="n">basis_C4R_F1</span><span class="p">,</span>
     <span class="s2">&quot;F2&quot;</span><span class="p">:</span> <span class="n">basis_C4R_F2</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis spinors for irrep F1 of C4P.</span>
+<span class="c1">#: Basis spinors for irrep :math:`F_{1}` of :math:`C_4^P`.</span>
 <span class="n">basis_C4P_F1</span> <span class="o">=</span> <span class="p">[[</span>
     <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
     <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
 <span class="p">]</span>
-<span class="c1">#: Basis spinors for irrep F2 of C4P.</span>
+<span class="c1">#: Basis spinors for irrep :math:`F_{2}` of :math:`C_4^P`.</span>
 <span class="n">basis_C4P_F2</span> <span class="o">=</span> <span class="p">[[</span>
     <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
     <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],</span>
@@ -566,7 +566,7 @@ document.write(`
     <span class="s2">&quot;F2&quot;</span><span class="p">:</span> <span class="n">basis_C4P_F2</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#: Basis spinors for irrep F of C1D.</span>
+<span class="c1">#: Basis spinors for irrep :math:`F` of :math:`C_1^D`.</span>
 <span class="n">basis_C1D_F</span> <span class="o">=</span> <span class="p">[[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SpinorTuple</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)),],]</span>
 <span class="n">basis_spinors</span><span class="p">[</span><span class="s2">&quot;C1D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="n">basis_C1D_F</span><span class="p">,</span>

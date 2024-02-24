@@ -444,9 +444,12 @@ of Narayana Pandita.</p>
 </dl>
 <p class="rubric">Notes</p>
 <p>In index notation symmetrization is the map which sends
-T_{ij…n} to  T_{(ij…n)}, where parantheses denote symmetrization.
-For instance, the symmetrization of a three-index tensor T_{ijk} is
-T_{(ijk)} = (T_{ijk} + T_{ikj} + T_{jik} + T_{jki} + T_{kij} + T_{kji})/6</p>
+<span class="math notranslate nohighlight">\(T_{ij...n} \to T_{(ij...n)}\)</span>,
+where parantheses denote symmetrization.
+For instance, the symmetrization of a three-index tensor
+<span class="math notranslate nohighlight">\(T_{ijk}\)</span>
+is
+<span class="math notranslate nohighlight">\(T_{(ijk)} = \tfrac{1}{6}(T_{ijk} + T_{ikj} + T_{jik} + T_{jki} + T_{kij} + T_{kji})\)</span></p>
 </dd></dl>
 
 <dl class="py function">
@@ -456,20 +459,19 @@ T_{(ijk)} = (T_{ijk} + T_{ikj} + T_{jik} + T_{jki} + T_{kij} + T_{kji})/6</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>a</strong><span class="classifier">array_like</span></dt><dd></dd>
-<dt><strong>b</strong><span class="classifier">array_like</span></dt><dd></dd>
+<dt><strong>a, b</strong><span class="classifier">array_like</span></dt><dd></dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">array_like</span></dt><dd><p>The tensor product of arrays “a” and “b”.</p>
+<dt><strong>tensor</strong><span class="classifier">array_like</span></dt><dd><p>The tensor product of arrays <cite>a</cite> and <cite>b</cite>.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>In index notation, this fuction computes
-tensor[i,j,…k,r,s,…t] = a[i,j,…k]*b[r,s,…,t].</p>
+<p>In index notation, this fuction computes the output tensor T defined by
+<span class="math notranslate nohighlight">\(T_{ij \dots k rs \dots t} = a_{ij \dots k} b_{rs \dots t}\)</span>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -491,16 +493,18 @@ tensor[i,j,…k,r,s,…t] = a[i,j,…k]*b[r,s,…,t].</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Suppose the input tensors are {a[i], b[j,k], c[l,m,n]}.
-This function computes the product
-tensor[i,j,k,l,m,n] = a[i]*b[j,k]*c[l,m,n]</p>
+<p>Suppose the input tensors are
+<span class="math notranslate nohighlight">\(\{a_i, b_{jk}, c_{lmn}\}\)</span>.
+This function computes the output tensor T defined by
+<span class="math notranslate nohighlight">\(T_{ijklmn} = a_i b_{jk} c_{lmn}\)</span>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.decompose">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">decompose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monomial</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#decompose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.decompose" title="Link to this definition">#</a></dt>
-<dd><p>Decomposes a monomial of the form c * x**nx * y**ny * z**nz
-into a coefficient “c” and a triplet of exponents “(nx, ny, nz)”.</p>
+<dd><p>Decomposes a sympy monomial of the form
+<code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">*</span> <span class="pre">x**nx</span> <span class="pre">*</span> <span class="pre">y**ny</span> <span class="pre">*</span> <span class="pre">z**nz</span></code>
+into a coefficient <cite>c</cite> and a triplet of exponents <code class="docutils literal notranslate"><span class="pre">(nx,</span> <span class="pre">ny,</span> <span class="pre">nz)</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -840,7 +844,7 @@ ordering of group elements.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.make_ohd">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_ohd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_ohd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_ohd" title="Link to this definition">#</a></dt>
-<dd><p>Constructs a presentation of the “spinorial” double cover <span class="math notranslate nohighlight">\(Oh^D\)</span> of
+<dd><p>Constructs a presentation of the “spinorial” double cover OhD of
 the cubic group ordering of group elements.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -885,9 +889,9 @@ The stabilizer group is the subgroup that leaves the ordered set invariant.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nmomenta,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The ordered momenta</p>
+<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nmomenta,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The ordered set of momenta that must be left invariant.</p>
 </dd>
-<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group</p>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The total group.</p>
 </dd>
 </dl>
 </dd>
@@ -1001,9 +1005,9 @@ Assumes that g is an orthogonal matrix so that <span class="math notranslate noh
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group G</p>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group G.</p>
 </dd>
-<dt><strong>h</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The conjugating element</p>
+<dt><strong>h</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The conjugating element.</p>
 </dd>
 </dl>
 </dd>
@@ -1023,18 +1027,17 @@ Assumes that g is an orthogonal matrix so that <span class="math notranslate noh
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group G</p>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group G.</p>
 </dd>
-<dt><strong>subgroup_h1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The subgroups H1</p>
+<dt><strong>subgroup_h1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The subgroup H1.</p>
 </dd>
-<dt><strong>subgroup_h2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The subgroups H2</p>
+<dt><strong>subgroup_h2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The subgroup H2.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>g, perm</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray, <code class="docutils literal notranslate"><span class="pre">(|H|,</span> <span class="pre">)</span></code> ndarray</span></dt><dd><p>The group element and permutation specifying the isomorphism via
-(g.H1.g^{inv})[perm] –&gt; H2 as an ordered set</p>
+<dt><strong>(g, perm)</strong><span class="classifier"><a class="reference internal" href="#mhi.mhi.Isomorphism" title="mhi.mhi.Isomorphism"><code class="xref py py-class docutils literal notranslate"><span class="pre">Isomorphism</span></code></a></span></dt><dd><p>The group element and permutation specifying the isomorphism.</p>
 </dd>
 </dl>
 </dd>
@@ -1048,10 +1051,8 @@ Assumes that g is an orthogonal matrix so that <span class="math notranslate noh
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>The group</p>
-</dd>
-<dt><strong>isomorphism</strong><span class="classifier">namedtuple / Isomorphism</span></dt><dd><p>The (group_element, permuation) pair</p>
-</dd>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd></dd>
+<dt><strong>isomorphism</strong><span class="classifier"><a class="reference internal" href="#mhi.mhi.Isomorphism" title="mhi.mhi.Isomorphism"><code class="xref py py-class docutils literal notranslate"><span class="pre">Isomorphism</span></code></a></span></dt><dd></dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1092,15 +1093,15 @@ initialization. Basically copied from the docs:
 <dd class="field-odd"><dl>
 <dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nmomenta,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The ordered momenta.</p>
 </dd>
-<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group matrices</p>
+<dt><strong>group</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> array_like</span></dt><dd><p>The group matrices.</p>
 </dd>
-<dt><strong>exchange_group</strong><span class="classifier">array_like</span></dt><dd><p>The exchange group with namedtuple/WeightedPermutation elements</p>
+<dt><strong>exchange_group</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></span></dt><dd><p>The exchange group projector.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>orbit</strong><span class="classifier">list</span></dt><dd><p>The matrices corresponding to ordered momenta in the orbit</p>
+<dt><strong>orbit</strong><span class="classifier">list</span></dt><dd><p>The matrices corresponding to ordered momenta in the orbit.</p>
 </dd>
 </dl>
 </dd>
@@ -1162,7 +1163,7 @@ contiguous integers.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>sign: int</dt><dd><p>The parity, +/- 1</p>
+<dt>sign: +1 or -1</dt><dd><p>The parity.</p>
 </dd>
 </dl>
 </dd>
@@ -1317,14 +1318,15 @@ configuration for a given element of the orbit</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>proj</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>projection matrix, intended to be contracted against the extended
-momentum-spin representation matrices: “Dmm(R) -&gt; proj &#64; Dmm(R) &#64; proj”</p>
+<dt><strong>proj</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> ndarray</span></dt><dd><p>projection matrix P, intended to be contracted against the extended
+momentum-spin representation matrices, giving projected matrices
+<span class="math notranslate nohighlight">\(\hat{D}_{mm'}(R) = P_{mn} D_{nn'}(R) P_{nm'}\)</span></p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>As a projection matrix, “proj” is idempotent: proj &#64; proj = proj.</p>
+<p>As a projection matrix, “proj” is idempotent: <code class="docutils literal notranslate"><span class="pre">proj</span> <span class="pre">&#64;</span> <span class="pre">proj</span> <span class="pre">==</span> <span class="pre">proj</span></code>.</p>
 <p>The full internal symmetry operator can be thought of as a linear
 combination of permutations. The representation matrices can be computed
 either before or after taking the linear combination. This implementation
@@ -1335,17 +1337,19 @@ taking a suitable linear combination.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.multiply_perms">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">multiply_perms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#multiply_perms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.multiply_perms" title="Link to this definition">#</a></dt>
-<dd><p>Multiply the permutations a and b via composition <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">\circ</span> <span class="pre">a</span></code>.</p>
-<dl class="field-list simple">
+<dd><p>Multiply the permutations a and b.</p>
+<p>Group multiplication acts as composition when considering group elements as
+left-acting operators, i.e.,
+<span class="math notranslate nohighlight">\((a \cdot b)(v) = (a \circ b)(v) = a(b(v))\)</span>.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>a, b</strong><span class="classifier">(n, ) ndarray</span></dt><dd><p>The permutations</p>
-</dd>
+<dd class="field-odd"><dl>
+<dt><strong>a, b</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,)</span></code> ndarray</span></dt><dd></dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>ndarray</dt><dd><p>The product of permutations</p>
+<dt>ndarray</dt><dd><p>The product of permutations.</p>
 </dd>
 </dl>
 </dd>
@@ -1356,17 +1360,16 @@ taking a suitable linear combination.</p>
 <dt class="sig sig-object py" id="mhi.mhi.invert_perm">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">invert_perm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#invert_perm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.invert_perm" title="Link to this definition">#</a></dt>
 <dd><p>Compute the inverse permutation such that
-<code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">\circ</span> <span class="pre">a^{-1}</span> <span class="pre">=</span> <span class="pre">a^{-1}</span> <span class="pre">\circ</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">(1)</span></code></p>
-<dl class="field-list simple">
+<span class="math notranslate nohighlight">\(a \circ a^{-1} = a^{-1} \circ a = (1)\)</span></p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>a</strong><span class="classifier">(n, ) array_like</span></dt><dd><p>The permutation</p>
-</dd>
+<dd class="field-odd"><dl>
+<dt><strong>a</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,)</span></code> array_like</span></dt><dd></dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>ainv</strong><span class="classifier">(n, ) ndarray</span></dt><dd><p>Inverse permutation</p>
+<dd class="field-even"><dl>
+<dt><strong>ainv</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(n,)</span></code> ndarray</span></dt><dd><p>The inverse permutation.</p>
 </dd>
 </dl>
 </dd>
@@ -1376,18 +1379,17 @@ taking a suitable linear combination.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.compose_permutation_algebra_elements">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">compose_permutation_algebra_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#compose_permutation_algebra_elements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.compose_permutation_algebra_elements" title="Link to this definition">#</a></dt>
-<dd><p>Compute the composition (i.e., product) of elements algebra of a
-permutation group.</p>
-<dl class="field-list simple">
+<dd><p>Compute the product of two elements in the algebra of the permutation group.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>a, b</strong><span class="classifier">array_like</span></dt><dd><p>The algebra elements, specified as lists of WeightedPermutation objects</p>
+<dd class="field-odd"><dl>
+<dt><strong>a, b</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></span></dt><dd><p>The algebra elements to be multiplied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">list</span></dt><dd><p>The product, as a list of WeightedPermutation objects</p>
+<dt>list</dt><dd><p>The product, as a list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a> objects.</p>
 </dd>
 </dl>
 </dd>
@@ -1398,18 +1400,16 @@ permutation group.</p>
 <dt class="sig sig-object py" id="mhi.mhi.algebra_elements_are_close">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">algebra_elements_are_close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#algebra_elements_are_close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.algebra_elements_are_close" title="Link to this definition">#</a></dt>
 <dd><p>Checks whether elements of the group algebra of Sn are numerically close.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>x1</strong><span class="classifier">list of WeightedPermutation objects</span></dt><dd></dd>
-<dt><strong>x2</strong><span class="classifier">list of WeightedPermutation objects</span></dt><dd><p>The group algebra elements</p>
+<dd class="field-odd"><dl>
+<dt><strong>x1, x2</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a> objects</span></dt><dd><p>The group algebra elements.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>bool</strong><span class="classifier">are_close</span></dt><dd><p>Whether the elements are numerically close</p>
-</dd>
+<dt><strong>are_close</strong><span class="classifier">bool</span></dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -1422,10 +1422,12 @@ permutation group.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tableau</strong><span class="classifier">list of lists</span></dt><dd><p>The candidate Young tableau</p>
+<dt><strong>tableau</strong><span class="classifier">list of lists</span></dt><dd><p>The candidate Young tableau.</p>
 </dd>
-<dt><strong>Returns</strong></dt><dd></dd>
-<dt><strong>——-</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt><strong>is_valid</strong><span class="classifier">bool</span></dt><dd></dd>
 </dl>
 </dd>
@@ -1439,13 +1441,13 @@ permutation group.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tableau</strong><span class="classifier">list of lists</span></dt><dd><p>The tableau, given as a ragged list of integers</p>
+<dt><strong>tableau</strong><span class="classifier">list of lists</span></dt><dd><p>The tableau, given as a ragged list of integers.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>tableau_t</strong><span class="classifier">list</span></dt><dd><p>The transposed tableau, as a ragged list of integers</p>
+<dt><strong>tableau_t</strong><span class="classifier">list of lists</span></dt><dd><p>The transposed tableau, as a ragged list of integers.</p>
 </dd>
 </dl>
 </dd>
@@ -1455,8 +1457,10 @@ permutation group.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.symmetrizer">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">symmetrizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#symmetrizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.symmetrizer" title="Link to this definition">#</a></dt>
-<dd><p>Computes a symmetrizer (i.e., an element of the algebra of the group Sn)
-over the specified indices in a “row.”</p>
+<dd><p>Computes a symmetrizer over the specified indices.</p>
+<p>The symmetrizer is an element of the algebra of the group Sn that yields the
+symmetrized or anti-symmetrized (depending on <cite>signed</cite>) space over the
+indices in <cite>row</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -1469,7 +1473,7 @@ over the specified indices in a “row.”</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">list</span></dt><dd><p>The symmetrizer in the group algebra, represented as a list of
+<dt>list</dt><dd><p>The symmetrizer in the group algebra, represented as a list of
 WeightedPermutation objects.</p>
 </dd>
 </dl>
@@ -1564,8 +1568,7 @@ one for each group element) is itself a group representation.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.make_momentum_orbit_rep">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_momentum_orbit_rep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_momentum_orbit_rep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_momentum_orbit_rep" title="Link to this definition">#</a></dt>
-<dd><p>Computes the representation “Dmm” of a group G acting on an orbit O.
-The representation is the set of matrices “D_{m,m’}(g)”.</p>
+<dd><p>Computes the representation of a group G acting on an orbit O.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1577,7 +1580,8 @@ The representation is the set of matrices “D_{m,m’}(g)”.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>representation</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|O|,</span> <span class="pre">|O|)</span></code> ndarray</span></dt><dd><p>The momentum-representation matrices</p>
+<dt><strong>representation</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|O|,</span> <span class="pre">|O|)</span></code> ndarray</span></dt><dd><p>The momentum-representation matrices <span class="math notranslate nohighlight">\(D_{m,m'}(R)\)</span> for all
+<span class="math notranslate nohighlight">\(R \in G\)</span>.</p>
 </dd>
 </dl>
 </dd>
@@ -1805,14 +1809,16 @@ including transition operators to move between rows in a given irrep.</p>
 <dt><strong>Dmumu</strong><span class="classifier">dict</span></dt><dd><p>The irrep matrices. The keys give the name of the irrep. The values
 contain the group irrep matrices, with shape <code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|\Gamma|,</span> <span class="pre">|\Gamma|)</span></code>.</p>
 </dd>
-<dt><strong>Returns</strong></dt><dd></dd>
-<dt><strong>——-</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt><strong>u_matrix</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix.
 The keys are tuples of the form (irrep_name, degeneracy_number).
 The values are arrays containing the matrices, each of shape
 <code class="docutils literal notranslate"><span class="pre">(|\Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
 </dd>
-<dt><strong>transition_operators: dict</strong></dt><dd><p>Column of transition operators <code class="docutils literal notranslate"><span class="pre">T_{\mu,0}</span></code>.
+<dt>transition_operators: dict</dt><dd><p>Column of transition operators <code class="docutils literal notranslate"><span class="pre">T_{\mu,0}</span></code>.
 The keys are irrep names.
 The values are ndarrays of shape <code class="docutils literal notranslate"><span class="pre">(|\Gamma|,</span> <span class="pre">|O|,</span> <span class="pre">|O|)</span></code>.</p>
 </dd>
@@ -1843,12 +1849,12 @@ The values are ndarrays of shape <code class="docutils literal notranslate"><spa
 <dl class="simple">
 <dt>The phase convention is as follows:</dt><dd><ul class="simple">
 <li><p>For a generic irrep, the phase is chosen such that the first nonzero
-entry of the first row (“mu=1”) is real and positive.</p></li>
-<li><p>For the irreps T2p and T2m only, the phase is chosen such that the second
-row (“mu=2”) is purely imaginary with a negative imaginary part. This
-choice matches the basis-vector conventions of Basak et al., where a
-particular combination of spheric harmonics <span class="math notranslate nohighlight">\((Y_2^2 - Y_2^{-2})\)</span> is
-used as the “mu=2” basis vector for T2.</p></li>
+entry of the first row (<span class="math notranslate nohighlight">\(\mu=1\)</span>) is real and positive.</p></li>
+<li><p>For the irreps <span class="math notranslate nohighlight">\(T_2^+\)</span> and <span class="math notranslate nohighlight">\(T_2^-\)</span> only, the phase is chosen
+such that the second row (<span class="math notranslate nohighlight">\(\mu=2\)</span>) is purely imaginary with a negative
+imaginary part. This choice matches the basis-vector conventions of
+Basak et al., where a particular combination of spheric harmonics
+<span class="math notranslate nohighlight">\((Y_2^2 - Y_2^{-2})\)</span> is used as the <span class="math notranslate nohighlight">\(\mu=2\)</span> basis vector for T2.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1888,8 +1894,8 @@ and spin irreps.</p>
 <dt class="sig sig-object py" id="mhi.mhi.make_pseudoscalar_irrep">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_pseudoscalar_irrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">little</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_pseudoscalar_irrep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_pseudoscalar_irrep" title="Link to this definition">#</a></dt>
 <dd><p>Instantiates the double-cover irrep matrices associated with a pseudoscalar
-particle, assumed to transform under the A1m irrep. Usually this function
-is used when constructing the “Dspin” matrices.</p>
+particle, assumed to transform under the <span class="math notranslate nohighlight">\(A_1^-\)</span> irrep. Usually this
+function is used when constructing the <cite>Dspin</cite> matrices.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1910,8 +1916,8 @@ is used when constructing the “Dspin” matrices.</p>
 <dt class="sig sig-object py" id="mhi.mhi.make_spin_half_irrep">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">make_spin_half_irrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">little_double</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#make_spin_half_irrep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.make_spin_half_irrep" title="Link to this definition">#</a></dt>
 <dd><p>Instantiates the double-cover irrep matrices associated with a spin-half
-particle, assumed to transform under the G_1^+ irrep. Usually this function
-is used when constructing the “Dspin” matrices.</p>
+particle, assumed to transform under the <span class="math notranslate nohighlight">\(G_1^+\)</span> irrep. Usually this
+function is used when constructing the <cite>Dspin</cite> matrices.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1961,8 +1967,10 @@ is used when constructing the “Dspin” matrices.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>str</strong><span class="classifier">irrep</span></dt><dd><p>The name of the spin irrep, e.g., ‘A1m’ or ‘G1p’.</p>
 </dd>
-<dt><strong>Returns</strong></dt><dd></dd>
-<dt><strong>——-</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt><strong>dim</strong><span class="classifier">int</span></dt><dd><p>The dimension of the irrep</p>
 </dd>
 </dl>
@@ -1979,15 +1987,15 @@ wave states onto irreps of the cubic group.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nparticles,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The ordered momenta</p>
+<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nparticles,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The ordered momenta.</p>
 </dd>
-<dt><strong>particle_names</strong><span class="classifier">array_like</span></dt><dd><p>The particle names, e.g., [‘n’, ‘p’]</p>
+<dt><strong>particle_names</strong><span class="classifier">array_like</span></dt><dd><p>The particle names, e.g., [‘n’, ‘p’].</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to print extra diagnostic information.</p>
 </dd>
-<dt><strong>return_Dmm</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to return the momentum-(spin) representation matrices</p>
+<dt><strong>return_Dmm</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to return the momentum-(spin) representation matrices.</p>
 </dd>
-<dt><strong>internal_symmetry</strong><span class="classifier">list of WeightedPermutations</span></dt><dd><p>The internal symmetry group</p>
+<dt><strong>internal_symmetry</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></span></dt><dd><p>The internal symmetry group.</p>
 </dd>
 </dl>
 </dd>
@@ -1999,17 +2007,17 @@ wave states onto irreps of the cubic group.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The algorithm is as follows:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="simple">
+<dt>The algorithm is as follows:</dt><dd><ul class="simple">
 <li><p>Compute the little group of the total momentum</p></li>
-<li><p>Compute irrep matrices of the little group, Dmumu(R)</p></li>
-<li><p>Compute the momentum(-spin) representation matrices, Dmm(R)</p></li>
-<li><p>Apply exchange-group projection to Dmm matrices, P &#64; Dmm(R) &#64; P</p></li>
+<li><p>Compute irrep matrices of the little group, <span class="math notranslate nohighlight">\(D_{\mu\nu}(R)\)</span></p></li>
+<li><p>Compute the momentum(-spin) representation matrices, <span class="math notranslate nohighlight">\(D_{mm'}(R)\)</span></p></li>
+<li><p>Apply exchange-group projection, giving <span class="math notranslate nohighlight">\(\hat{D}(R) = P D(R) P\)</span></p></li>
 <li><p>Apply Schur’s algorithm and transition operators to construct the
-block-diagonalization  matrices</p></li>
+block-diagonalization matrices</p></li>
 </ul>
-</div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -2061,14 +2069,14 @@ block-diagonalization  matrices</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.test_clifford">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_clifford</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_clifford"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_clifford" title="Link to this definition">#</a></dt>
-<dd><p>Tests the Clifford-algrebra condition,
-{gamma[mu], gamma[nu]} = 2*Id*eta[mu,nu].</p>
+<dd><p>Tests the Clifford-algebra condition,
+<span class="math notranslate nohighlight">\(\{\gamma_\mu, \gamma_\nu\} = 2*\eta_{\mu\nu}\)</span></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">)</span></code> list or <code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> array_like</span></dt><dd><p>The gamma matrices gamma[i], i=0,1,2,3.</p>
 </dd>
-<dt><strong>eta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,4)</span></code></span></dt><dd><p>The metric.</p>
+<dt><strong>eta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,4)</span></code> ndarray</span></dt><dd><p>The metric.</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
 </dd>
@@ -2085,13 +2093,14 @@ block-diagonalization  matrices</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.test_gamma5">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_gamma5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_gamma5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_gamma5" title="Link to this definition">#</a></dt>
-<dd><p>Tests anticommutation of gamma5, {gamma[mu], gamma5} = 0.</p>
+<dd><p>Tests anticommutation of gamma5,
+<span class="math notranslate nohighlight">\(\{\gamma_\mu, \gamma_5\} = 0\)</span></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">)</span></code> list or <code class="docutils literal notranslate"><span class="pre">(4,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> array_like</span></dt><dd><p>The gamma matrices gamma[i], i=0,1,2,3.</p>
 </dd>
-<dt><strong>gamma5</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,4)</span></code></span></dt><dd><p>The matrix gamma5</p>
+<dt><strong>gamma5</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(4,4)</span></code></span></dt><dd><p>The matrix gamma5.</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
 </dd>
@@ -2182,10 +2191,11 @@ The values are arrays containing the matrices, each of shape
 <dl class="py function">
 <dt class="sig sig-object py" id="mhi.mhi.test_block_diagonalization">
 <span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">test_block_diagonalization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dmm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dmumu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#test_block_diagonalization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.test_block_diagonalization" title="Link to this definition">#</a></dt>
-<dd><p>Tests the block diagonalization property of the change-of-basis
-projection matrices which, schematically, reads: “Dmumu = U^dagger Dmm U”
-in terms of the momentum-shell representation “Dmm”, the block-diagonalization
-matrix “U”, and the block-diagonal irrep matrix “Dmumu”.</p>
+<dd><p>Tests the block diagonalization property of the change-of-basis matrices,
+<span class="math notranslate nohighlight">\(D_{\mu\nu} = U^\dagger_{\mu m} D_{mm'} U_{m' \nu}\)</span>
+in terms of the given momentum-shell representation <cite>Dmm</cite>, the
+block-diagonalization matrix <cite>U</cite>, and the block-diagonal irrep matrix
+<cite>Dmumu</cite>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -2267,11 +2277,11 @@ with the associated matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>j</strong><span class="classifier">float</span></dt><dd><p>Half-integer total spin.</p>
+<dt><strong>j</strong><span class="classifier">float</span></dt><dd><p>The half-integer total spin.</p>
 </dd>
-<dt><strong>jz</strong><span class="classifier">float</span></dt><dd><p>Half-integer z component of spin.</p>
+<dt><strong>jz</strong><span class="classifier">float</span></dt><dd><p>The half-integer z component of spin.</p>
 </dd>
-<dt><strong>parity</strong><span class="classifier">int</span></dt><dd><p>Parity defined as one of [+1,-1].</p>
+<dt><strong>parity</strong><span class="classifier">+1 or -1</span></dt><dd><p>The parity.</p>
 </dd>
 </dl>
 </dd>
@@ -2281,265 +2291,265 @@ with the associated matrix.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_A1p">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_A1p</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.577350269189626*x**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*y**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*z**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_A1p" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A1+ of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{1}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_A1m">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_A1m</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.408248290463863*x*y*z*(x**4*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">y**4*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">z**4*(x**2</span> <span class="pre">-</span> <span class="pre">y**2))]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_A1m" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A1- of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{1}^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_A2p">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_A2p</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.408248290463863*x**4*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">0.408248290463863*y**4*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">0.408248290463863*z**4*(x**2</span> <span class="pre">-</span> <span class="pre">y**2)]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_A2p" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A2+ of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{2}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_A2m">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_A2m</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[x*y*z]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_A2m" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A2- of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{2}^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_Ep">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_Ep</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[-0.408248290463863*x**2</span> <span class="pre">-</span> <span class="pre">0.408248290463863*y**2</span> <span class="pre">+</span> <span class="pre">0.816496580927726*z**2,</span> <span class="pre">0.707106781186547*x**2</span> <span class="pre">-</span> <span class="pre">0.707106781186547*y**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_Ep" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep E+ of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(E^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_Em">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_Em</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[x*y*z*(x**2</span> <span class="pre">-</span> <span class="pre">y**2),</span> <span class="pre">-x*y*z*(-x**2</span> <span class="pre">-</span> <span class="pre">y**2</span> <span class="pre">+</span> <span class="pre">2*z**2)]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_Em" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep E- of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(E^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_T1m">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_T1m</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1.4142135623731*z,</span> <span class="pre">-x</span> <span class="pre">+</span> <span class="pre">1.0*I*y,</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">1.0*I*y]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_T1m" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep T1- of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(T_1^-\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_T1p">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_T1p</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1.4142135623731*x*y*(x**2</span> <span class="pre">-</span> <span class="pre">y**2),</span> <span class="pre">1.0*I*x*z*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">-</span> <span class="pre">y*z*(y**2</span> <span class="pre">-</span> <span class="pre">z**2),</span> <span class="pre">1.0*I*x*z*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">y*z*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_T1p" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep T1+ of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(T_1^+\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_T2m">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_T2m</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1.0*I*x*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">-</span> <span class="pre">y*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2),</span> <span class="pre">-1.4142135623731*I*z*(x**2</span> <span class="pre">-</span> <span class="pre">y**2),</span> <span class="pre">1.0*I*x*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">y*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_T2m" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep T2- of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(T_2^-\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Oh_T2p">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Oh_T2p</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[-x*z</span> <span class="pre">+</span> <span class="pre">1.0*I*y*z,</span> <span class="pre">-1.4142135623731*I*x*y,</span> <span class="pre">x*z</span> <span class="pre">+</span> <span class="pre">1.0*I*y*z]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Oh_T2p" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep T2+ of group Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(T_2^+\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4v_A1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4v_A1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.577350269189626*x**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*y**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*z**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4v_A1" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A1 of C4v = A1+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{1}\)</span> of <span class="math notranslate nohighlight">\(C_{4v}\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4v_A2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4v_A2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.408248290463863*x*y*z*(x**4*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">y**4*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">z**4*(x**2</span> <span class="pre">-</span> <span class="pre">y**2))]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4v_A2" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A2 of C4v = A1- of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{2}\)</span> of <span class="math notranslate nohighlight">\(C_{4v}\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4v_B1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4v_B1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.707106781186547*x**2</span> <span class="pre">-</span> <span class="pre">0.707106781186547*y**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4v_B1" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep B1 of C4v = E1+[1] of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(B_{1}\)</span> of <span class="math notranslate nohighlight">\(C_{4v}\)</span> = <span class="math notranslate nohighlight">\(E_{1}^{+} (\mu=2)\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4v_B2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4v_B2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[-1.4142135623731*I*x*y]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4v_B2" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep B2 of C4v = T2+[1] of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(B_{2}\)</span> of <span class="math notranslate nohighlight">\(C_{4v}\)</span> = <span class="math notranslate nohighlight">\(T_2^+ (\mu=2)\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4v_E">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4v_E</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[-x*z,</span> <span class="pre">-y*z]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4v_E" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep E of C4v.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(E\)</span> of <span class="math notranslate nohighlight">\(C_{4v}\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C3v_A1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C3v_A1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.577350269189626*x**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*y**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*z**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C3v_A1" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A1 of C3v = A1+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{1}\)</span> of <span class="math notranslate nohighlight">\(C_{3v}\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C3v_A2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C3v_A2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.408248290463863*x**4*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">0.408248290463863*y**4*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">0.408248290463863*z**4*(x**2</span> <span class="pre">-</span> <span class="pre">y**2)]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C3v_A2" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A2 of C3v = A2+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{2}\)</span> of <span class="math notranslate nohighlight">\(C_{3v}\)</span> = <span class="math notranslate nohighlight">\(A_{2}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C3v_E">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C3v_E</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[-0.408248290463863*x**2</span> <span class="pre">-</span> <span class="pre">0.408248290463863*y**2</span> <span class="pre">+</span> <span class="pre">0.816496580927726*z**2,</span> <span class="pre">0.707106781186547*x**2</span> <span class="pre">-</span> <span class="pre">0.707106781186547*y**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C3v_E" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep E of C3v = E+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(E\)</span> of <span class="math notranslate nohighlight">\(C_{3v}\)</span> = <span class="math notranslate nohighlight">\(E_{}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C2v_A1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C2v_A1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.577350269189626*x**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*y**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*z**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C2v_A1" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A1 of C2v = A1+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{1}\)</span> of <span class="math notranslate nohighlight">\(C_{2v}\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C2v_A2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C2v_A2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.408248290463863*x*y*z*(x**4*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">y**4*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">z**4*(x**2</span> <span class="pre">-</span> <span class="pre">y**2))]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C2v_A2" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A2 of C2v = A1- of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A_{2}\)</span> of <span class="math notranslate nohighlight">\(C_{2v}\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C2v_B1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C2v_B1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[x*y*z]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C2v_B1" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep B1 of C2v = A2- of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(B_{1}\)</span> of <span class="math notranslate nohighlight">\(C_{2v}\)</span> = <span class="math notranslate nohighlight">\(A_{2}^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C2v_B2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C2v_B2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.408248290463863*x**4*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">0.408248290463863*y**4*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">0.408248290463863*z**4*(x**2</span> <span class="pre">-</span> <span class="pre">y**2)]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C2v_B2" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep B2 of C2v = A2+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(B_{2}\)</span> of <span class="math notranslate nohighlight">\(C_{2v}\)</span> = <span class="math notranslate nohighlight">\(A_{2}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C2R_A">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C2R_A</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.577350269189626*x**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*y**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*z**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C2R_A" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A of C2R = A1+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A\)</span> of <span class="math notranslate nohighlight">\(C_2^R\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C2R_B">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C2R_B</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.408248290463863*x*y*z*(x**4*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">y**4*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">z**4*(x**2</span> <span class="pre">-</span> <span class="pre">y**2))]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C2R_B" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep B of C2R = A1- of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(B\)</span> of <span class="math notranslate nohighlight">\(C_2^R\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C2P_A">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C2P_A</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.577350269189626*x**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*y**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*z**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C2P_A" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A of C2P = A1+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A\)</span> of <span class="math notranslate nohighlight">\(C_2^P\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C2P_B">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C2P_B</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.408248290463863*x**4*(y**2</span> <span class="pre">-</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">0.408248290463863*y**4*(-x**2</span> <span class="pre">+</span> <span class="pre">z**2)</span> <span class="pre">+</span> <span class="pre">0.408248290463863*z**4*(x**2</span> <span class="pre">-</span> <span class="pre">y**2)]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C2P_B" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep B of C2P = A2+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(B\)</span> of <span class="math notranslate nohighlight">\(C_2^P\)</span> = <span class="math notranslate nohighlight">\(A_{2}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C1_A">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C1_A</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0.577350269189626*x**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*y**2</span> <span class="pre">+</span> <span class="pre">0.577350269189626*z**2]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C1_A" title="Link to this definition">#</a></dt>
-<dd><p>Basis functions for irrep A of C1 = A1+ of Oh.</p>
+<dd><p>Basis functions for irrep <span class="math notranslate nohighlight">\(A\)</span> of <span class="math notranslate nohighlight">\(C_1\)</span> = <span class="math notranslate nohighlight">\(A_{1}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_OhD_G1p">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_OhD_G1p</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">1))],</span> <span class="pre">[(1,</span> <span class="pre">(0.5,</span> <span class="pre">-0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_OhD_G1p" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep G1+ of OhD.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(G_{1}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h^D\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_OhD_G1m">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_OhD_G1m</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">-1))],</span> <span class="pre">[(1,</span> <span class="pre">(0.5,</span> <span class="pre">-0.5,</span> <span class="pre">-1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_OhD_G1m" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep G1- of OhD.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(G_{1}^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h^D\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_OhD_G2p">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_OhD_G2p</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(0.408248290463863,</span> <span class="pre">(2.5,</span> <span class="pre">2.5,</span> <span class="pre">1)),</span> <span class="pre">(-0.9128709291752769,</span> <span class="pre">(2.5,</span> <span class="pre">-1.5,</span> <span class="pre">1))],</span> <span class="pre">[(0.408248290463863,</span> <span class="pre">(2.5,</span> <span class="pre">-2.5,</span> <span class="pre">1)),</span> <span class="pre">(-0.9128709291752769,</span> <span class="pre">(2.5,</span> <span class="pre">1.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_OhD_G2p" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep G2+ of OhD.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(G_{2}^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h^D\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_OhD_G2m">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_OhD_G2m</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(0.408248290463863,</span> <span class="pre">(2.5,</span> <span class="pre">2.5,</span> <span class="pre">-1)),</span> <span class="pre">(-0.9128709291752769,</span> <span class="pre">(2.5,</span> <span class="pre">-1.5,</span> <span class="pre">-1))],</span> <span class="pre">[(0.408248290463863,</span> <span class="pre">(2.5,</span> <span class="pre">-2.5,</span> <span class="pre">-1)),</span> <span class="pre">(-0.9128709291752769,</span> <span class="pre">(2.5,</span> <span class="pre">1.5,</span> <span class="pre">-1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_OhD_G2m" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep G2- of OhD.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(G_{2}^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h^D\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_OhD_Hp">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_OhD_Hp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(1.5,</span> <span class="pre">1.5,</span> <span class="pre">1))],</span> <span class="pre">[(1,</span> <span class="pre">(1.5,</span> <span class="pre">0.5,</span> <span class="pre">1))],</span> <span class="pre">[(1,</span> <span class="pre">(1.5,</span> <span class="pre">-0.5,</span> <span class="pre">1))],</span> <span class="pre">[(1,</span> <span class="pre">(1.5,</span> <span class="pre">-1.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_OhD_Hp" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep H+ of OhD.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(H^{+}\)</span> of <span class="math notranslate nohighlight">\(O_h^D\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_OhD_Hm">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_OhD_Hm</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(1.5,</span> <span class="pre">1.5,</span> <span class="pre">-1))],</span> <span class="pre">[(1,</span> <span class="pre">(1.5,</span> <span class="pre">0.5,</span> <span class="pre">-1))],</span> <span class="pre">[(1,</span> <span class="pre">(1.5,</span> <span class="pre">-0.5,</span> <span class="pre">-1))],</span> <span class="pre">[(1,</span> <span class="pre">(1.5,</span> <span class="pre">-1.5,</span> <span class="pre">-1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_OhD_Hm" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep H- of OhD.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(H^{-}\)</span> of <span class="math notranslate nohighlight">\(O_h^D\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Dic4_G1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Dic4_G1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">1))],</span> <span class="pre">[(1,</span> <span class="pre">(0.5,</span> <span class="pre">-0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Dic4_G1" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep G1 of Dic4.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(G_{1}\)</span> of <span class="math notranslate nohighlight">\(\mathrm{Dic}_4\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Dic4_G2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Dic4_G2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(0.408248290463863,</span> <span class="pre">(2.5,</span> <span class="pre">2.5,</span> <span class="pre">1)),</span> <span class="pre">(-0.9128709291752769,</span> <span class="pre">(2.5,</span> <span class="pre">-1.5,</span> <span class="pre">1))],</span> <span class="pre">[(0.408248290463863,</span> <span class="pre">(2.5,</span> <span class="pre">-2.5,</span> <span class="pre">1)),</span> <span class="pre">(-0.9128709291752769,</span> <span class="pre">(2.5,</span> <span class="pre">1.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Dic4_G2" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep G2 of Dic4.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(G_{2}\)</span> of <span class="math notranslate nohighlight">\(\mathrm{Dic}_4\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Dic3_G">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Dic3_G</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">1))],</span> <span class="pre">[(1,</span> <span class="pre">(0.5,</span> <span class="pre">-0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Dic3_G" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep G of Dic3.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(G\)</span> of <span class="math notranslate nohighlight">\(\mathrm{Dic}_3\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Dic3_F1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Dic3_F1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(0.5,</span> <span class="pre">(1.5,</span> <span class="pre">1.5,</span> <span class="pre">1)),</span> <span class="pre">((0.08455098936288137+0.49279927982674443j),</span> <span class="pre">(1.5,</span> <span class="pre">0.5,</span> <span class="pre">1)),</span> <span class="pre">((0.4082482904638631+0.2886751345948129j),</span> <span class="pre">(1.5,</span> <span class="pre">-0.5,</span> <span class="pre">1)),</span> <span class="pre">((-0.35355339059327373-0.35355339059327373j),</span> <span class="pre">(1.5,</span> <span class="pre">-1.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Dic3_F1" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep F1 of Dic3.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(F_{1}\)</span> of <span class="math notranslate nohighlight">\(\mathrm{Dic}_3\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Dic3_F2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Dic3_F2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(0.5,</span> <span class="pre">(1.5,</span> <span class="pre">1.5,</span> <span class="pre">1)),</span> <span class="pre">((0.4927992798267444+0.08455098936288137j),</span> <span class="pre">(1.5,</span> <span class="pre">0.5,</span> <span class="pre">1)),</span> <span class="pre">((-0.4082482904638631+0.2886751345948129j),</span> <span class="pre">(1.5,</span> <span class="pre">-0.5,</span> <span class="pre">1)),</span> <span class="pre">((0.35355339059327373+0.35355339059327373j),</span> <span class="pre">(1.5,</span> <span class="pre">-1.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Dic3_F2" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep F2 of Dic3.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(F_{2}\)</span> of <span class="math notranslate nohighlight">\(\mathrm{Dic}_3\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_Dic2_G">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_Dic2_G</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">1))],</span> <span class="pre">[(1,</span> <span class="pre">(0.5,</span> <span class="pre">-0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_Dic2_G" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep G of Dic2.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(G\)</span> of <span class="math notranslate nohighlight">\(\mathrm{Dic}_2\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4R_F1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4R_F1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4R_F1" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep F1 of C4R.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(F_{1}\)</span> of <span class="math notranslate nohighlight">\(C_4^R\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4R_F2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4R_F2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(0.5,</span> <span class="pre">-0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4R_F2" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep F2 of C4R.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(F_{2}\)</span> of <span class="math notranslate nohighlight">\(C_4^R\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4P_F1">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4P_F1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(0.7071067811865475,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">1)),</span> <span class="pre">((0.5-0.5j),</span> <span class="pre">(0.5,</span> <span class="pre">-0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4P_F1" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep F1 of C4P.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(F_{1}\)</span> of <span class="math notranslate nohighlight">\(C_4^P\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C4P_F2">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C4P_F2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(0.7071067811865475,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">1)),</span> <span class="pre">((-0.5+0.5j),</span> <span class="pre">(0.5,</span> <span class="pre">-0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C4P_F2" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep F2 of C4P.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(F_{2}\)</span> of <span class="math notranslate nohighlight">\(C_4^P\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="mhi.basis_functions.basis_C1D_F">
 <span class="sig-prename descclassname"><span class="pre">mhi.basis_functions.</span></span><span class="sig-name descname"><span class="pre">basis_C1D_F</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[(1,</span> <span class="pre">(0.5,</span> <span class="pre">0.5,</span> <span class="pre">1))]]</span></em><a class="headerlink" href="#mhi.basis_functions.basis_C1D_F" title="Link to this definition">#</a></dt>
-<dd><p>Basis spinors for irrep F of C1D.</p>
+<dd><p>Basis spinors for irrep <span class="math notranslate nohighlight">\(F\)</span> of <span class="math notranslate nohighlight">\(C_1^D\)</span>.</p>
 </dd></dl>
 
 <dl class="py data">

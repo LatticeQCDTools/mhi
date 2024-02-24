@@ -181,7 +181,7 @@ def unique_permutations(seq):
 
 
 def symmetrize(arr):
-    """
+    r"""
     Computes the completely symmetrized version of the input array.
 
     Parameters
@@ -197,9 +197,12 @@ def symmetrize(arr):
     Notes
     -----
     In index notation symmetrization is the map which sends
-    T_{ij...n} to  T_{(ij...n)}, where parantheses denote symmetrization.
-    For instance, the symmetrization of a three-index tensor T_{ijk} is
-    T_{(ijk)} = (T_{ijk} + T_{ikj} + T_{jik} + T_{jki} + T_{kij} + T_{kji})/6
+    :math:`T_{ij...n} \to T_{(ij...n)}`,
+    where parantheses denote symmetrization.
+    For instance, the symmetrization of a three-index tensor
+    :math:`T_{ijk}`
+    is
+    :math:`T_{(ijk)} = \tfrac{1}{6}(T_{ijk} + T_{ikj} + T_{jik} + T_{jki} + T_{kij} + T_{kji})`
     """
     rank = len(arr.shape)
     dim = np.unique(arr.shape).item()
@@ -217,29 +220,28 @@ def symmetrize(arr):
 
 
 def tensor_product(a, b):
-    """
+    r"""
     Computes the tensor product between tensors a and b.
 
     Parameters
     ----------
-    a : array_like
-    b : array_like
+    a, b : array_like
 
     Returns
     -------
     tensor : array_like
-        The tensor product of arrays "a" and "b".
+        The tensor product of arrays `a` and `b`.
 
     Notes
     -----
-    In index notation, this fuction computes
-    tensor[i,j,...k,r,s,...t] = a[i,j,...k]*b[r,s,...,t].
+    In index notation, this fuction computes the output tensor T defined by
+    :math:`T_{ij \dots k rs \dots t} = a_{ij \dots k} b_{rs \dots t}`.
     """
     return np.tensordot(a, b, axes=0)
 
 
 def tensor_nfold(*tensors):
-    """
+    r"""
     Computes the n-fold tensor product between all the tensors in a list.
 
     Parameters
@@ -254,17 +256,19 @@ def tensor_nfold(*tensors):
 
     Notes
     -----
-    Suppose the input tensors are {a[i], b[j,k], c[l,m,n]}.
-    This function computes the product
-    tensor[i,j,k,l,m,n] = a[i]*b[j,k]*c[l,m,n]
+    Suppose the input tensors are
+    :math:`\{a_i, b_{jk}, c_{lmn}\}`.
+    This function computes the output tensor T defined by
+    :math:`T_{ijklmn} = a_i b_{jk} c_{lmn}`.
     """
     return functools.reduce(tensor_product, tensors)
 
 
 def decompose(monomial):
     """
-    Decomposes a monomial of the form c * x**nx * y**ny * z**nz
-    into a coefficient "c" and a triplet of exponents "(nx, ny, nz)".
+    Decomposes a sympy monomial of the form
+    ``c * x**nx * y**ny * z**nz``
+    into a coefficient `c` and a triplet of exponents ``(nx, ny, nz)``.
 
     Parameters
     ----------
@@ -705,7 +709,7 @@ def rotation_vec(omega):
 
 def make_ohd():
     """
-    Constructs a presentation of the "spinorial" double cover :math:`Oh^D` of
+    Constructs a presentation of the "spinorial" double cover OhD of
     the cubic group ordering of group elements.
 
     Parameters
@@ -772,9 +776,9 @@ def make_stabilizer(momenta, group):
     Parameters
     ----------
     momenta : ``(nmomenta, 3)`` or ``(3, )`` array_like
-        The ordered momenta
+        The ordered set of momenta that must be left invariant.
     group : ``(|G|, 3, 3)`` array_like
-        The group
+        The total group.
 
     Returns
     -------
@@ -915,9 +919,9 @@ def conjugate_group(g, group):
     Parameters
     ----------
     group : ``(|G|, n, n)`` ndarray
-        The group G
+        The group G.
     h : ``(n, n)`` ndarray
-        The conjugating element
+        The conjugating element.
 
     Returns
     -------
@@ -934,18 +938,16 @@ def find_subgroup_isomorphism(group, subgroup_h1 , subgroup_h2):
     Parameters
     ----------
     group : ``(|G|, n, n)`` ndarray
-        The group G
+        The group G.
     subgroup_h1 : ``(|H|, n, n)`` ndarray
-        The subgroups H1
+        The subgroup H1.
     subgroup_h2 : ``(|H|, n, n)`` ndarray
-        The subgroups H2
+        The subgroup H2.
 
     Returns
     -------
-    g, perm : ``(n, n)`` ndarray, ``(|H|, )`` ndarray
-        The group element and permutation specifying the isomorphism via
-        (g.H1.g^{inv})[perm] --> H2 as an ordered set
-
+    (g, perm) : :class:`Isomorphism`
+        The group element and permutation specifying the isomorphism.
     """
     assert subgroup_h1.shape == subgroup_h2.shape,\
         f"Incomensurate shapes for subgroups H1 and H2: {subgroup_h1.shape} {subgroup_h2.shape}"
@@ -977,9 +979,7 @@ def apply_isomorphism(group, isomorphism):
     Parameters
     ----------
     group : ``(|G|, n, n)`` ndarray
-        The group
-    isomorphism : namedtuple / Isomorphism
-        The (group_element, permuation) pair
+    isomorphism : :class:`Isomorphism`
 
     Returns
     -------
@@ -1057,14 +1057,14 @@ def make_momentum_orbit(momenta, group, exchange_group=None):
     momenta : ``(nmomenta, 3)`` array_like
         The ordered momenta.
     group : ``(|G|, 3, 3)`` array_like
-        The group matrices
-    exchange_group : array_like
-        The exchange group with namedtuple/WeightedPermutation elements
+        The group matrices.
+    exchange_group : list of :class:`WeightedPermutation`
+        The exchange group projector.
 
     Returns
     -------
     orbit : list
-        The matrices corresponding to ordered momenta in the orbit
+        The matrices corresponding to ordered momenta in the orbit.
 
     Notes
     -----
@@ -1153,8 +1153,8 @@ def parity(permutation):
 
     Returns
     -------
-    sign: int
-        The parity, +/- 1
+    sign: +1 or -1
+        The parity.
 
     Examples
     --------
@@ -1381,7 +1381,7 @@ def make_exchange_projector_identical(labels):
 
 
 def make_internal_symmetry_projector(orbit, internal_symmetry):
-    """
+    r"""
     Computes the projection matrix associated with an internal symmetry group.
 
     Parameters
@@ -1395,12 +1395,13 @@ def make_internal_symmetry_projector(orbit, internal_symmetry):
     Returns
     -------
     proj : ``(n, n)`` ndarray
-        projection matrix, intended to be contracted against the extended
-        momentum-spin representation matrices: "Dmm(R) -> proj @ Dmm(R) @ proj"
+        projection matrix P, intended to be contracted against the extended
+        momentum-spin representation matrices, giving projected matrices
+        :math:`\hat{D}_{mm'}(R) = P_{mn} D_{nn'}(R) P_{nm'}`
 
     Notes
     -----
-    As a projection matrix, "proj" is idempotent: proj @ proj = proj.
+    As a projection matrix, "proj" is idempotent: ``proj @ proj == proj``.
 
     The full internal symmetry operator can be thought of as a linear
     combination of permutations. The representation matrices can be computed
@@ -1442,17 +1443,20 @@ def make_internal_symmetry_projector(orbit, internal_symmetry):
 
 def multiply_perms(a, b):
     """
-    Multiply the permutations a and b via composition ``b \circ a``.
+    Multiply the permutations a and b.
+
+    Group multiplication acts as composition when considering group elements as
+    left-acting operators, i.e.,
+    :math:`(a \cdot b)(v) = (a \circ b)(v) = a(b(v))`.
 
     Parameters
     ----------
-    a, b : (n, ) ndarray
-        The permutations
+    a, b : ``(n,)`` ndarray
 
     Returns
     -------
     ndarray
-        The product of permutations
+        The product of permutations.
     """
     return b[a]
 
@@ -1460,35 +1464,33 @@ def multiply_perms(a, b):
 def invert_perm(a):
     """
     Compute the inverse permutation such that
-    ``a \circ a^{-1} = a^{-1} \circ a = (1)``
+    :math:`a \circ a^{-1} = a^{-1} \circ a = (1)`
 
     Parameters
     ----------
-    a : (n, ) array_like
-        The permutation
+    a : ``(n,)`` array_like
 
     Returns
     -------
-    ainv : (n, ) ndarray
-        Inverse permutation
+    ainv : ``(n,)`` ndarray
+        The inverse permutation.
     """
     return np.argsort(a)
 
 
 def compose_permutation_algebra_elements(a, b):
     """
-    Compute the composition (i.e., product) of elements algebra of a
-    permutation group.
+    Compute the product of two elements in the algebra of the permutation group.
 
     Parameters
     ----------
-    a, b : array_like
-        The algebra elements, specified as lists of WeightedPermutation objects
+    a, b : list of :class:`WeightedPermutation`
+        The algebra elements to be multiplied.
 
     Returns
     -------
-    out : list
-        The product, as a list of WeightedPermutation objects
+    list
+        The product, as a list of :class:`WeightedPermutation` objects.
     """
     out = {}
     for w_perm1, w_perm2 in itertools.product(a, b):
@@ -1507,14 +1509,12 @@ def algebra_elements_are_close(x1, x2):
 
     Parameters
     ----------
-    x1 : list of WeightedPermutation objects
-    x2 : list of WeightedPermutation objects
-        The group algebra elements
+    x1, x2 : list of :class:`WeightedPermutation` objects
+        The group algebra elements.
 
     Returns
     -------
-    bool : are_close
-        Whether the elements are numerically close
+    are_close : bool
     """
     if len(x1) != len(x2):return False
     inds1 = np.lexsort(np.stack([wp.perm for wp in x1], axis=-1))
@@ -1536,7 +1536,8 @@ def is_valid_tableau(tableau):
     Parameters
     ----------
     tableau : list of lists
-        The candidate Young tableau
+        The candidate Young tableau.
+
     Returns
     -------
     is_valid : bool
@@ -1561,12 +1562,12 @@ def transpose_tableau(tableau):
     Parameters
     ----------
     tableau : list of lists
-        The tableau, given as a ragged list of integers
+        The tableau, given as a ragged list of integers.
 
     Returns
     -------
-    tableau_t : list
-        The transposed tableau, as a ragged list of integers
+    tableau_t : list of lists
+        The transposed tableau, as a ragged list of integers.
     """
     tableau_t = [[] for _ in range(len(tableau[0]))]
     for row in tableau:
@@ -1576,9 +1577,11 @@ def transpose_tableau(tableau):
 
 
 def symmetrizer(row, *, signed, n):
-    """
-    Computes a symmetrizer (i.e., an element of the algebra of the group Sn)
-    over the specified indices in a "row."
+    """Computes a symmetrizer over the specified indices.
+
+    The symmetrizer is an element of the algebra of the group Sn that yields the
+    symmetrized or anti-symmetrized (depending on `signed`) space over the
+    indices in `row`.
 
     Parameters
     ----------
@@ -1590,7 +1593,7 @@ def symmetrizer(row, *, signed, n):
 
     Returns
     -------
-    out : list
+    list
         The symmetrizer in the group algebra, represented as a list of
         WeightedPermutation objects.
 
@@ -1765,8 +1768,7 @@ def make_momentum_orbit_rep_matrix(orbit, group_element):
 
 def make_momentum_orbit_rep(orbit, group):
     """
-    Computes the representation "Dmm" of a group G acting on an orbit O.
-    The representation is the set of matrices "D_{m,m'}(g)".
+    Computes the representation of a group G acting on an orbit O.
 
     Parameters
     ----------
@@ -1778,7 +1780,8 @@ def make_momentum_orbit_rep(orbit, group):
     Returns
     -------
     representation : ``(|G|, |O|, |O|)`` ndarray
-        The momentum-representation matrices
+        The momentum-representation matrices :math:`D_{m,m'}(R)` for all
+        :math:`R \in G`.
     """
     return np.array([make_momentum_orbit_rep_matrix(orbit, g) for g in group])
 
@@ -2105,6 +2108,7 @@ def apply_schur(Dmm, Dmumu, verbose):
     Dmumu : dict
         The irrep matrices. The keys give the name of the irrep. The values
         contain the group irrep matrices, with shape ``(|G|, |\Gamma|, |\Gamma|)``.
+
     Returns
     -------
     u_matrix : dict
@@ -2186,12 +2190,12 @@ def rephase(arr, irrep):
     -----
     The phase convention is as follows:
       - For a generic irrep, the phase is chosen such that the first nonzero
-        entry of the first row ("mu=1") is real and positive.
-      - For the irreps T2p and T2m only, the phase is chosen such that the second
-        row ("mu=2") is purely imaginary with a negative imaginary part. This
-        choice matches the basis-vector conventions of Basak et al., where a
-        particular combination of spheric harmonics :math:`(Y_2^2 - Y_2^{-2})` is
-        used as the "mu=2" basis vector for T2.
+        entry of the first row (:math:`\mu=1`) is real and positive.
+      - For the irreps :math:`T_2^+` and :math:`T_2^-` only, the phase is chosen
+        such that the second row (:math:`\mu=2`) is purely imaginary with a negative
+        imaginary part. This choice matches the basis-vector conventions of
+        Basak et al., where a particular combination of spheric harmonics
+        :math:`(Y_2^2 - Y_2^{-2})` is used as the :math:`\mu=2` basis vector for T2.
 
     References
     ----------
@@ -2254,8 +2258,8 @@ def load_particle_info(fname=None):
 def make_pseudoscalar_irrep(little):
     """
     Instantiates the double-cover irrep matrices associated with a pseudoscalar
-    particle, assumed to transform under the A1m irrep. Usually this function
-    is used when constructing the "Dspin" matrices.
+    particle, assumed to transform under the :math:`A_1^-` irrep. Usually this
+    function is used when constructing the `Dspin` matrices.
 
     Parameters
     ----------
@@ -2276,8 +2280,8 @@ def make_pseudoscalar_irrep(little):
 def make_spin_half_irrep(little_double):
     """
     Instantiates the double-cover irrep matrices associated with a spin-half
-    particle, assumed to transform under the G_1^+ irrep. Usually this function
-    is used when constructing the "Dspin" matrices.
+    particle, assumed to transform under the :math:`G_1^+` irrep. Usually this
+    function is used when constructing the `Dspin` matrices.
 
     Parameters
     ----------
@@ -2338,6 +2342,7 @@ def identify_spin_dim(irrep):
     ----------
     str : irrep
         The name of the spin irrep, e.g., 'A1m' or 'G1p'.
+
     Returns
     -------
     dim : int
@@ -2588,7 +2593,7 @@ class IrrepDecomposition:
 
 
 def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
-    """
+    r"""
     General-purpose driver function for construction of change-of-basis /
     block-diagonalization matrices which project linear combinations of plane-
     wave states onto irreps of the cubic group.
@@ -2596,15 +2601,15 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
     Parameters
     ----------
     momenta : ``(nparticles, 3)`` or ``(3, )`` array_like
-        The ordered momenta
+        The ordered momenta.
     particle_names : array_like
-        The particle names, e.g., ['n', 'p']
+        The particle names, e.g., ['n', 'p'].
     verbose : bool
         Whether or not to print extra diagnostic information.
     return_Dmm : bool
-        Whether or not to return the momentum-(spin) representation matrices
-    internal_symmetry : list of WeightedPermutations
-        The internal symmetry group
+        Whether or not to return the momentum-(spin) representation matrices.
+    internal_symmetry : list of :class:`WeightedPermutation`
+        The internal symmetry group.
 
     Returns
     -------
@@ -2614,13 +2619,12 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
     Notes
     -----
     The algorithm is as follows:
-
       - Compute the little group of the total momentum
-      - Compute irrep matrices of the little group, Dmumu(R)
-      - Compute the momentum(-spin) representation matrices, Dmm(R)
-      - Apply exchange-group projection to Dmm matrices, P @ Dmm(R) @ P
+      - Compute irrep matrices of the little group, :math:`D_{\mu\nu}(R)`
+      - Compute the momentum(-spin) representation matrices, :math:`D_{mm'}(R)`
+      - Apply exchange-group projection, giving :math:`\hat{D}(R) = P D(R) P`
       - Apply Schur's algorithm and transition operators to construct the
-        block-diagonalization  matrices
+        block-diagonalization matrices
     """
     if (spin_irreps is not None) and len(spin_irreps) > 0:
         if len(spin_irreps) != len(momenta):
@@ -2758,15 +2762,15 @@ def commutator(arr1, arr2):
 
 
 def test_clifford(gamma, eta, verbose=False):
-    """
-    Tests the Clifford-algrebra condition,
-    {gamma[mu], gamma[nu]} = 2*Id*eta[mu,nu].
+    r"""
+    Tests the Clifford-algebra condition,
+    :math:`\{\gamma_\mu, \gamma_\nu\} = 2*\eta_{\mu\nu}`
 
     Parameters
     ----------
     gamma : ``(4, )`` list or ``(4, 4, 4)`` array_like
         The gamma matrices gamma[i], i=0,1,2,3.
-    eta : ``(4,4)``
+    eta : ``(4,4)`` ndarray
         The metric.
     verbose : bool
         Whether to print additional information about successful tests.
@@ -2790,14 +2794,15 @@ def test_clifford(gamma, eta, verbose=False):
 
 def test_gamma5(gamma, gamma5, verbose):
     """
-    Tests anticommutation of gamma5, {gamma[mu], gamma5} = 0.
+    Tests anticommutation of gamma5,
+    :math:`\{\gamma_\mu, \gamma_5\} = 0`
 
     Parameters
     ----------
     gamma : ``(4, )`` list or ``(4, 4, 4)`` array_like
         The gamma matrices gamma[i], i=0,1,2,3.
     gamma5 : ``(4,4)``
-        The matrix gamma5
+        The matrix gamma5.
     verbose : bool
         Whether to print additional information about successful tests.
 
@@ -2904,11 +2909,12 @@ def test_degenerate_orthogonality(u_matrix, verbose=False):
 
 
 def test_block_diagonalization(Dmm, Dmumu, u_matrix, verbose=False):
-    """
-    Tests the block diagonalization property of the change-of-basis
-    projection matrices which, schematically, reads: "Dmumu = U^dagger Dmm U"
-    in terms of the momentum-shell representation "Dmm", the block-diagonalization
-    matrix "U", and the block-diagonal irrep matrix "Dmumu".
+    r"""
+    Tests the block diagonalization property of the change-of-basis matrices,
+    :math:`D_{\mu\nu} = U^\dagger_{\mu m} D_{mm'} U_{m' \nu}`
+    in terms of the given momentum-shell representation `Dmm`, the
+    block-diagonalization matrix `U`, and the block-diagonal irrep matrix
+    `Dmumu`.
 
     Parameters
     ----------
