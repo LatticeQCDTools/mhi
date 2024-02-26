@@ -23,6 +23,112 @@ import yaml
 import h5py
 from . import basis_functions
 
+
+###############
+# Main driver #
+###############
+
+def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
+    r"""
+    General-purpose driver function for construction of change-of-basis /
+    block-diagonalization matrices which project linear combinations of plane-
+    wave states onto irreps of the cubic group.
+
+    Parameters
+    ----------
+    momenta : ``(nparticles, 3)`` or ``(3, )`` array_like
+        The ordered momenta.
+    particle_names : array_like
+        The particle names, e.g., ['n', 'p'].
+    verbose : bool
+        Whether or not to print extra diagnostic information.
+    return_Dmm : bool
+        Whether or not to return the momentum-(spin) representation matrices.
+    internal_symmetry : list of :class:`WeightedPermutation`
+        The exchange group projector defined in the group algebra.
+
+    Returns
+    -------
+    result : :class:`IrrepDecomposition`
+        object containing the results of the irrep decomposition.
+
+    Notes
+    -----
+    The algorithm is as follows:
+      - Compute the little group of the total momentum
+      - Compute irrep matrices of the little group, :math:`D_{\mu\nu}(R)`
+      - Compute the momentum(-spin) representation matrices, :math:`D_{mm'}(R)`
+      - Apply exchange-group projection, giving :math:`\hat{D}(R) = P D(R) P`
+      - Apply Schur's algorithm and transition operators to construct the
+        block-diagonalization matrices
+    """
+    if (spin_irreps is not None) and len(spin_irreps) > 0:
+        if len(spin_irreps) != len(momenta):
+            raise ValueError("Incomensurate momenta and spin irreps specified.")
+
+    # 1. Compute the little group of the total momentum
+    little, stab = make_little_and_stabilizer(momenta, group=make_oh())
+    little_name = identify_stabilizer(little)
+    stab_name = identify_stabilizer(stab)
+    little_canonical = make_canonical_stabilizer(little_name, group=make_oh())
+    isomorphism = find_subgroup_isomorphism(make_oh(), little_canonical , little)
+    little = little[isomorphism.perm]  # Rotate to conventional orientation
+    little_double = make_spinorial_little_group(little)
+
+    # 2. Compute the irrep matrics of the little group
+    if spin_irreps is None:
+        # Distinguishable spin-zero particles. Single-cover irrep matrics suffice.
+        Dmumu = make_irrep_from_group(little_canonical)
+    else:
+        Dmumu = make_irrep_from_groupD(little_canonical)
+
+    # 3. Compute momentum(-spin) representation matrices
+    orbit = make_momentum_orbit(momenta, little, internal_symmetry)
+    if spin_irreps is None:
+        spin_dims = [1 for _ in range(len(momenta))]
+    else:
+        spin_dims = [identify_spin_dim(irrep) for irrep in spin_irreps]
+    orbit_momspin = make_momentum_spin_orbit(momenta, spin_dims, little, internal_symmetry)
+
+    if verbose:
+        print(f"Size of extended orbit: {len(orbit_momspin)}")
+    if len(orbit_momspin) > 100:
+        print((
+            "Warning: detailed optimization efforts have not been made "
+            "in the reference implementation.\nAdditional optimization may be "
+            "required for calculations with large momentum-spin orbits."
+        ))
+    Dmm = make_momentum_orbit_rep(orbit, little)
+    Dspin = make_Dspin(spin_irreps, little, little_double)
+    Dmm_momspin = make_momentum_spin_rep(Dmm, *Dspin)
+
+    # 4. Compute and apply projection from the internal symmetry group
+    if internal_symmetry:
+        # Naively, the projector applied to the Dmm should be proj @ Dmm(R) @ proj.
+        # However, the projector is idempotent, and the permutations commute
+        # with rotations. Therefore, it suffices to compute Dmm(R) @ proj.
+        proj = make_internal_symmetry_projector(orbit_momspin, internal_symmetry)
+        if proj is None:
+            Dmm_momspin = None
+        else:
+            Dmm_momspin = np.einsum("ajk,kl", Dmm_momspin, proj, optimize='greedy')
+
+    # 5. Apply Schur's lemma
+    if Dmm_momspin is None:
+        result, transition_operators = {}, {}
+    else:
+        result, transition_operators = apply_schur(Dmm_momspin, Dmumu, verbose)
+
+    if verbose and (len(result) == 0):
+        print("Decomposition vanishes for specified inputs.")
+
+    return IrrepDecomposition(result, orbit_momspin, Dmm_momspin, Dmumu, little_name, stab_name, transition_operators)
+
+
+####################
+# Basic data types #
+####################
+
 class WeightedPermutation(namedtuple('WeightedPermutation', ['weight', 'perm'])):
     """A complex scalar weight times a permutation group element.
 
@@ -33,9 +139,6 @@ class WeightedPermutation(namedtuple('WeightedPermutation', ['weight', 'perm']))
     perm : ``(n,)`` ndarray
         Permutation expressed as an array.
     """
-    # def __init__(self, weight, perm):
-    #     self.weight = weight
-    #     self.perm = perm
 class Isomorphism(namedtuple('Isomorphism', ['g', 'perm'])):
     """The group element and permutation specifying a subgroup isomorphism.
 
@@ -48,9 +151,6 @@ class Isomorphism(namedtuple('Isomorphism', ['g', 'perm'])):
         Permutation p mapping from conjugated elements to target subgroup as
         :math:`H' = g \cdot H \cdot g^{-1}[p]`
     """
-    # def __init__(self, g, perm):
-    #     self.g = g
-    #     self.perm = perm
 class SpinShellTuple(namedtuple('SpinShellTuple', ['momenta', 'spins'])):
     """Pairing of momenta and spins making up an orbit with non-zero spins.
 
@@ -61,9 +161,6 @@ class SpinShellTuple(namedtuple('SpinShellTuple', ['momenta', 'spins'])):
     spins : ``(norbit, nspin)`` ndarray
         List of spin configurations in the orbit.
     """
-    # def __init__(self, momenta, spins):
-    #     self.momenta = momenta
-    #     self.spins = spins
 
 ####################
 # Tensor utilities #
@@ -2359,49 +2456,49 @@ def identify_spin_dim(irrep):
 
 
 class IrrepDecomposition:
+    """
+    Container for results of computing the block-diagonalization matrices
+    which project linear combinations of plane-wave states onto irreps of
+    the cubic group.
+    
+    Parameters
+    ----------
+    decomp : dict
+        The irrep decomposition and change-of-basis matrices.
+        The keys are tuples (irrep_name, degeneracy_idx).
+        The values are the block-diagonalization matrices, given as arrays
+        of shape ``(|Gamma|, |O|)``.
+    orbit : ``(|O|,)`` list of :class:`SpinShellTuple`
+        The "extended" spin-momentum orbit, where each element is a
+        :class:`SpinShellTuple` specifying momentum and spin indices.
+    Dmm : ``(|G|, |O|, |O|)``, ndarray
+        The (reducible) representation matrices associated with the orbit.
+    Dmumu : ``(|G|, |Gamma|, |Gamma|)``, ndarray
+        The irrep matrices
+    little_name : str
+        The name of the little group leaving the total momentum invariant
+    stab_name : str
+        The name of the stabilizer group leaving the ordered set of
+        momenta invariant.
+    transition_operators: dict
+        Column of transition operators :math:`T_{\mu,0}`.
+        The keys are irrep names.
+        The values are ndarrays of shape ``(|Gamma|, |O|, |O|)``.
+
+    Notes
+    -----
+    Projection onto cubic-group irreps requires two pieces.
+      - A basis of momentum plane-wave correlation functions, presumably
+        computed using lattice QCD.
+      - The block-diagonalization matrices computed using this module.
+
+    To carry out this projection, the basis of correlation functions must
+    have the same order as the orbit used to compute the block-diagonalization
+    matrices. The required ordering can be seen by examining the
+    "orbit."
+    """
+
     def __init__(self, decomp, orbit, Dmm, Dmumu, little_name, stab_name, transition_operators):
-        """
-        Container for results of computing the block-diagonalization matrices
-        which project linear combinations of plane-wave states onto irreps of
-        the cubic group.
-
-        Parameters
-        ----------
-        decomp : dict
-            The irrep decomposition and change-of-basis matrices.
-            The keys are tuples (irrep_name, degeneracy_idx).
-            The values are the block-diagonalization matrices, given as arrays
-            of shape ``(|\Gamma|, |O|)``.
-        orbit : ``(|O|,)`` list of :class:`SpinShellTuple`
-            The "extended" spin-momentum orbit, where each element is a
-            :class:`SpinShellTuple` specifying momentum and spin indices.
-        Dmm : ``(|G|, |O|, |O|)``, ndarray
-            The (reducible) representation matrices associated with the orbit.
-        Dmumu : ``(|G|, |\Gamma|, |\Gamma|)``, ndarray
-            The irrep matrices
-        little_name : str
-            The name of the little group leaving the total momentum invariant
-        stab_name : str
-            The name of the stabilizer group leaving the ordered set of
-            momenta invariant.
-        transition_operators: dict
-            Column of transition operators ``T_{\mu,0}``.
-            The keys are irrep names.
-            The values are ndarrays of shape ``(|\Gamma|, |O|, |O|)``.
-
-
-        Notes
-        -----
-        Projection onto cubic-group irreps requires two pieces.
-        1.) A basis of momentum plane-wave correlation functions, presumably
-            computed using lattice QCD.
-        2.) The block-diagonalization matrices computed using this module.
-
-        To carry out this projection, the basis of correlation functions must
-        have the same order as the orbit used to compute the block-diagonalization
-        matrices. The required ordering can be seen by examining the
-        "orbit."
-        """
         # Check expected shape of block diagonalization matrices
         for _, arr in decomp.items():
             assert arr.shape[1] == len(orbit)
@@ -2592,103 +2689,6 @@ class IrrepDecomposition:
         return self._stab_name
 
 
-def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
-    r"""
-    General-purpose driver function for construction of change-of-basis /
-    block-diagonalization matrices which project linear combinations of plane-
-    wave states onto irreps of the cubic group.
-
-    Parameters
-    ----------
-    momenta : ``(nparticles, 3)`` or ``(3, )`` array_like
-        The ordered momenta.
-    particle_names : array_like
-        The particle names, e.g., ['n', 'p'].
-    verbose : bool
-        Whether or not to print extra diagnostic information.
-    return_Dmm : bool
-        Whether or not to return the momentum-(spin) representation matrices.
-    internal_symmetry : list of :class:`WeightedPermutation`
-        The exchange group projector defined in the group algebra.
-
-    Returns
-    -------
-    result : IrrepDecomposition
-        object containing the results of the irrep decomposition.
-
-    Notes
-    -----
-    The algorithm is as follows:
-      - Compute the little group of the total momentum
-      - Compute irrep matrices of the little group, :math:`D_{\mu\nu}(R)`
-      - Compute the momentum(-spin) representation matrices, :math:`D_{mm'}(R)`
-      - Apply exchange-group projection, giving :math:`\hat{D}(R) = P D(R) P`
-      - Apply Schur's algorithm and transition operators to construct the
-        block-diagonalization matrices
-    """
-    if (spin_irreps is not None) and len(spin_irreps) > 0:
-        if len(spin_irreps) != len(momenta):
-            raise ValueError("Incomensurate momenta and spin irreps specified.")
-
-    # 1. Compute the little group of the total momentum
-    little, stab = make_little_and_stabilizer(momenta, group=make_oh())
-    little_name = identify_stabilizer(little)
-    stab_name = identify_stabilizer(stab)
-    little_canonical = make_canonical_stabilizer(little_name, group=make_oh())
-    isomorphism = find_subgroup_isomorphism(make_oh(), little_canonical , little)
-    little = little[isomorphism.perm]  # Rotate to conventional orientation
-    little_double = make_spinorial_little_group(little)
-
-    # 2. Compute the irrep matrics of the little group
-    if spin_irreps is None:
-        # Distinguishable spin-zero particles. Single-cover irrep matrics suffice.
-        Dmumu = make_irrep_from_group(little_canonical)
-    else:
-        Dmumu = make_irrep_from_groupD(little_canonical)
-
-    # 3. Compute momentum(-spin) representation matrices
-    orbit = make_momentum_orbit(momenta, little, internal_symmetry)
-    if spin_irreps is None:
-        spin_dims = [1 for _ in range(len(momenta))]
-    else:
-        spin_dims = [identify_spin_dim(irrep) for irrep in spin_irreps]
-    orbit_momspin = make_momentum_spin_orbit(momenta, spin_dims, little, internal_symmetry)
-
-    if verbose:
-        print(f"Size of extended orbit: {len(orbit_momspin)}")
-    if len(orbit_momspin) > 100:
-        print((
-            "Warning: detailed optimization efforts have not been made "
-            "in the reference implementation.\nAdditional optimization may be "
-            "required for calculations with large momentum-spin orbits."
-        ))
-    Dmm = make_momentum_orbit_rep(orbit, little)
-    Dspin = make_Dspin(spin_irreps, little, little_double)
-    Dmm_momspin = make_momentum_spin_rep(Dmm, *Dspin)
-
-    # 4. Compute and apply projection from the internal symmetry group
-    if internal_symmetry:
-        # Naively, the projector applied to the Dmm should be proj @ Dmm(R) @ proj.
-        # However, the projector is idempotent, and the permutations commute
-        # with rotations. Therefore, it suffices to compute Dmm(R) @ proj.
-        proj = make_internal_symmetry_projector(orbit_momspin, internal_symmetry)
-        if proj is None:
-            Dmm_momspin = None
-        else:
-            Dmm_momspin = np.einsum("ajk,kl", Dmm_momspin, proj, optimize='greedy')
-
-    # 5. Apply Schur's lemma
-    if Dmm_momspin is None:
-        result, transition_operators = {}, {}
-    else:
-        result, transition_operators = apply_schur(Dmm_momspin, Dmumu, verbose)
-
-    if verbose and (len(result) == 0):
-        print("Decomposition vanishes for specified inputs.")
-
-    return IrrepDecomposition(result, orbit_momspin, Dmm_momspin, Dmumu, little_name, stab_name, transition_operators)
-
-
 ##################
 # Test functions #
 ##################
@@ -2829,7 +2829,7 @@ def test_row_orthogonality(u_matrix, verbose=False):
         The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the matrices, each of shape
-        ``(|\Gamma|, |O|)``.
+        ``(|Gamma|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 
@@ -2857,7 +2857,7 @@ def count_degeneracy(u_matrix):
         The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the matrices, each of shape
-        ``(|\Gamma|, |O|)``.
+        ``(|Gamma|, |O|)``.
 
     Returns
     -------
@@ -2884,7 +2884,7 @@ def test_degenerate_orthogonality(u_matrix, verbose=False):
         The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the matrices, each of shape
-        ``(|\Gamma|, |O|)``.
+        ``(|Gamma|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 
@@ -2923,12 +2923,12 @@ def test_block_diagonalization(Dmm, Dmumu, u_matrix, verbose=False):
     Dmumu : dict
         The irrep matrices as a dict. The keys give the name of the irrep.
         The values contain the irrep matrices themselves, each with shape
-        ``(|G|, |\Gamma|, |\Gamma|)``.
+        ``(|G|, |Gamma|, |Gamma|)``.
     u_matrix : dict
         The block diagonalization matrix.
         The keys are tuples of the form (irrep_name, degeneracy_number).
         The values are arrays containing the matrix, each of shape
-        ``(|\Gamma|, |O|)``.
+        ``(|Gamma|, |O|)``.
     verbose : bool
         Whether to print additional information about successful tests.
 

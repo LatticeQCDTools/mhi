@@ -305,6 +305,48 @@ document.write(`
 <p>Module for constructing block-diagonalization / change-of-basis matrices to map
 products of N local plane-wave operators into irreps of the cubic group.
 Includes appropriate generalizations for spin and internal symmetries.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="mhi.mhi.mhi">
+<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">mhi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_irreps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_symmetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#mhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.mhi" title="Link to this definition">#</a></dt>
+<dd><p>General-purpose driver function for construction of change-of-basis /
+block-diagonalization matrices which project linear combinations of plane-
+wave states onto irreps of the cubic group.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nparticles,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The ordered momenta.</p>
+</dd>
+<dt><strong>particle_names</strong><span class="classifier">array_like</span></dt><dd><p>The particle names, e.g., [‘n’, ‘p’].</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to print extra diagnostic information.</p>
+</dd>
+<dt><strong>return_Dmm</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to return the momentum-(spin) representation matrices.</p>
+</dd>
+<dt><strong>internal_symmetry</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></span></dt><dd><p>The exchange group projector defined in the group algebra.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><a class="reference internal" href="#mhi.mhi.IrrepDecomposition" title="mhi.mhi.IrrepDecomposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">IrrepDecomposition</span></code></a></span></dt><dd><p>object containing the results of the irrep decomposition.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>The algorithm is as follows:</dt><dd><ul class="simple">
+<li><p>Compute the little group of the total momentum</p></li>
+<li><p>Compute irrep matrices of the little group, <span class="math notranslate nohighlight">\(D_{\mu\nu}(R)\)</span></p></li>
+<li><p>Compute the momentum(-spin) representation matrices, <span class="math notranslate nohighlight">\(D_{mm'}(R)\)</span></p></li>
+<li><p>Apply exchange-group projection, giving <span class="math notranslate nohighlight">\(\hat{D}(R) = P D(R) P\)</span></p></li>
+<li><p>Apply Schur’s algorithm and transition operators to construct the
+block-diagonalization matrices</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="mhi.mhi.WeightedPermutation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">WeightedPermutation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#WeightedPermutation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.WeightedPermutation" title="Link to this definition">#</a></dt>
@@ -1978,46 +2020,113 @@ function is used when constructing the <cite>Dspin</cite> matrices.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="mhi.mhi.mhi">
-<span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">mhi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">momenta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_irreps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_symmetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#mhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.mhi" title="Link to this definition">#</a></dt>
-<dd><p>General-purpose driver function for construction of change-of-basis /
-block-diagonalization matrices which project linear combinations of plane-
-wave states onto irreps of the cubic group.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mhi.mhi.IrrepDecomposition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mhi.mhi.</span></span><span class="sig-name descname"><span class="pre">IrrepDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dmm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dmumu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">little_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transition_operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#IrrepDecomposition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.IrrepDecomposition" title="Link to this definition">#</a></dt>
+<dd><p>Container for results of computing the block-diagonalization matrices
+which project linear combinations of plane-wave states onto irreps of
+the cubic group.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>momenta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(nparticles,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">)</span></code> array_like</span></dt><dd><p>The ordered momenta.</p>
+<dt><strong>decomp</strong><span class="classifier">dict</span></dt><dd><p>The irrep decomposition and change-of-basis matrices.
+The keys are tuples (irrep_name, degeneracy_idx).
+The values are the block-diagonalization matrices, given as arrays
+of shape <code class="docutils literal notranslate"><span class="pre">(|Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
 </dd>
-<dt><strong>particle_names</strong><span class="classifier">array_like</span></dt><dd><p>The particle names, e.g., [‘n’, ‘p’].</p>
+<dt><strong>orbit</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|O|,)</span></code> list of <a class="reference internal" href="#mhi.mhi.SpinShellTuple" title="mhi.mhi.SpinShellTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpinShellTuple</span></code></a></span></dt><dd><p>The “extended” spin-momentum orbit, where each element is a
+<a class="reference internal" href="#mhi.mhi.SpinShellTuple" title="mhi.mhi.SpinShellTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpinShellTuple</span></code></a> specifying momentum and spin indices.</p>
 </dd>
-<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to print extra diagnostic information.</p>
+<dt><strong>Dmm</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|O|,</span> <span class="pre">|O|)</span></code>, ndarray</span></dt><dd><p>The (reducible) representation matrices associated with the orbit.</p>
 </dd>
-<dt><strong>return_Dmm</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to return the momentum-(spin) representation matrices.</p>
+<dt><strong>Dmumu</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|Gamma|,</span> <span class="pre">|Gamma|)</span></code>, ndarray</span></dt><dd><p>The irrep matrices</p>
 </dd>
-<dt><strong>internal_symmetry</strong><span class="classifier">list of <a class="reference internal" href="#mhi.mhi.WeightedPermutation" title="mhi.mhi.WeightedPermutation"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></span></dt><dd><p>The exchange group projector defined in the group algebra.</p>
+<dt><strong>little_name</strong><span class="classifier">str</span></dt><dd><p>The name of the little group leaving the total momentum invariant</p>
 </dd>
-</dl>
+<dt><strong>stab_name</strong><span class="classifier">str</span></dt><dd><p>The name of the stabilizer group leaving the ordered set of
+momenta invariant.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>result</strong><span class="classifier">IrrepDecomposition</span></dt><dd><p>object containing the results of the irrep decomposition.</p>
+<dt><strong>transition_operators: dict</strong></dt><dd><p>Column of transition operators <span class="math notranslate nohighlight">\(T_{\mu,0}\)</span>.
+The keys are irrep names.
+The values are ndarrays of shape <code class="docutils literal notranslate"><span class="pre">(|Gamma|,</span> <span class="pre">|O|,</span> <span class="pre">|O|)</span></code>.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <dl class="simple">
-<dt>The algorithm is as follows:</dt><dd><ul class="simple">
-<li><p>Compute the little group of the total momentum</p></li>
-<li><p>Compute irrep matrices of the little group, <span class="math notranslate nohighlight">\(D_{\mu\nu}(R)\)</span></p></li>
-<li><p>Compute the momentum(-spin) representation matrices, <span class="math notranslate nohighlight">\(D_{mm'}(R)\)</span></p></li>
-<li><p>Apply exchange-group projection, giving <span class="math notranslate nohighlight">\(\hat{D}(R) = P D(R) P\)</span></p></li>
-<li><p>Apply Schur’s algorithm and transition operators to construct the
-block-diagonalization matrices</p></li>
+<dt>Projection onto cubic-group irreps requires two pieces.</dt><dd><ul class="simple">
+<li><p>A basis of momentum plane-wave correlation functions, presumably
+computed using lattice QCD.</p></li>
+<li><p>The block-diagonalization matrices computed using this module.</p></li>
 </ul>
 </dd>
 </dl>
+<p>To carry out this projection, the basis of correlation functions must
+have the same order as the orbit used to compute the block-diagonalization
+matrices. The required ordering can be seen by examining the
+“orbit.”</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mhi.mhi.IrrepDecomposition.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#IrrepDecomposition.format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.IrrepDecomposition.format" title="Link to this definition">#</a></dt>
+<dd><p>Formats the irrep decomposition as text string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>latex</strong><span class="classifier">bool</span></dt><dd><p>Whether or not return a latex-formatted sting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>output</strong><span class="classifier">str</span></dt><dd><p>The irrep decomposition, e.g., <code class="docutils literal notranslate"><span class="pre">&quot;A1p</span> <span class="pre">+</span> <span class="pre">A2p</span> <span class="pre">+</span> <span class="pre">2*Ep&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;$A_1^+</span> <span class="pre">\oplus</span> <span class="pre">A_2^+</span> <span class="pre">\oplus</span> <span class="pre">2E^+$&quot;</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mhi.mhi.IrrepDecomposition.little_name">
+<span class="sig-name descname"><span class="pre">little_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#IrrepDecomposition.little_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.IrrepDecomposition.little_name" title="Link to this definition">#</a></dt>
+<dd><p>Returns the name of the little group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>latex</strong><span class="classifier">bool</span></dt><dd><p>Whether or not return a latex-formatted sting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>little_name</strong><span class="classifier">str</span></dt><dd><p>The name of the little group</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mhi.mhi.IrrepDecomposition.stab_name">
+<span class="sig-name descname"><span class="pre">stab_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mhi/mhi.html#IrrepDecomposition.stab_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mhi.mhi.IrrepDecomposition.stab_name" title="Link to this definition">#</a></dt>
+<dd><p>Returns the name of the stabilizer group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>latex</strong><span class="classifier">bool</span></dt><dd><p>Whether or not return a latex-formatted sting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>stab_name</strong><span class="classifier">str</span></dt><dd><p>The name of the stabilizer group</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -2125,7 +2234,7 @@ for a given irrep.</p>
 <dt><strong>u_matrix</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix.
 The keys are tuples of the form (irrep_name, degeneracy_number).
 The values are arrays containing the matrices, each of shape
-<code class="docutils literal notranslate"><span class="pre">(|\Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">(|Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
 </dd>
@@ -2150,7 +2259,7 @@ matrices.</p>
 <dt><strong>u_matrix</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix.
 The keys are tuples of the form (irrep_name, degeneracy_number).
 The values are arrays containing the matrices, each of shape
-<code class="docutils literal notranslate"><span class="pre">(|\Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">(|Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -2174,7 +2283,7 @@ to the counts.</p>
 <dt><strong>u_matrix</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix.
 The keys are tuples of the form (irrep_name, degeneracy_number).
 The values are arrays containing the matrices, each of shape
-<code class="docutils literal notranslate"><span class="pre">(|\Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">(|Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
 </dd>
@@ -2203,12 +2312,12 @@ block-diagonalization matrix <cite>U</cite>, and the block-diagonal irrep matrix
 </dd>
 <dt><strong>Dmumu</strong><span class="classifier">dict</span></dt><dd><p>The irrep matrices as a dict. The keys give the name of the irrep.
 The values contain the irrep matrices themselves, each with shape
-<code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|\Gamma|,</span> <span class="pre">|\Gamma|)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">(|G|,</span> <span class="pre">|Gamma|,</span> <span class="pre">|Gamma|)</span></code>.</p>
 </dd>
 <dt><strong>u_matrix</strong><span class="classifier">dict</span></dt><dd><p>The block diagonalization matrix.
 The keys are tuples of the form (irrep_name, degeneracy_number).
 The values are arrays containing the matrix, each of shape
-<code class="docutils literal notranslate"><span class="pre">(|\Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">(|Gamma|,</span> <span class="pre">|O|)</span></code>.</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>Whether to print additional information about successful tests.</p>
 </dd>
@@ -2599,6 +2708,7 @@ with the associated matrix.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-mhi.mhi">Main module</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.mhi"><code class="docutils literal notranslate"><span class="pre">mhi()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.WeightedPermutation"><code class="docutils literal notranslate"><span class="pre">WeightedPermutation</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.Isomorphism"><code class="docutils literal notranslate"><span class="pre">Isomorphism</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.SpinShellTuple"><code class="docutils literal notranslate"><span class="pre">SpinShellTuple</span></code></a></li>
@@ -2672,7 +2782,12 @@ with the associated matrix.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_spin_half_irrep"><code class="docutils literal notranslate"><span class="pre">make_spin_half_irrep()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.make_Dspin"><code class="docutils literal notranslate"><span class="pre">make_Dspin()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.identify_spin_dim"><code class="docutils literal notranslate"><span class="pre">identify_spin_dim()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.mhi"><code class="docutils literal notranslate"><span class="pre">mhi()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.IrrepDecomposition"><code class="docutils literal notranslate"><span class="pre">IrrepDecomposition</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.IrrepDecomposition.format"><code class="docutils literal notranslate"><span class="pre">IrrepDecomposition.format()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.IrrepDecomposition.little_name"><code class="docutils literal notranslate"><span class="pre">IrrepDecomposition.little_name()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.IrrepDecomposition.stab_name"><code class="docutils literal notranslate"><span class="pre">IrrepDecomposition.stab_name()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.test_stabilizer"><code class="docutils literal notranslate"><span class="pre">test_stabilizer()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.anticommutator"><code class="docutils literal notranslate"><span class="pre">anticommutator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mhi.mhi.commutator"><code class="docutils literal notranslate"><span class="pre">commutator()</span></code></a></li>
