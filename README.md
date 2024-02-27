@@ -16,6 +16,44 @@ Then use pip to install the module:
 The flag "-e" is an "editable install", which means that local changes to the
 code will appear code is run.
 
+## Usage
+
+The most flexible usage comes from the python module.
+For example:
+```
+# Momenta for three particles in the center-of-mass frame
+momenta = np.array([[1,-1,0],[0,1,-1], [-1,0,1],])
+
+# Compute block diagonalization for three distinguishable "pseudoscalar" operators
+# Block diagonalization matrices are stored in the dict result.decomp
+result = mhi.mhi(
+    momenta,
+    spin_irreps=['A1m','A1m','A1m'],
+    internal_symmetry=None)
+print("Case 1:", result.format(latex=True))
+
+# Repeat the diagonalization including symmetrization associated
+# with irreps of some internal symmetry, labelled by Young diagrams.
+tableaux = [
+    [[1,2,3]],      # trivial irrep of S3
+    [[1,2],[3]],    # standard irrep of S3
+    [[1],[2],[3]],  # sign irrep of S3
+]
+for n, tableau in enumerate(tableaux):
+    internal_symmetry = mhi.make_young_projector(tableau, n=3)
+    result = mhi.mhi(momenta, spin_irreps=['A1m','A1m','A1m'], internal_symmetry=internal_symmetry)
+    print(f"Case {n+2}:", result.format(latex=True))
+```
+which yields:
+```
+Case 1: $A_1^+ \oplus A_2^+ \oplus 2E^+ \oplus 3T_1^+ \oplus 3T_2^+ \oplus A_1^- \oplus A_2^- \oplus 2E^- \oplus 3T_1^- \oplus 3T_2^-$
+Case 2: $A_1^+ \oplus T_2^+ \oplus A_1^- \oplus T_2^-$
+Case 3: $E^+ \oplus T_1^+ \oplus T_2^+ \oplus E^- \oplus T_1^- \oplus T_2^-$
+Case 4: $A_2^+ \oplus T_1^+ \oplus A_2^- \oplus T_1^-$
+```
+
+A command-line interface to the module is also provided. Example usage is describe below in [Tests](#tests).
+
 ## Tests
 
 To test the command-line interface, run the command
@@ -27,6 +65,6 @@ After running the main function, it is possible to test the ability to read the 
 
 `$ python read.py <output_name.h5>`
 
-To test the module against previously tabulated data, run the command
+To test the module against previously reference data in test/data, run the command
 
-`$ python test.py <path/to/reference/data>`
+`$ python test_mhi.py`
