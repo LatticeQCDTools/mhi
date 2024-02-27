@@ -9,11 +9,7 @@ def main():
     Command-line script to test functionality of MHI code against tabulated
     reference data.
     """
-    if len(sys.argv) != 2:
-        print(f"usage: python {sys.argv[0]} <reference/output/directory>")
-        sys.exit(0)
-
-    base = sys.argv[1]
+    base = "./test/data"
     if not os.path.exists(base):
         print(base, "does not exist.")
         sys.exit(0)
@@ -443,16 +439,16 @@ def test_groups_and_irreps(base):
     """
     # Oh: Verify agreement of group presentations
     oh = mhi.make_oh()
-    oh_ref = read_mathematica(
-        os.path.join(base, "Oh/Group.dat"),
+    oh_ref = read_npz(
+        os.path.join(base, "Oh/Group.npz"),
         oh.shape)
     assert np.allclose(oh, oh_ref), "Mismatch: Oh"
     print("Success for group: Oh")
 
     # OhD: Verify agreement of group presentations
     ohd = mhi.make_ohd()
-    ohd_ref = read_mathematica(
-        os.path.join(base,"OhD/Group.dat"),
+    ohd_ref = read_npz(
+        os.path.join(base,"OhD/Group.npz"),
         ohd.shape)
     assert np.allclose(ohd, ohd_ref), "Mismatch: OhD"
     print("Success for group: OhD")
@@ -461,8 +457,8 @@ def test_groups_and_irreps(base):
     Dmumu = mhi.make_irrep_from_group(oh)
     for irrep_name, table in Dmumu.items():
         prefix = irrep_name.replace("m", "_minus").replace("p", "_plus")
-        ref = read_mathematica(
-            os.path.join(base, f"Oh/{prefix}.dat"),
+        ref = read_npz(
+            os.path.join(base, f"Oh/{prefix}.npz"),
             table.shape)
         assert np.allclose(ref, table)
         print("Success for Oh irrep:", irrep_name)
@@ -471,8 +467,8 @@ def test_groups_and_irreps(base):
     Dmumu = mhi.make_irrep_from_groupD(oh)
     for irrep_name, table in Dmumu.items():
         prefix = irrep_name.replace("m", "_minus").replace("p", "_plus")
-        ref = read_mathematica(
-            os.path.join(base, f"OhD/{prefix}.dat"),
+        ref = read_npz(
+            os.path.join(base, f"OhD/{prefix}.npz"),
             table.shape)
         assert np.allclose(ref, table)
         print("Success for OhD irrep:", irrep_name)
@@ -509,8 +505,8 @@ def test_subgroups_and_irreps(base):
         little = mhi.make_stabilizer(momenta=momenta, group=oh)
         little_name = mhi.identify_stabilizer(little)
         assert name == little_name, f"Misidentified subgroup? {name} vs {little_name}"
-        little_ref = read_mathematica(
-            os.path.join(base, f"{little_name}/Group.dat"),
+        little_ref = read_npz(
+            os.path.join(base, f"{little_name}/Group.npz"),
             little.shape)
         assert np.allclose(little, little_ref), f"Mismatch: {little_name}"
         print(f"Success for subgroup: {little_name} of Oh")
@@ -518,16 +514,16 @@ def test_subgroups_and_irreps(base):
         # Irreps of subgroups of Oh
         Dmumu = mhi.make_irrep_from_group(little)
         for irrep_name, table in Dmumu.items():
-            ref = read_mathematica(
-                os.path.join(base, f"{name}/{irrep_name}.dat"),
+            ref = read_npz(
+                os.path.join(base, f"{name}/{irrep_name}.npz"),
                 table.shape)
             assert np.allclose(ref, table), f"Problem with {irrep_name}"
             print(f"Success for {little_name} irrep: {irrep_name}")
 
         # Subgroups of OhD
         little_double = mhi.make_spinorial_little_group(little)
-        little_double_ref = read_mathematica(
-            os.path.join(base, f"{little_name}D/Group.dat"),
+        little_double_ref = read_npz(
+            os.path.join(base, f"{little_name}D/Group.npz"),
             little_double.shape)
         assert np.allclose(little_double, little_double_ref), f"Mismatch: {little_name}"
         print(f"Success for subgroup: {little_name}D of OhD")
@@ -535,8 +531,8 @@ def test_subgroups_and_irreps(base):
         # Irreps of subgroups of OhD
         Dmumu_double = mhi.make_irrep_from_groupD(little)
         for irrep_name, table in Dmumu_double.items():
-            ref = read_mathematica(
-                os.path.join(base, f"{name}D/{irrep_name}.dat"),
+            ref = read_npz(
+                os.path.join(base, f"{name}D/{irrep_name}.npz"),
                 table.shape)
             assert np.allclose(ref, table), f"Problem with {irrep_name}"
             print(f"Success for {little_name} irrep: {irrep_name}")
@@ -680,13 +676,13 @@ def test_mhi(momenta, particle_names, spin_irreps, fname_rep, fname_basis):
 
     # Check momentum-orbit representation matrices
     if fname_rep is not None:
-        ref = read_mathematica(fname_rep, result.Dmm.shape)
+        ref = read_npz(fname_rep, result.Dmm.shape)
         assert np.allclose(result.Dmm, ref), f"Trouble with {fname_rep}"
         print("Success:", os.path.split(fname_rep)[-1])
 
     # Check change-of-basis coefficients
     table = make_table(result.decomp)
-    ref = read_mathematica(fname_basis, table.shape)
+    ref = read_npz(fname_basis, table.shape)
     assert np.allclose(table, ref), f"Error: trouble with {fname_basis}"
     print("Success:", os.path.split(fname_basis)[-1])
 
@@ -749,9 +745,9 @@ def make_table(proj):
     return np.vstack([rows[idx] for idx in new_idxs])
 
 
-def read_mathematica(fname, shape=None):
+def read_npz(fname, shape=None):
     """
-    Reads a mathematica file
+    Reads a compressed npz file
 
     Parameters
     ----------
@@ -763,11 +759,11 @@ def read_mathematica(fname, shape=None):
     arr : ndarray
         The array of data.
     """
-    with open(fname, 'rb') as ifile:
-        ref = np.fromfile(ifile, dtype=complex)
-        if shape is not None:
-            ref = ref.reshape(shape)
-        return ref
+    ref = np.load(fname)['arr']
+    if shape is not None:
+        ref = ref.reshape(shape)
+    return ref
+
 
 def get_test_setups():
     """
@@ -775,106 +771,106 @@ def get_test_setups():
     """
     # Momentum configurations for spinless case
     test_setup1 = [
-        ("Dmm_000.dat", "basis_000.dat", np.array([[0,0,0],[0,0,0]])),
-        ("Dmm_100.dat", "basis_100.dat", np.array([[0,0,1],[0,0,-1]])),
-        ("Dmm_110.dat", "basis_110.dat", np.array([[0,1,1],[0,-1,-1]])),
-        ("Dmm_111.dat", "basis_111.dat", np.array([[1,1,1],[-1,-1,-1]])),
-        ("Dmm_112.dat", "basis_112.dat", np.array([[1,1,2],[-1,-1,-2]])),
-        ("Dmm_120.dat", "basis_120.dat", np.array([[1,2,0],[-1,-2,0]])),
-        ("Dmm_123.dat", "basis_123.dat", np.array([[1,2,3],[-1,-2,-3]])),
-        ("Dmm_001_000.dat", "basis_001_000.dat", np.array([[0,0,1],[0,0,0]])),
-        ("Dmm_110_000.dat", "basis_110_000.dat", np.array([[1,1,0],[0,0,0]])),
-        ("Dmm_111_000.dat", "basis_111_000.dat", np.array([[1,1,1],[0,0,0]])),
-        ("Dmm_120_000.dat", "basis_120_000.dat", np.array([[1,2,0],[0,0,0]])),
-        ("Dmm_123_000.dat", "basis_123_000.dat", np.array([[1,2,3],[0,0,0]])),
-        ("Dmm_110_m001.dat", "basis_110_m001.dat", np.array([[1,1,0],[0,0,1]])),
-        ("Dmm_101_100.dat", "basis_101_100.dat", np.array([[1,0,1],[-1,0,0]])),
-        ("Dmm_111_m1m10.dat", "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0]])),
-        ("Dmm_211_m2m10.dat", "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0]])),
-        ("Dmm_10m1_012.dat", "basis_10m1_012.dat", np.array([[1,0,-1],[0,1,2]])),
-        ("Dmm_100_m010.dat", "basis_100_m010.dat", np.array([[0,0,1],[0,1,0]])),
-        ("Dmm_112_00m2.dat", "basis_112_00m2.dat", np.array([[2,1,1],[-2,0,0]])),
-        ("Dmm_10m2_012.dat", "basis_10m2_012.dat", np.array([[-2,0,1],[2,1,0]])),
-        ("Dmm_101_02m1.dat", "basis_101_02m1.dat", np.array([[1,0,1],[0,2,-1]])),
+        ("Dmm_000.npz", "basis_000.npz", np.array([[0,0,0],[0,0,0]])),
+        ("Dmm_100.npz", "basis_100.npz", np.array([[0,0,1],[0,0,-1]])),
+        ("Dmm_110.npz", "basis_110.npz", np.array([[0,1,1],[0,-1,-1]])),
+        ("Dmm_111.npz", "basis_111.npz", np.array([[1,1,1],[-1,-1,-1]])),
+        ("Dmm_112.npz", "basis_112.npz", np.array([[1,1,2],[-1,-1,-2]])),
+        ("Dmm_120.npz", "basis_120.npz", np.array([[1,2,0],[-1,-2,0]])),
+        ("Dmm_123.npz", "basis_123.npz", np.array([[1,2,3],[-1,-2,-3]])),
+        ("Dmm_001_000.npz", "basis_001_000.npz", np.array([[0,0,1],[0,0,0]])),
+        ("Dmm_110_000.npz", "basis_110_000.npz", np.array([[1,1,0],[0,0,0]])),
+        ("Dmm_111_000.npz", "basis_111_000.npz", np.array([[1,1,1],[0,0,0]])),
+        ("Dmm_120_000.npz", "basis_120_000.npz", np.array([[1,2,0],[0,0,0]])),
+        ("Dmm_123_000.npz", "basis_123_000.npz", np.array([[1,2,3],[0,0,0]])),
+        ("Dmm_110_m001.npz", "basis_110_m001.npz", np.array([[1,1,0],[0,0,1]])),
+        ("Dmm_101_100.npz", "basis_101_100.npz", np.array([[1,0,1],[-1,0,0]])),
+        ("Dmm_111_m1m10.npz", "basis_111_m1m10.npz", np.array([[1,1,1],[-1,-1,0]])),
+        ("Dmm_211_m2m10.npz", "basis_211_m2m10.npz", np.array([[2,1,1],[-2,-1,0]])),
+        ("Dmm_10m1_012.npz", "basis_10m1_012.npz", np.array([[1,0,-1],[0,1,2]])),
+        ("Dmm_100_m010.npz", "basis_100_m010.npz", np.array([[0,0,1],[0,1,0]])),
+        ("Dmm_112_00m2.npz", "basis_112_00m2.npz", np.array([[2,1,1],[-2,0,0]])),
+        ("Dmm_10m2_012.npz", "basis_10m2_012.npz", np.array([[-2,0,1],[2,1,0]])),
+        ("Dmm_101_02m1.npz", "basis_101_02m1.npz", np.array([[1,0,1],[0,2,-1]])),
     ]
 
     # Momentum configurations for Npi and np
     test_setup2 = [
-        ("Dmm_000.dat", "basis_000.dat", np.array([[0,0,0],[0,0,0]])),
-        ("Dmm_100.dat", "basis_100.dat", np.array([[0,0,1],[0,0,-1]])),
-        ("Dmm_110.dat", "basis_110.dat", np.array([[0,1,1],[0,-1,-1]])),
-        ("Dmm_111.dat", "basis_111.dat", np.array([[1,1,1],[-1,-1,-1]])),
-        ("Dmm_112.dat", "basis_112.dat", np.array([[2,1,1],[-2,-1,-1]])),
-        ("Dmm_120.dat", "basis_120.dat", np.array([[1,2,0],[-1,-2,0]])),
-        ("Dmm_123.dat", "basis_123.dat", np.array([[1,2,3],[-1,-2,-3]])),
-        ("Dmm_001_000.dat", "basis_001_000.dat", np.array([[0,0,1],[0,0,0]])),
-        ("Dmm_110_000.dat", "basis_110_000.dat", np.array([[0,1,1],[0,0,0]])),
-        ("Dmm_111_000.dat", "basis_111_000.dat", np.array([[1,1,1],[0,0,0]])),
-        ("Dmm_120_000.dat", "basis_120_000.dat", np.array([[1,2,0],[0,0,0]])),
-        ("Dmm_123_000.dat", "basis_123_000.dat", np.array([[1,2,3],[0,0,0]])),
-        ("Dmm_110_m001.dat","basis_110_m001.dat", np.array([[1,1,0],[0,0,1]])),
-        ("Dmm_101_100.dat", "basis_101_100.dat", np.array([[1,0,1],[-1,0,0]])),
-        ("Dmm_111_m1m10.dat", "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0]])),
-        ("Dmm_211_m2m10.dat", "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0]])),
-        ("Dmm_10m1_012.dat", "basis_10m1_012.dat", np.array([[1,0,-1],[0,1,2]])),
-        ("Dmm_100_m010.dat", "basis_100_m010.dat", np.array([[0,0,1],[0,1,0]])),
-        ("Dmm_112_00m2.dat", "basis_112_00m2.dat", np.array([[2,1,1],[-2,0,0]])),
-        ("Dmm_10m2_012.dat", "basis_10m2_012.dat", np.array([[-2,0,1],[2,1,0]])),
-        ("Dmm_101_02m1.dat", "basis_101_02m1.dat", np.array([[1,0,1],[0,2,-1]])),
+        ("Dmm_000.npz", "basis_000.npz", np.array([[0,0,0],[0,0,0]])),
+        ("Dmm_100.npz", "basis_100.npz", np.array([[0,0,1],[0,0,-1]])),
+        ("Dmm_110.npz", "basis_110.npz", np.array([[0,1,1],[0,-1,-1]])),
+        ("Dmm_111.npz", "basis_111.npz", np.array([[1,1,1],[-1,-1,-1]])),
+        ("Dmm_112.npz", "basis_112.npz", np.array([[2,1,1],[-2,-1,-1]])),
+        ("Dmm_120.npz", "basis_120.npz", np.array([[1,2,0],[-1,-2,0]])),
+        ("Dmm_123.npz", "basis_123.npz", np.array([[1,2,3],[-1,-2,-3]])),
+        ("Dmm_001_000.npz", "basis_001_000.npz", np.array([[0,0,1],[0,0,0]])),
+        ("Dmm_110_000.npz", "basis_110_000.npz", np.array([[0,1,1],[0,0,0]])),
+        ("Dmm_111_000.npz", "basis_111_000.npz", np.array([[1,1,1],[0,0,0]])),
+        ("Dmm_120_000.npz", "basis_120_000.npz", np.array([[1,2,0],[0,0,0]])),
+        ("Dmm_123_000.npz", "basis_123_000.npz", np.array([[1,2,3],[0,0,0]])),
+        ("Dmm_110_m001.npz","basis_110_m001.npz", np.array([[1,1,0],[0,0,1]])),
+        ("Dmm_101_100.npz", "basis_101_100.npz", np.array([[1,0,1],[-1,0,0]])),
+        ("Dmm_111_m1m10.npz", "basis_111_m1m10.npz", np.array([[1,1,1],[-1,-1,0]])),
+        ("Dmm_211_m2m10.npz", "basis_211_m2m10.npz", np.array([[2,1,1],[-2,-1,0]])),
+        ("Dmm_10m1_012.npz", "basis_10m1_012.npz", np.array([[1,0,-1],[0,1,2]])),
+        ("Dmm_100_m010.npz", "basis_100_m010.npz", np.array([[0,0,1],[0,1,0]])),
+        ("Dmm_112_00m2.npz", "basis_112_00m2.npz", np.array([[2,1,1],[-2,0,0]])),
+        ("Dmm_10m2_012.npz", "basis_10m2_012.npz", np.array([[-2,0,1],[2,1,0]])),
+        ("Dmm_101_02m1.npz", "basis_101_02m1.npz", np.array([[1,0,1],[0,2,-1]])),
     ]
 
     # Momentum configurations for nn
     test_setup3 = [
-        ("Dmm_proj_000.dat", "basis_000.dat", np.array([[0,0,0],[0,0,0]])),
-        ("Dmm_proj_100.dat", "basis_100.dat", np.array([[0,0,1],[0,0,-1]])),
-        ("Dmm_proj_110.dat", "basis_110.dat", np.array([[0,1,1],[0,-1,-1]])),
-        ("Dmm_proj_111.dat", "basis_111.dat", np.array([[1,1,1],[-1,-1,-1]])),
-        ("Dmm_proj_112.dat", "basis_112.dat", np.array([[2,1,1],[-2,-1,-1]])),
-        ("Dmm_proj_120.dat", "basis_120.dat", np.array([[2,1,0],[-2,-1,0]])),
-        ("Dmm_proj_123.dat", "basis_123.dat", np.array([[3,2,1],[-3,-2,-1]])),
-        ("Dmm_proj_001_000.dat", "basis_001_000.dat", np.array([[0,0,1],[0,0,0]])),
-        ("Dmm_proj_001_001.dat", "basis_001_001.dat", np.array([[0,0,1],[0,0,1]])),
-        ("Dmm_proj_100_010.dat", "basis_100_010.dat", np.array([[0,0,1],[0,1,0]])),
-        ("Dmm_proj_101_02m1.dat", "basis_101_02m1.dat", np.array([[1,0,1],[0,2,-1]])),
-        ("Dmm_proj_101_100.dat", "basis_101_100.dat", np.array([[1,0,1],[-1,0,0]])),
-        ("Dmm_proj_101_101.dat", "basis_101_101.dat", np.array([[1,0,1],[-1,0,1]])),
-        ("Dmm_proj_10m1_012.dat", "basis_10m1_012.dat", np.array([[1,0,-1],[0,1,2]])),
-        ("Dmm_proj_10m2_012.dat", "basis_10m2_012.dat", np.array([[-2,0,1],[2,1,0]])),
-        ("Dmm_proj_110_000.dat", "basis_110_000.dat", np.array([[0,1,1],[0,0,0]])),
-        ("Dmm_proj_110_110.dat", "basis_110_110.dat", np.array([[1,1,0],[1,1,0]])),
-        ("Dmm_proj_110_m001.dat", "basis_110_m001.dat", np.array([[1,1,0],[0,0,1]])),
-        ("Dmm_proj_111_000.dat", "basis_111_000.dat", np.array([[1,1,1],[0,0,0]])),
-        ("Dmm_proj_111_111.dat", "basis_111_111.dat", np.array([[1,1,1],[1,1,1]])),
-        ("Dmm_proj_111_m1m10.dat", "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0]])),
-        ("Dmm_proj_111_m1m11.dat", "basis_111_m1m11.dat", np.array([[1,1,1],[-1,-1,1]])),
-        ("Dmm_proj_112_00m2.dat", "basis_112_00m2.dat", np.array([[2,1,1],[-2,0,0]])),
-        ("Dmm_proj_112_11m2.dat", "basis_112_11m2.dat", np.array([[2,1,1],[-2,1,1]])),
-        ("Dmm_proj_120_000.dat", "basis_120_000.dat", np.array([[1,2,0],[0,0,0]])),
-        ("Dmm_proj_120_120.dat", "basis_120_120.dat", np.array([[1,2,0],[1,2,0]])),
-        ("Dmm_proj_121_0m1m1.dat", "basis_121_0m1m1.dat", np.array([[1,2,1],[-1,-1,0]])),
-        ("Dmm_proj_123_000.dat", "basis_123_000.dat", np.array([[1,2,3],[0,0,0]])),
-        ("Dmm_proj_123_123.dat", "basis_123_123.dat", np.array([[1,2,3],[1,2,3]])),
-        ("Dmm_proj_211_m2m10.dat", "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0]])),
-        ("Dmm_proj_211_m2m11.dat", "basis_211_m2m11.dat", np.array([[2,1,1],[-2,-1,1]])),
-        ("Dmm_proj_220_m1m10.dat", "basis_220_m1m10.dat", np.array([[0,2,2],[0,-1,-1]])),
+        ("Dmm_proj_000.npz", "basis_000.npz", np.array([[0,0,0],[0,0,0]])),
+        ("Dmm_proj_100.npz", "basis_100.npz", np.array([[0,0,1],[0,0,-1]])),
+        ("Dmm_proj_110.npz", "basis_110.npz", np.array([[0,1,1],[0,-1,-1]])),
+        ("Dmm_proj_111.npz", "basis_111.npz", np.array([[1,1,1],[-1,-1,-1]])),
+        ("Dmm_proj_112.npz", "basis_112.npz", np.array([[2,1,1],[-2,-1,-1]])),
+        ("Dmm_proj_120.npz", "basis_120.npz", np.array([[2,1,0],[-2,-1,0]])),
+        ("Dmm_proj_123.npz", "basis_123.npz", np.array([[3,2,1],[-3,-2,-1]])),
+        ("Dmm_proj_001_000.npz", "basis_001_000.npz", np.array([[0,0,1],[0,0,0]])),
+        ("Dmm_proj_001_001.npz", "basis_001_001.npz", np.array([[0,0,1],[0,0,1]])),
+        ("Dmm_proj_100_010.npz", "basis_100_010.npz", np.array([[0,0,1],[0,1,0]])),
+        ("Dmm_proj_101_02m1.npz", "basis_101_02m1.npz", np.array([[1,0,1],[0,2,-1]])),
+        ("Dmm_proj_101_100.npz", "basis_101_100.npz", np.array([[1,0,1],[-1,0,0]])),
+        ("Dmm_proj_101_101.npz", "basis_101_101.npz", np.array([[1,0,1],[-1,0,1]])),
+        ("Dmm_proj_10m1_012.npz", "basis_10m1_012.npz", np.array([[1,0,-1],[0,1,2]])),
+        ("Dmm_proj_10m2_012.npz", "basis_10m2_012.npz", np.array([[-2,0,1],[2,1,0]])),
+        ("Dmm_proj_110_000.npz", "basis_110_000.npz", np.array([[0,1,1],[0,0,0]])),
+        ("Dmm_proj_110_110.npz", "basis_110_110.npz", np.array([[1,1,0],[1,1,0]])),
+        ("Dmm_proj_110_m001.npz", "basis_110_m001.npz", np.array([[1,1,0],[0,0,1]])),
+        ("Dmm_proj_111_000.npz", "basis_111_000.npz", np.array([[1,1,1],[0,0,0]])),
+        ("Dmm_proj_111_111.npz", "basis_111_111.npz", np.array([[1,1,1],[1,1,1]])),
+        ("Dmm_proj_111_m1m10.npz", "basis_111_m1m10.npz", np.array([[1,1,1],[-1,-1,0]])),
+        ("Dmm_proj_111_m1m11.npz", "basis_111_m1m11.npz", np.array([[1,1,1],[-1,-1,1]])),
+        ("Dmm_proj_112_00m2.npz", "basis_112_00m2.npz", np.array([[2,1,1],[-2,0,0]])),
+        ("Dmm_proj_112_11m2.npz", "basis_112_11m2.npz", np.array([[2,1,1],[-2,1,1]])),
+        ("Dmm_proj_120_000.npz", "basis_120_000.npz", np.array([[1,2,0],[0,0,0]])),
+        ("Dmm_proj_120_120.npz", "basis_120_120.npz", np.array([[1,2,0],[1,2,0]])),
+        ("Dmm_proj_121_0m1m1.npz", "basis_121_0m1m1.npz", np.array([[1,2,1],[-1,-1,0]])),
+        ("Dmm_proj_123_000.npz", "basis_123_000.npz", np.array([[1,2,3],[0,0,0]])),
+        ("Dmm_proj_123_123.npz", "basis_123_123.npz", np.array([[1,2,3],[1,2,3]])),
+        ("Dmm_proj_211_m2m10.npz", "basis_211_m2m10.npz", np.array([[2,1,1],[-2,-1,0]])),
+        ("Dmm_proj_211_m2m11.npz", "basis_211_m2m11.npz", np.array([[2,1,1],[-2,-1,1]])),
+        ("Dmm_proj_220_m1m10.npz", "basis_220_m1m10.npz", np.array([[0,2,2],[0,-1,-1]])),
     ]
 
     # Momentum configurations for nnn
     test_setup4 = [
-        (None, "basis_001.dat", np.array([[0,0,1],[0,0,-1],[0,0,0]])),
-        (None, "basis_001_002.dat", np.array([[0,0,1],[0,0,2],[0,0,-3]])),
-        (None, "basis_011.dat", np.array([[0,1,1],[0,-1,-1],[0,0,0]])),
-        (None, "basis_011_022.dat", np.array([[0,-1,-1],[0,-2,-2],[0,3,3]])),
-        (None, "basis_111.dat", np.array([[1,1,1],[-1,-1,-1],[0,0,0]])),
-        (None, "basis_111_222.dat", np.array([[1,1,1],[2,2,2],[-3,-3,-3]])),
-        (None, "basis_210.dat", np.array([[2,1,0],[-2,-1,0],[0,0,0]])),
-        (None, "basis_011_0m10.dat", np.array([[0,1,1],[0,-1,0],[0,0,-1]])),
-        (None, "basis_210_m200.dat", np.array([[2,1,0],[-2,0,0],[0,-1,0]])),
-        (None, "basis_211.dat", np.array([[2,1,1],[-2,-1,-1],[0,0,0]])),
-        (None, "basis_111_m1m10.dat", np.array([[1,1,1],[-1,-1,0],[0,0,-1]])),
-        (None, "basis_0m11_210.dat", np.array([[0,-1,1],[2,1,0],[-2,0,-1]])),
+        (None, "basis_001.npz", np.array([[0,0,1],[0,0,-1],[0,0,0]])),
+        (None, "basis_001_002.npz", np.array([[0,0,1],[0,0,2],[0,0,-3]])),
+        (None, "basis_011.npz", np.array([[0,1,1],[0,-1,-1],[0,0,0]])),
+        (None, "basis_011_022.npz", np.array([[0,-1,-1],[0,-2,-2],[0,3,3]])),
+        (None, "basis_111.npz", np.array([[1,1,1],[-1,-1,-1],[0,0,0]])),
+        (None, "basis_111_222.npz", np.array([[1,1,1],[2,2,2],[-3,-3,-3]])),
+        (None, "basis_210.npz", np.array([[2,1,0],[-2,-1,0],[0,0,0]])),
+        (None, "basis_011_0m10.npz", np.array([[0,1,1],[0,-1,0],[0,0,-1]])),
+        (None, "basis_210_m200.npz", np.array([[2,1,0],[-2,0,0],[0,-1,0]])),
         # OK, but very slow to run all the internal tests
-        # (None, "basis_211_m2m10.dat", np.array([[2,1,1],[-2,-1,0],[0,0,-1]])),
+        # (None, "basis_211.npz", np.array([[2,1,1],[-2,-1,-1],[0,0,0]])),
+        # (None, "basis_111_m1m10.npz", np.array([[1,1,1],[-1,-1,0],[0,0,-1]])),
+        # (None, "basis_0m11_210.npz", np.array([[0,-1,1],[2,1,0],[-2,0,-1]])),
+        # (None, "basis_211_m2m10.npz", np.array([[2,1,1],[-2,-1,0],[0,0,-1]])),
     ]
     return test_setup1, test_setup2, test_setup3, test_setup4
 
