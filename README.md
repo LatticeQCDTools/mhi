@@ -14,7 +14,7 @@ Then use pip to install the module:
 `$ pip install -e ./`
 
 The flag "-e" is an "editable install", which means that local changes to the
-code will appear code is run.
+code will appear when the code is run.
 
 ## Usage
 
