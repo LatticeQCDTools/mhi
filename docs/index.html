@@ -287,7 +287,46 @@ associated with the paper</p>
 use pip to install the module:</p>
 <p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">./</span></code></p>
 <p>The flag “-e” is an “editable install”, which means that local changes to the
-code will appear code is run.</p>
+code will appear when the code is run.</p>
+</section>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h1>
+<p>The most flexible usage comes from the python module. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Momenta for three particles in a boosted frame.</span>
+<span class="n">momenta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],])</span>
+
+<span class="c1"># Compute block diagonalization for three distinguishable &quot;pseudoscalar&quot; operators</span>
+<span class="c1"># Block diagonalization matrices are stored in the dict result.decomp</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">mhi</span><span class="o">.</span><span class="n">mhi</span><span class="p">(</span>
+    <span class="n">momenta</span><span class="p">,</span>
+    <span class="n">spin_irreps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A1m&#39;</span><span class="p">,</span><span class="s1">&#39;A1m&#39;</span><span class="p">,</span><span class="s1">&#39;A1m&#39;</span><span class="p">],</span>
+    <span class="n">internal_symmetry</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Case 1:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">latex</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="c1"># Repeat the diagonalization including symmetrization associated</span>
+<span class="c1"># with irreps of some internal symmetry, labelled by Young diagrams.</span>
+<span class="n">tableaux</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span>      <span class="c1"># trivial irrep of S3</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">]],</span>    <span class="c1"># standard irrep of S3</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">]],</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">]],</span>  <span class="c1"># sign irrep of S3</span>
+<span class="p">]</span>
+<span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">tableau</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tableaux</span><span class="p">):</span>
+    <span class="n">internal_symmetry</span> <span class="o">=</span> <span class="n">mhi</span><span class="o">.</span><span class="n">make_young_projector</span><span class="p">(</span><span class="n">tableau</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">mhi</span><span class="o">.</span><span class="n">mhi</span><span class="p">(</span><span class="n">momenta</span><span class="p">,</span> <span class="n">spin_irreps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A1m&#39;</span><span class="p">,</span><span class="s1">&#39;A1m&#39;</span><span class="p">,</span><span class="s1">&#39;A1m&#39;</span><span class="p">],</span> <span class="n">internal_symmetry</span><span class="o">=</span><span class="n">internal_symmetry</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Case </span><span class="si">{</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">latex</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>which yields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Case 1: $A_1 \oplus A_2 \oplus 2E$
+Case 2: $A_2$
+Case 3: $E$
+Case 4: $E$
+Case 5: $A_1$
+</pre></div>
+</div>
+<p>These results arise in the case of three pions with isospin, which is discussed explicitly in the accompanying paper.</p>
+<p>A command-line interface to the module is also provided. Example usage is describe below in Tests.</p>
 </section>
 <section id="tests">
 <h1>Tests<a class="headerlink" href="#tests" title="Link to this heading">#</a></h1>
@@ -340,6 +379,7 @@ code will appear code is run.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Overview</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">Tests</a></li>
 </ul>
 
