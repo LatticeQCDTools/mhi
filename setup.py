@@ -5,7 +5,7 @@
 from os import path
 from io import open
 import setuptools
-from numpy.distutils.core import setup
+from distutils.core import setup
 # io.open is needed for projects that support Python 2.7
 # It ensures open() defaults to text mode with universal newlines,
 # and accepts an argument to specify the text encoding
