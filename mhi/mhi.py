@@ -1398,7 +1398,7 @@ def make_exchange_projector(labels, tableau_map):
     keys = np.array(list(partitions.keys()))
     for wps in itertools.product(*projectors.values()):
         idxs = [wp.perm for wp in wps]
-        weight = np.product([wp.weight for wp in wps])
+        weight = np.prod([wp.weight for wp in wps])
         projector.append(
             WeightedPermutation(
                 weight=weight,
