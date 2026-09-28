@@ -2394,6 +2394,49 @@ def make_spin_half_irrep(little_double):
             basis_functions.basis_spinors["nucleon"]["nucleon"],
             little_double)
 
+def make_boson_irrep(little, irrep):
+    """
+    Instantiates the double-cover irrep matrices associated with a pseudoscalar
+    particle, assumed to transform under the :math:`A_1^-` irrep, vectors particle\
+    transforming under the :math:`T_1^-` irrep, or other boson. 
+    Usually this function is used when constructing the `Dspin` matrices.
+
+    Parameters
+    ----------
+    little : ``(|G|, 3, 3)`` array_like
+        The little-group matrices associated with some momenta
+
+    Returns
+    -------
+    boson_irrep : ``(|G^D|, 1, 1)`` ndarray
+        The boson irrep matrices for the double cover of the little group.
+    """
+    oh = make_oh()
+    idxs = np.hstack([np.where([np.allclose(gg, g) for gg in oh]) for g in little]).squeeze()
+    boson_irrep = np.vstack(2*[make_irrep_from_group(oh)[irrep][idxs]])
+    return boson_irrep
+
+def make_fermion_irrep(little_double, irrep):
+    """
+    Instantiates the double-cover irrep matrices associated with a spin-half
+    particle, assumed to transform under the :math:`G_1^+` irrep, spin-3/2
+    particle transforming under the :math:`H^+` irrep, or other fermion. 
+    Usually this function is used when constructing the `Dspin` matrices.
+
+    Parameters
+    ----------
+    little_double : ``(|G^D|, 4, 4)`` array_like
+        The spinorial little-group matrices associated with some momenta
+
+    Returns
+    -------
+    irrep_spin : ``(|G^D|, 1, 1)`` ndarray
+        The fermionic irrep matrices for double cover of the little group.
+    """
+    return make_irrep_spinor(
+            basis_functions.basis_spinors["OhD"][irrep],
+            little_double)
+
 
 def make_Dspin(spin_irreps, little, little_double):
     """
@@ -2416,18 +2459,18 @@ def make_Dspin(spin_irreps, little, little_double):
     if spin_irreps is None:
         return []
 
-    if 'A1m' in spin_irreps:
-        pseudoscalar = make_pseudoscalar_irrep(little)
-    if 'G1p' in spin_irreps:
-        spin_half = make_spin_half_irrep(little_double)
+    fermionic_irreps = [
+            "F", "F1", "F2", "G", "G1", "G2", "G1p", "G2p",
+            "Hp", "G1m", "G2m", "Hm"
+    ]
+
     Dspin = []
     for irrep in spin_irreps:
-        if irrep == 'A1m':
-            Dspin.append(pseudoscalar)
-        elif irrep == 'G1p':
-            Dspin.append(spin_half)
+        if irrep in fermionic_irreps:
+            Dspin.append(make_fermion_irrep(little_double, irrep))
         else:
-            raise ValueError(f"Unexpected irrep '{irrep}'")
+            Dspin.append(make_boson_irrep(little, irrep))
+
     return Dspin
 
 
