@@ -5,7 +5,7 @@
 from os import path
 from io import open
 import setuptools
-from distutils.core import setup
+from setuptools import setup
 # io.open is needed for projects that support Python 2.7
 # It ensures open() defaults to text mode with universal newlines,
 # and accepts an argument to specify the text encoding
@@ -49,12 +49,15 @@ setup(
         # 'collections ',
         'sympy',
         'numpy',
+        'scipy',
+        'pyyaml',
+        'h5py'
     ],
     # Provide executable script to run the main code
     # TODO
     entry_points={},
     #ext_modules=[EXT1], # external modlues
     # TODO
-    #package_data={'': ['data/*']},
-    extras_require={},
+    package_data={'mhi': ['particles.yaml']},
+    extras_require={'test': ['pytest']}, # pytest suite: pip install -e ".[test]
 )

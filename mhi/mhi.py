@@ -20,7 +20,6 @@ import numpy as np
 import sympy
 from scipy.linalg import expm
 import yaml
-import h5py
 from . import basis_functions
 
 
@@ -72,8 +71,16 @@ def mhi(momenta, spin_irreps=None, internal_symmetry=None, verbose=False):
     stab_name = identify_stabilizer(stab)
     little_canonical = make_canonical_stabilizer(little_name, group=make_oh())
     isomorphism = find_subgroup_isomorphism(make_oh(), little_canonical , little)
-    little = little[isomorphism.perm]  # Rotate to conventional orientation
+    # Rotate canonical elements C_j to conventional orientation with g C_j g^{-1}
+    little = conjugate_group(isomorphism.g, little_canonical) # = little[np.argsort(isomorphism.perm)]
+    # Rotate double cover, ghat C_j ghat^{-1}
+    oh_group = make_oh()
+    g_hat = make_ohd()[[np.allclose(elt, isomorphism.g) for elt in oh_group].index(True)]
+    target = conjugate_group(g_hat, make_spinorial_little_group(little_canonical))
+    # Fix signs 
     little_double = make_spinorial_little_group(little)
+    signs = np.sign(np.real(np.einsum("rij,rij->r", little_double.conj(), target)))
+    little_double = little_double * signs[:, None, None]
 
     # 2. Compute the irrep matrics of the little group
     if spin_irreps is None:
@@ -140,7 +147,7 @@ class WeightedPermutation(namedtuple('WeightedPermutation', ['weight', 'perm']))
         Permutation expressed as an array.
     """
 class Isomorphism(namedtuple('Isomorphism', ['g', 'perm'])):
-    """The group element and permutation specifying a subgroup isomorphism.
+    r"""The group element and permutation specifying a subgroup isomorphism.
 
     Attributes
     ----------
@@ -663,7 +670,7 @@ class DiracPauli:
 
 
 def get_nprod(j):
-    """
+    r"""
     Gets the number of spin-1/2 copies present for a given half-integer j.
 
     For example, 3/2 = 1/2 \otimes 1/2 \otimes 1/2 --> 3 copies
@@ -992,8 +999,8 @@ def make_little_and_stabilizer(momenta, group):
 def conjugate(g, h):
     """
     Computes the conjugate of group element h by group element g:
-    :math:`g.h.g^{-1}`.  Assumes that g is an orthogonal matrix so that
-    :math:`g^{-1} = g^T`.
+    :math:`g.h.g^{-1}`.  Assumes that g is a unitary matrix so that
+    :math:`g^{-1} = g^{*T}`.
 
     Parameters
     ----------
@@ -1005,7 +1012,7 @@ def conjugate(g, h):
     h_conj : ``(n, n)`` ndarray
         The conjugated element, :math:`g.h.g^{-1}`
     """
-    return g @ h @ g.T
+    return g @ h @ g.conj().T
 
 
 def conjugate_group(g, group):
@@ -1055,7 +1062,7 @@ def find_subgroup_isomorphism(group, subgroup_h1 , subgroup_h2):
         """
         Computes the indices that would sort the group, using a hash
         """
-        return np.argsort([force_hash(g) for g in group])
+        return np.argsort([force_hash(canonicalize(g)) for g in group])
 
     ridx2 = argsort(subgroup_h2).argsort()
     for g in group:
@@ -1089,6 +1096,16 @@ def apply_isomorphism(group, isomorphism):
 ######################
 # Orbit construction #
 ######################
+
+def canonicalize(arr, decimals=10):
+    """
+    Rounds an array and normalises signed zeros, so that numerically equal
+    group elements have identical bytes (and hence identical hashes).
+    """
+    arr = np.asarray(arr)
+    arr = arr.astype(np.complex128) if np.iscomplexobj(arr) else arr.astype(np.float64)
+    return np.ascontiguousarray(np.round(arr, decimals) + 0.0)  # + 0.0 maps -0.0 to 0.0
+
 
 def force_hash(arr):
     """
@@ -1539,7 +1556,7 @@ def make_internal_symmetry_projector(orbit, internal_symmetry):
 
 
 def multiply_perms(a, b):
-    """
+    r"""
     Multiply the permutations a and b.
 
     Group multiplication acts as composition when considering group elements as
@@ -1559,7 +1576,7 @@ def multiply_perms(a, b):
 
 
 def invert_perm(a):
-    """
+    r"""
     Compute the inverse permutation such that
     :math:`a \circ a^{-1} = a^{-1} \circ a = (1)`
 
@@ -1864,7 +1881,7 @@ def make_momentum_orbit_rep_matrix(orbit, group_element):
 
 
 def make_momentum_orbit_rep(orbit, group):
-    """
+    r"""
     Computes the representation of a group G acting on an orbit O.
 
     Parameters
@@ -1884,7 +1901,7 @@ def make_momentum_orbit_rep(orbit, group):
 
 
 def make_momentum_spin_rep(Dmm, *Dspin):
-    """
+    r"""
     Computes the combined momentum-spin representation matrices.
 
     Parameters
@@ -1921,7 +1938,7 @@ def make_momentum_spin_rep(Dmm, *Dspin):
 
 
 def make_irrep_matrix(polarizations, group_element):
-    """
+    r"""
     Computes the irrep matrix associated with a group element using the
     algebraic method in terms of polarization tensors.
 
@@ -1948,7 +1965,7 @@ def make_irrep_matrix(polarizations, group_element):
 
 
 def make_irrep(polarizations, group):
-    """
+    r"""
     Computes the irrep matrices D_{mu, mu'}(g).
 
     Parameters
@@ -1970,7 +1987,7 @@ def make_irrep(polarizations, group):
 ############################
 
 def make_irrep_matrix_spinor(irrep_basis, group_element):
-    """
+    r"""
     Computes the spinorial irrep matrix associated with a group element,
     given a basis for the irrep.
 
@@ -2019,7 +2036,7 @@ def make_irrep_matrix_spinor(irrep_basis, group_element):
 
 
 def make_irrep_spinor(basis, group):
-    """
+    r"""
     Computes the spinorial irrep matrices D_{mu, mu'}(g).
 
     Parameters
@@ -2038,7 +2055,7 @@ def make_irrep_spinor(basis, group):
 
 
 def make_irrep_from_group(little_group):
-    """
+    r"""
     Computes the irrep matrices associated with a particular little group.
 
     Parameters
@@ -2074,7 +2091,7 @@ def make_irrep_from_group(little_group):
 
 
 def make_irrep_from_groupD(little_group):
-    """
+    r"""
     Computes double-cover irrep matrices associated with a given little group,
     including both spinorial and bosonic irreps.
 
@@ -2194,7 +2211,7 @@ def project(vector, basis, direction):
 
 
 def apply_schur(Dmm, Dmumu, verbose):
-    """
+    r"""
     Computes the block diagonalization matrices using Schur's algorithm,
     including transition operators to move between rows in a given irrep.
 
@@ -2270,7 +2287,7 @@ def apply_schur(Dmm, Dmumu, verbose):
 
 
 def rephase(arr, irrep):
-    """
+    r"""
     Applies a phase convention to block diagonalization matrices
 
     Parameters
@@ -2499,7 +2516,7 @@ def identify_spin_dim(irrep):
 
 
 class IrrepDecomposition:
-    """
+    r"""
     Container for results of computing the block-diagonalization matrices
     which project linear combinations of plane-wave states onto irreps of
     the cubic group.
@@ -2836,7 +2853,7 @@ def test_clifford(gamma, eta, verbose=False):
 
 
 def test_gamma5(gamma, gamma5, verbose):
-    """
+    r"""
     Tests anticommutation of gamma5,
     :math:`\{\gamma_\mu, \gamma_5\} = 0`
 
@@ -3010,6 +3027,7 @@ def write_hdf5(h5fname, result_dict):
     None
 
     """
+    import h5py
     with h5py.File(h5fname, mode='a') as h5file:
         for (irrep_name, degeneracy), data in result_dict.items():
             dpath = f'data/{irrep_name}/{degeneracy}'
@@ -3041,6 +3059,7 @@ def read_hdf5(h5fname):
         with the associated matrix.
 
     """
+    import h5py
     result_dict = {}
     with h5py.File(h5fname, 'r') as ifile:
         for irrep_name in ifile['data']:
